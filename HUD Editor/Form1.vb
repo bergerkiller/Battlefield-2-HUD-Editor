@@ -1,4 +1,6 @@
-﻿Public Class Form1
+﻿Imports System.Runtime.InteropServices
+
+Public Class Form1
     Dim tupdater As System.Threading.Thread
 
 
@@ -246,11 +248,16 @@
     End Sub
     Private Sub LoadToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles LoadToolStripMenuItem.Click
         If OpenFileDialog1.ShowDialog = Windows.Forms.DialogResult.OK Then
-            Cursor.Current = Cursors.WaitCursor
-            LoadFile(OpenFileDialog1.FileName)
-            Cursor.Current = Cursors.Default
+            LoadFileWithWaitCursor(OpenFileDialog1.FileName)
         End If
     End Sub
+
+    Private Sub LoadFileWithWaitCursor(ByVal FileName As String)
+        Cursor.Current = Cursors.WaitCursor
+        LoadFile(FileName)
+        Cursor.Current = Cursors.Default
+    End Sub
+
     Private Sub LoadFile(ByVal FileName As String)
         If System.IO.File.Exists(FileName) Then
             WriteLog("Loading file: " & FileName)
@@ -877,7 +884,9 @@
 #End Region
 
 #Region "Simulation"
-    Public Declare Function GetAsyncKeyState Lib "user32" (ByVal Key As Windows.Forms.Keys) As Boolean
+    <DllImport("user32.dll")> _
+    Shared Function GetAsyncKeyState(ByVal vKey As System.Windows.Forms.Keys) As Short
+    End Function
 
     Dim simpitch As Single = 0
     Dim simbanking As Single = 0
@@ -890,6 +899,7 @@
             SimulateButton.BackColor = Color.Control
             IsInSimulationMode = False
             Timer1.Stop()
+            Return
         End If
         If GetAsyncKeyState(Keys.A) Then
             simangle -= 1.5
@@ -1010,4 +1020,15 @@
         MsgBox(e.KeyCode)
     End Sub
 
+    Private Sub Form1_DragEnter(sender As Object, e As DragEventArgs) Handles MyBase.DragEnter
+        If e.Data.GetDataPresent(DataFormats.FileDrop) Then
+            e.Effect = DragDropEffects.Link
+        End If
+    End Sub
+
+    Private Sub Form1_DragDrop(sender As Object, e As DragEventArgs) Handles MyBase.DragDrop
+        If e.Data.GetDataPresent(DataFormats.FileDrop) Then
+            LoadFileWithWaitCursor(e.Data.GetData(DataFormats.FileDrop)(0))
+        End If
+    End Sub
 End Class
