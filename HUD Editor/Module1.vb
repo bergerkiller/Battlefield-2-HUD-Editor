@@ -18,6 +18,26 @@ Module Module1
     Public Nodes(0) As Node
 
 #Region "Program Functions"
+    Public Function GetVariable(ByVal VarName As String) As String
+        GetVariable = VarName
+        VarName = VarName.ToLower.Trim
+        If VarName = "radio1string" Then Return "SPOTTED"
+        If VarName = "radio2string" Then Return "GO, GO, GO"
+        If VarName = "radio3string" Then Return "NEED PICKUP"
+        If VarName = "radio4string" Then Return "NEGATIVE"
+        If VarName = "radio5string" Then Return "NEED AMMO"
+        If VarName = "radio6string" Then Return "FOLLOW ME"
+        If VarName = "radio7string" Then Return "NEED MEDIC"
+        If VarName = "radio8string" Then Return "ROGER THAT"
+        If VarName = "radio9string" Then Return "NEED BACKUP"
+        If VarName = "radio10string" Then Return "THANK YOU"
+        If VarName = "radio11string" Then Return "SORRY"
+    End Function
+    Public Function GetTextString(ByVal Text As String)
+        GetTextString = Text
+        Text = Text.ToLower.Trim
+    End Function
+
     Public Sub VarDispForm1(ByVal ParamArray Variables() As Object)
         Dim t As String = ""
         For Each v As Object In Variables
@@ -156,10 +176,10 @@ Module Module1
         Dim R As String = Color.R / 255
         Dim G As String = Color.G / 255
         Dim B As String = Color.B / 255
-        If A.Length > 5 Then A = A.Substring(0, 5)
-        If R.Length > 5 Then R = R.Substring(0, 5)
-        If G.Length > 5 Then G = G.Substring(0, 5)
-        If B.Length > 5 Then B = B.Substring(0, 5)
+        If A.Length > 7 Then A = A.Substring(0, 7)
+        If R.Length > 7 Then R = R.Substring(0, 7)
+        If G.Length > 7 Then G = G.Substring(0, 7)
+        If B.Length > 7 Then B = B.Substring(0, 7)
         Return (R & " " & G & " " & B & " " & A).Replace(",", ".")
     End Function
 
@@ -195,11 +215,13 @@ Module Module1
                 If Nodes(CurrentIndex).Type = "Text Node" Then tnvariables.Show()
                 If Nodes(CurrentIndex).Type = "Compass Node" Then cnvariables.Show()
                 If Nodes(CurrentIndex).Type = "Bar Node" Then bnvariables.Show()
+                If Nodes(CurrentIndex).Type = "Button Node" Then btnvariables.Show()
             Else
                 pnvariables.Close()
                 tnvariables.Close()
                 cnvariables.Close()
                 bnvariables.Close()
+                btnvariables.Close()
             End If
             If DialogIndex = 7 Then
                 If Nodes(CurrentIndex).Type = "Text Node" Then TextStyle.Show()
@@ -475,172 +497,6 @@ Module Module1
         g.Dispose()
         Return returnbm
     End Function
-    Public Function RenderPictureNode(ByRef pnode As PictureNode) As Image
-        Dim cchanged As Boolean = pnode.ColorChanged
-        Dim schanged As Boolean = pnode.SizeChanged
-        Dim pchanged As Boolean = pnode.PosRotChanged
-        If cchanged = True Then
-            pnode.ColorChanged = False
-            pnode.ColoredImage = ColorImage(pnode.TextureImage, pnode.Color.A / 255, pnode.Color.R / 255, pnode.Color.G / 255, pnode.Color.B / 255)
-        End If
-        If schanged = True Or cchanged = True Then
-            pnode.SizeChanged = False
-            pnode.SizedImage = ResizeImage(pnode.ColoredImage, pnode.Size.Width, pnode.Size.Height, True)
-        End If
-        If schanged = True Or cchanged = True Or pchanged = True Then
-            pnode.PosRotChanged = False
-            pnode.FinalImage = New Bitmap(800, 600)
-            Dim g As Graphics = Graphics.FromImage(pnode.FinalImage)
-            g.TranslateTransform(pnode.DRotationMid.X + 400, pnode.DRotationMid.Y + 300)
-            g.RotateTransform(pnode.DRotation)
-            g.TranslateTransform((pnode.Position.X + pnode.DOffsetX) - pnode.DRotationMid.X - 400 + pnode.Size.Width * 0.5, (pnode.Position.Y + pnode.DOffsetY) - pnode.DRotationMid.Y - 300 + pnode.Size.Height * 0.5)
-            g.RotateTransform(pnode.StaticRotation)
-            g.TranslateTransform(pnode.Size.Width * -0.5, pnode.Size.Height * -0.5)
-            g.DrawImage(pnode.SizedImage, New Point(0, 0))
-            g.Dispose()
-        End If
-        If IsNothing(pnode.FinalImage) Then pnode.FinalImage = New Bitmap(800, 600)
-        Return pnode.FinalImage
-    End Function
-    Public Function RenderTextNode(ByRef tnode As TextNode) As Image
-        If tnode.Modified = True Then
-            If tnode.StringVariable = "" Then tnode.Text = tnode.StringText
-            tnode.Modified = False
-            'Generate Text Bitmap (tbmp)
-            Dim tbox As New TextBox
-            tbox.Font = New Font("Arial", 8, FontStyle.Regular)
-            tbox.Text = tnode.Text & " "
-            Dim tbmp As New Bitmap(tbox.GetPositionFromCharIndex(tbox.Text.Length - 1).X, 20)
-            Dim myBrush As New Drawing2D.LinearGradientBrush(New Rectangle(0, 0, 1, 1), tnode.Color, tnode.Color, Drawing2D.LinearGradientMode.Horizontal)
-            Dim tg As Graphics = Graphics.FromImage(tbmp)
-            tg.DrawString(tnode.Text, tbox.Font, myBrush, -1, -1)
-            tg.Dispose()
-
-            'Draw this Text Bitmap inside the bounds
-            tnode.FinalImage = New Bitmap(800, 600)
-            Dim g As Graphics = Graphics.FromImage(tnode.FinalImage)
-            If tnode.Style = 0 Then
-                'center
-                g.DrawImage(tbmp, New Point(tnode.Position.X + tnode.Size.Width * 0.5 - tbmp.Width * 0.5, tnode.Position.Y))
-            ElseIf tnode.Style = 1 Then
-                'right
-                g.DrawImage(tbmp, New Point(tnode.Position.X + tnode.Size.Width - tbmp.Width, tnode.Position.Y))
-            ElseIf tnode.Style = 2 Then
-                'left
-                g.DrawImage(tbmp, New Point(tnode.Position.X, tnode.Position.Y))
-            End If
-        End If
-        If IsNothing(tnode.FinalImage) Then tnode.FinalImage = New Bitmap(800, 600)
-        Return tnode.FinalImage
-    End Function
-    Public Function RenderCompassNode(ByRef cnode As CompassNode) As Image
-        Dim cchanged As Boolean = cnode.ColorChanged
-        Dim schanged As Boolean = cnode.SizeChanged
-        Dim vchanged As Boolean = cnode.ValueChanged
-        If cchanged = True Then
-            cnode.ColorChanged = False
-            cnode.ColoredImage = ColorImage(cnode.TextureImage, cnode.Color.A / 255, cnode.Color.R / 255, cnode.Color.G / 255, cnode.Color.B / 255)
-        End If
-        If cchanged = True Or schanged = True Then
-            cnode.SizeChanged = False
-            cnode.SizedImage = ResizeImage(cnode.ColoredImage, cnode.TextureSize.Width, cnode.TextureSize.Height, True)
-        End If
-        If cchanged = True Or schanged = True Or vchanged = True Then
-            cnode.ValueChanged = False
-            'Tough rendering part
-            cnode.FinalImage = New Bitmap(800, 600)
-            Dim g As Graphics = Graphics.FromImage(cnode.FinalImage)
-            Dim bmp As New Bitmap(cnode.Size.Width, cnode.Size.Height)
-            If cnode.Type = 3 Then
-                'Step1: Convert value into offset
-                Dim offset As Integer = -1 * (cnode.TextureSize.Width - cnode.Border) * cnode.Value - cnode.Offset
-
-                'Step2: Write part 1 (main part)
-                Dim cg As Graphics = Graphics.FromImage(bmp)
-                cg.DrawImage(cnode.SizedImage, New Point(offset, 0))
-                cg.DrawImage(cnode.SizedImage, New Point(offset + cnode.TextureSize.Width - cnode.Border, 0))
-            ElseIf cnode.Type = 0 Then
-                'Step1: Convert value into offset
-                Dim offset As Integer = -1 * (cnode.TextureSize.Height - cnode.Border) * cnode.Value - cnode.Offset
-                'Step2: Write part 1 (main part)
-                Dim cg As Graphics = Graphics.FromImage(bmp)
-                cg.DrawImage(cnode.SizedImage, New Point(0, offset))
-                cg.DrawImage(cnode.SizedImage, New Point(0, offset + cnode.TextureSize.Height - cnode.Border))
-            End If
-            g.DrawImage(bmp, cnode.Position)
-        End If
-        If IsNothing(cnode.FinalImage) Then cnode.FinalImage = New Bitmap(800, 600)
-        Return cnode.FinalImage
-    End Function
-    Public Function RenderBarNode(ByRef bnode As BarNode) As Image
-        Dim cchanged As Boolean = bnode.ColorChanged
-        Dim schanged As Boolean = bnode.SizeChanged
-        Dim vchanged As Boolean = bnode.ValueChanged
-        If cchanged = True Then
-            bnode.ColorChanged = False
-            bnode.ColoredFullImage = ColorImage(bnode.FullTextureImage, bnode.Color.A / 255, bnode.Color.R / 255, bnode.Color.G / 255, bnode.Color.B / 255)
-            bnode.ColoredEmptyImage = ColorImage(bnode.EmptyTextureImage, bnode.Color.A / 255, bnode.Color.R / 255, bnode.Color.G / 255, bnode.Color.B / 255)
-        End If
-        If schanged = True Or cchanged = True Then
-            bnode.SizeChanged = False
-            bnode.SizedFullImage = ResizeImage(bnode.ColoredFullImage, bnode.Size.Width, bnode.Size.Height, True)
-            bnode.SizedEmptyImage = ResizeImage(bnode.ColoredEmptyImage, bnode.Size.Width, bnode.Size.Height, True)
-        End If
-        If schanged = True Or cchanged = True Or vchanged = True Then
-            bnode.ValueChanged = False
-            bnode.FinalImage = New Bitmap(800, 600)
-            Dim g As Graphics = Graphics.FromImage(bnode.FinalImage)
-            Dim bmp As New Bitmap(bnode.Size.Width, bnode.Size.Height)
-            Dim bg As Graphics = Graphics.FromImage(bmp)
-            If bnode.Style = 0 Then
-                'Vertical increasing from below
-                Dim h As Integer = bnode.SizedFullImage.Size.Height - bnode.SizedFullImage.Size.Height * bnode.Value
-                If h < bnode.SizedFullImage.Size.Height Then
-                    Dim fullpart As Bitmap = CropImage(bnode.SizedFullImage, 0, h, bnode.SizedFullImage.Size.Width, bnode.SizedFullImage.Size.Height - h)
-                    bg.DrawImage(fullpart, New Point(0, h))
-                End If
-                If h > 0 Then
-                    Dim emptypart As Bitmap = CropImage(bnode.SizedEmptyImage, 0, 0, bnode.SizedEmptyImage.Size.Width, h)
-                    bg.DrawImage(emptypart, New Point(0, 0))
-                End If
-            ElseIf bnode.Style = 1 Then
-                'Vertical increasing from above
-                Dim h As Integer = bnode.SizedFullImage.Size.Height * bnode.Value
-                If h > 0 Then
-                    Dim fullpart As Bitmap = CropImage(bnode.SizedFullImage, 0, 0, bnode.SizedFullImage.Size.Width, h)
-                    bg.DrawImage(fullpart, New Point(0, 0))
-                End If
-                If h < bnode.SizedFullImage.Size.Height Then
-                    Dim emptypart As Bitmap = CropImage(bnode.SizedEmptyImage, 0, h, bnode.SizedEmptyImage.Size.Width, bnode.SizedEmptyImage.Size.Height - h)
-                    bg.DrawImage(emptypart, New Point(0, h))
-                End If
-            ElseIf bnode.Style = 2 Then
-                'Horizontal increasing from right
-                Dim w As Integer = bnode.SizedFullImage.Size.Width - bnode.SizedFullImage.Size.Width * bnode.Value
-                If w < bnode.SizedFullImage.Size.Width Then
-                    Dim fullpart As Bitmap = CropImage(bnode.SizedFullImage, w, 0, bnode.SizedFullImage.Size.Width - w, bnode.SizedFullImage.Size.Height)
-                    bg.DrawImage(fullpart, New Point(w, 0))
-                End If
-                If w > 0 Then
-                    Dim emptypart As Bitmap = CropImage(bnode.SizedEmptyImage, 0, 0, w, bnode.SizedEmptyImage.Height)
-                    bg.DrawImage(emptypart, New Point(0, 0))
-                End If
-            ElseIf bnode.Style = 3 Then
-                'Horizontal increasing from left
-                Dim w As Integer = bnode.SizedFullImage.Size.Width * bnode.Value
-                If w > 0 Then
-                    Dim fullpart As Bitmap = CropImage(bnode.SizedFullImage, 0, 0, w, bnode.SizedFullImage.Size.Height)
-                    bg.DrawImage(fullpart, New Point(0, 0))
-                End If
-                If w < bnode.SizedFullImage.Size.Width Then
-                    Dim emptypart As Bitmap = CropImage(bnode.SizedEmptyImage, w, 0, bnode.SizedEmptyImage.Size.Width - w, bnode.SizedEmptyImage.Size.Height)
-                    bg.DrawImage(emptypart, New Point(w, 0))
-                End If
-            End If
-            g.DrawImage(bmp, bnode.Position)
-        End If
-        Return bnode.FinalImage
-    End Function
 #End Region
 
 #Region "Nodes array manipulation functions"
@@ -648,16 +504,22 @@ Module Module1
     Public Function GetNodeIndexAtPoint(ByVal Point As Point) As Integer
         Dim selindex As Integer = -1
         For i As Integer = 1 To Nodes.Count - 1
-            If Nodes(i).Render = True Then
-                Dim Position As Point = Nodes(i).Position
-                Dim Size As Size = Nodes(i).Size
-                Dim Rotation As Integer = Nodes(i).Rotation
-                If PointInSquare(Point, New Rectangle(Position, Size), Rotation) Then
-                    selindex = i
-                End If
-            End If
+            If GetPointIsInNode(Point, i) = True Then selindex = i
         Next
         Return selindex
+    End Function
+    Public Function GetPointIsInNode(ByVal Point As Point, ByVal Nodeindex As Integer) As Boolean
+        If Nodeindex <> -1 Then
+            If Nodes(Nodeindex).Render = True Then
+                Dim Position As Point = Nodes(Nodeindex).GetValue(Node.ValueType.Position)
+                Dim Size As Size = Nodes(Nodeindex).GetValue(Node.ValueType.Size)
+                Dim Rotation As Integer = Nodes(Nodeindex).GetValue(Node.ValueType.Rotation)
+                If PointInSquare(Point, New Rectangle(Position, Size), Rotation) Then
+                    Return True
+                End If
+            End If
+        End If
+        Return False
     End Function
     Public Sub RemoveNode(ByVal Index As Integer)
         WriteLog("Removing node: " & Nodes(Index).Name)
@@ -690,7 +552,7 @@ Module Module1
         Form1.FTextureButton.Visible = False
         Form1.ShowButton.Visible = False
         CurrentIndex = NodeIndex
-        If NodeIndex < Nodes.Count And NodeIndex > -1 Then
+        If NodeIndex < Nodes.Count And NodeIndex > 0 Then
             If SetTreeView = True Then Form1.TreeView1.SelectedNode = GetTreeViewNode(Form1.TreeView1, Nodes(CurrentIndex).Name)
             Form1.Text = "HUD Editor - " & Nodes(CurrentIndex).Name & " (" & Nodes(NodeIndex).Type & ")"
             'Set button visibility
@@ -720,11 +582,21 @@ Module Module1
                 Form1.VariablesButton.Visible = True
                 Form1.ETextureButton.Visible = True
                 Form1.FTextureButton.Visible = True
+                Form1.ETextureButton.Text = "Empty Texture"
+                Form1.FTextureButton.Text = "Full Texture"
                 Form1.StyleButton.Visible = True
             ElseIf Nodes(CurrentIndex).Type = "Hover Node" Then
                 Form1.MainButton.Visible = True
             ElseIf Nodes(CurrentIndex).Type = "Object Marker Node" Then
                 Form1.MainButton.Visible = True
+            ElseIf Nodes(CurrentIndex).Type = "Button Node" Then
+                Form1.MainButton.Visible = True
+                Form1.ColorButton.Visible = True
+                Form1.ETextureButton.Visible = True
+                Form1.FTextureButton.Visible = True
+                Form1.ETextureButton.Text = "Inactive Texture"
+                Form1.FTextureButton.Text = "Active Texture"
+                Form1.VariablesButton.Visible = True
             End If
             Form1.ShowButton.Visible = True
         Else
@@ -749,6 +621,11 @@ Module Module1
                 End If
                 If Nodes(i).Type = "Text Node" Then
                     Nodes(i).TextNodeData.Modified = True
+                End If
+                If Nodes(i).Type = "Bar Node" Then
+                    Nodes(i).BarNodeData.ValueChanged = True
+                    Nodes(i).BarNodeData.ColorChanged = True
+                    Nodes(i).BarNodeData.SizeChanged = True
                 End If
             End If
         Next
@@ -824,6 +701,10 @@ Module Module1
                         If Nodes(i).BarNodeData.SizeChanged = True Then NodeModified = True
                     ElseIf Nodes(i).Type = "Text Node" Then
                         If Nodes(i).TextNodeData.Modified = True Then NodeModified = True
+                    ElseIf Nodes(i).Type = "Button Node" Then
+                        If Nodes(i).ButtonNodeData.ColorChanged = True Then NodeModified = True
+                        If Nodes(i).ButtonNodeData.PosTypeChanged = True Then NodeModified = True
+                        If Nodes(i).ButtonNodeData.SizeChanged = True Then NodeModified = True
                     End If
                 End If
                 If NodeModified = True And i < CurrentIndex Then UpdateBackLayer = True
@@ -847,21 +728,9 @@ Module Module1
             For i As Integer = s To e
                 If i < Nodes.Count And i > 0 And ((UpdateBackLayer = True And i < CurrentIndex) Or (UpdateFrontLayer = True And i > CurrentIndex) Or (UpdateActiveLayer = True And i = CurrentIndex)) Then
                     If Nodes(i).Render = True Then
-                        Dim lg As Graphics = Graphics.FromImage(ActiveLayer)
-                        If i < CurrentIndex Then lg = Graphics.FromImage(BackLayer)
-                        If i > CurrentIndex Then lg = Graphics.FromImage(FrontLayer)
-                        If Nodes(i).Type = "Picture Node" Then
-                            lg.DrawImage(RenderPictureNode(Nodes(i).PictureNodeData), New Point(0, 0))
-                        End If
-                        If Nodes(i).Type = "Text Node" Then
-                            lg.DrawImage(RenderTextNode(Nodes(i).TextNodeData), New Point(0, 0))
-                        End If
-                        If Nodes(i).Type = "Compass Node" Then
-                            lg.DrawImage(RenderCompassNode(Nodes(i).CompassNodeData), New Point(0, 0))
-                        End If
-                        If Nodes(i).Type = "Bar Node" Then
-                            lg.DrawImage(RenderBarNode(Nodes(i).BarNodeData), New Point(0, 0))
-                        End If
+                        If i = CurrentIndex Then Nodes(i).ApplyToImage(ActiveLayer)
+                        If i < CurrentIndex Then Nodes(i).ApplyToImage(BackLayer)
+                        If i > CurrentIndex Then Nodes(i).ApplyToImage(FrontLayer)
                     End If
                 End If
             Next
@@ -990,6 +859,15 @@ Module Module1
                     RNodes(RNodes.Count - 1) = New Node(Parent, Name, "Object Marker Node")
                     RNodes(RNodes.Count - 1).ObjectMarkerNodeData.Position = Position
                     RNodes(RNodes.Count - 1).ObjectMarkerNodeData.Size = Size
+                ElseIf line.ToLower.Trim.StartsWith("hudbuilder.createbuttonnode") Then
+                    Dim Parent As String = GetValueAt(line, 1)
+                    Dim Name As String = GetValueAt(line, 2)
+                    Dim Position As New Point(Val(GetValueAt(line, 3)), Val(GetValueAt(line, 4)))
+                    Dim Size As New Size(SetValueBounds(Val(GetValueAt(line, 5)), 1, 2048), SetValueBounds(Val(GetValueAt(line, 6)), 1, 2048))
+                    ReDim Preserve RNodes(RNodes.Count)
+                    RNodes(RNodes.Count - 1) = New Node(Parent, Name, "Button Node")
+                    RNodes(RNodes.Count - 1).ButtonNodeData.Position = Position
+                    RNodes(RNodes.Count - 1).ButtonNodeData.Size = Size
                 ElseIf RNodes.Count = 0 Then
                     FailedLines &= line
                 ElseIf RNodes(RNodes.Count - 1).LoadLine(line) = False Then
@@ -1019,7 +897,8 @@ Module Module1
             If Type = "Bar Node" Then Me.BarNodeData = New BarNode("Ingame\GeneralIcons\full.dds", "Ingame\GeneralIcons\empty.dds")
             If Type = "Hover Node" Then Me.HoverNodeData = New HoverNode()
             If Type = "Object Marker Node" Then Me.ObjectMarkerNodeData = New ObjectMarkerNode("", "", "", "")
-            PerformRefresh = True
+            If Type = "Button Node" Then Me.ButtonNodeData = New ButtonNode("", "")
+            Me.PerformRefresh = True
         End Sub
         Function LoadLine(ByVal Line As String) As Boolean
             Dim rval As Boolean = True
@@ -1043,6 +922,7 @@ Module Module1
                 If Me.Type = "Text Node" Then Me.TextNodeData.Color = c
                 If Me.Type = "Bar Node" Then Me.BarNodeData.Color = c
                 If Me.Type = "Object Marker Node" Then Me.ObjectMarkerNodeData.Color = c
+                If Me.Type = "Button Node" Then Me.ButtonNodeData.Color = c
             Else
                 If Me.Type = "Picture Node" Then rval = Me.PictureNodeData.LoadLine(Line)
                 If Me.Type = "Compass Node" Then rval = Me.CompassNodeData.LoadLine(Line)
@@ -1051,6 +931,7 @@ Module Module1
                 If Me.Type = "Split Node" Then rval = Me.SplitNodeData.LoadLine(Line)
                 If Me.Type = "Hover Node" Then rval = Me.HoverNodeData.LoadLine(Line)
                 If Me.Type = "Object Marker Node" Then rval = Me.ObjectMarkerNodeData.LoadLine(Line)
+                If Me.Type = "Button Node" Then rval = Me.ButtonNodeData.LoadLine(Line)
             End If
             Return rval
         End Function
@@ -1143,6 +1024,20 @@ Module Module1
                     If .omnweapon <> 0 Then rdata &= vbCrLf & "hudBuilder.setObjectMarkerNodeWeapon 		" & .omnweapon
                     rdata &= vbCrLf & "hudBuilder.setNodeColor		 	" & ConvertColorToText(.Color)
                 End With
+            ElseIf Me.Type = "Button Node" Then
+                With Me.ButtonNodeData
+                    rdata = "hudBuilder.createOButtonNode 		" & Me.Parent & " " & Me.Name & " "
+                    rdata &= .Position.X & " " & .Position.Y & " " & .Size.Width & " " & .Size.Height
+                    If .OffTexturePath <> "" Then rdata &= vbCrLf & "hudBuilder.setButtonNodeTexture 	1 " & .OffTexturePath
+                    If .OnTexturePath <> "" Then rdata &= vbCrLf & "hudBuilder.setButtonNodeTexture 	2 " & .OnTexturePath
+                    For Each hc As String In .HoverCommands.Split(vbCrLf)
+                        rdata &= vbCrLf & "hudBuilder.setButtonNodeConCmd		" & hc & " 1"
+                    Next
+                    For Each pc As String In .PressCommands.Split(vbCrLf)
+                        rdata &= vbCrLf & "hudBuilder.setButtonNodeConCmd		" & pc & " 0"
+                    Next
+                    rdata &= vbCrLf & "hudBuilder.setNodeColor		 	" & ConvertColorToText(.Color)
+                End With
             End If
 
 
@@ -1184,26 +1079,11 @@ Module Module1
         Public SplitNodeData As SplitNode
         Public BarNodeData As BarNode
         Public HoverNodeData As HoverNode
+        Public ButtonNodeData As ButtonNode
         Public ObjectMarkerNodeData As ObjectMarkerNode
 
-        Public Property Position() As Point
-            Get
-                If Me.Type = "Picture Node" Then
-                    Return Me.PictureNodeData.Position
-                ElseIf Me.Type = "Compass Node" Then
-                    Return Me.CompassNodeData.Position
-                ElseIf Me.Type = "Text Node" Then
-                    Return Me.TextNodeData.Position
-                ElseIf Me.Type = "Bar Node" Then
-                    Return Me.BarNodeData.Position
-                ElseIf Me.Type = "Hover Node" Then
-                    Return Me.HoverNodeData.Position
-                ElseIf Me.Type = "Object Marker Node" Then
-                    Return Me.ObjectMarkerNodeData.Position
-                End If
-                Return New Point(0, 0)
-            End Get
-            Set(ByVal value As Point)
+        Public Sub SetValue(ByVal ValName As ValueType, ByVal value As Object)
+            If ValName = ValueType.Position Then
                 Dim vchange As Boolean = False
                 If ViewedDialog = 3 Then
                     Try
@@ -1232,28 +1112,12 @@ Module Module1
                         Me.HoverNodeData.Position = value
                     ElseIf Me.Type = "Object Marker Node" Then
                         Me.ObjectMarkerNodeData.Position = value
+                    ElseIf Me.Type = "Button Node" Then
+                        Me.ButtonNodeData.Position = value
+                        Me.ButtonNodeData.PosTypeChanged = True
                     End If
                 End If
-            End Set
-        End Property
-        Public Property Size() As Size
-            Get
-                If Me.Type = "Picture Node" Then
-                    Return Me.PictureNodeData.Size
-                ElseIf Me.Type = "Compass Node" Then
-                    Return Me.CompassNodeData.Size
-                ElseIf Me.Type = "Text Node" Then
-                    Return Me.TextNodeData.Size
-                ElseIf Me.Type = "Bar Node" Then
-                    Return Me.BarNodeData.Size
-                ElseIf Me.Type = "Hover Node" Then
-                    Return Me.HoverNodeData.Size
-                ElseIf Me.Type = "Object Marker Node" Then
-                    Return Me.ObjectMarkerNodeData.Size
-                End If
-                Return New Size(1, 1)
-            End Get
-            Set(ByVal value As Size)
+            ElseIf ValName = ValueType.Size Then
                 Dim vchange As Boolean = False
                 If ViewedDialog = 3 Then
                     Try
@@ -1277,27 +1141,28 @@ Module Module1
                         Me.TextNodeData.Modified = True
                     ElseIf Me.Type = "Bar Node" Then
                         Me.BarNodeData.Size = value
-                        Me.BarNodeData.ValueChanged = True
+                        Me.BarNodeData.SizeChanged = True
                     ElseIf Me.Type = "Hover Node" Then
                         Me.HoverNodeData.Size = value
                     ElseIf Me.Type = "Object Marker Node" Then
                         Me.ObjectMarkerNodeData.Size = value
+                    ElseIf Me.Type = "Button Node" Then
+                        Me.ButtonNodeData.Size = value
+                        Me.ButtonNodeData.SizeChanged = True
                     End If
                 End If
-            End Set
-        End Property
-        Public Property Rotation() As Integer
-            Get
+            ElseIf ValName = ValueType.Rotation Then
                 If Me.Type = "Picture Node" Then
-                    Return Me.PictureNodeData.StaticRotation
+                    Me.PictureNodeData.StaticRotation = value
                 End If
-                Return 0
-            End Get
-            Set(ByVal value As Integer)
+            ElseIf ValName = ValueType.Color Then
                 Dim vchange As Boolean = False
-                If ViewedDialog = 5 Then
+                If ViewedDialog = 2 Then
                     Try
-                        RotationDialog.NumericUpDown1.Value = value
+                        ColorDialog.TrackBarA.Value = SetValueBounds(CType(value, Color).A, 0, 255)
+                        ColorDialog.TrackBarR.Value = SetValueBounds(CType(value, Color).R, 0, 255)
+                        ColorDialog.TrackBarG.Value = SetValueBounds(CType(value, Color).G, 0, 255)
+                        ColorDialog.TrackBarB.Value = SetValueBounds(CType(value, Color).B, 0, 255)
                     Catch
                         vchange = True
                     End Try
@@ -1306,13 +1171,106 @@ Module Module1
                 End If
                 If vchange = True Then
                     If Me.Type = "Picture Node" Then
-                        Me.PictureNodeData.StaticRotation = value
-                        Me.PictureNodeData.PosRotChanged = True
+                        Me.PictureNodeData.Color = value
+                        Me.PictureNodeData.ColorChanged = True
+                    ElseIf Me.Type = "Compass Node" Then
+                        Me.CompassNodeData.Color = value
+                        Me.CompassNodeData.ColorChanged = True
+                    ElseIf Me.Type = "Text Node" Then
+                        Me.TextNodeData.Color = value
+                        Me.TextNodeData.Modified = True
+                    ElseIf Me.Type = "Bar Node" Then
+                        Me.BarNodeData.Color = value
+                        Me.BarNodeData.ColorChanged = True
+                    ElseIf Me.Type = "Object Marker Node" Then
+                        Me.ObjectMarkerNodeData.Color = value
+                    ElseIf Me.Type = "Button Node" Then
+                        Me.ButtonNodeData.ColorChanged = True
                     End If
                 End If
-            End Set
-        End Property
+            End If
+        End Sub
+        Public Function GetValue(ByVal ValName As ValueType) As Object
+            If ValName = ValueType.Position Then
+                If Me.Type = "Picture Node" Then
+                    Return Me.PictureNodeData.Position
+                ElseIf Me.Type = "Compass Node" Then
+                    Return Me.CompassNodeData.Position
+                ElseIf Me.Type = "Text Node" Then
+                    Return Me.TextNodeData.Position
+                ElseIf Me.Type = "Bar Node" Then
+                    Return Me.BarNodeData.Position
+                ElseIf Me.Type = "Hover Node" Then
+                    Return Me.HoverNodeData.Position
+                ElseIf Me.Type = "Object Marker Node" Then
+                    Return Me.ObjectMarkerNodeData.Position
+                ElseIf Me.Type = "Button Node" Then
+                    Return Me.ButtonNodeData.Position
+                End If
+                Return New Point(0, 0)
+            ElseIf ValName = ValueType.Size Then
+                If Me.Type = "Picture Node" Then
+                    Return Me.PictureNodeData.Size
+                ElseIf Me.Type = "Compass Node" Then
+                    Return Me.CompassNodeData.Size
+                ElseIf Me.Type = "Text Node" Then
+                    Return Me.TextNodeData.Size
+                ElseIf Me.Type = "Bar Node" Then
+                    Return Me.BarNodeData.Size
+                ElseIf Me.Type = "Hover Node" Then
+                    Return Me.HoverNodeData.Size
+                ElseIf Me.Type = "Object Marker Node" Then
+                    Return Me.ObjectMarkerNodeData.Size
+                ElseIf Me.Type = "Button Node" Then
+                    Return Me.ButtonNodeData.Size
+                End If
+                Return New Size(32, 32)
+            ElseIf ValName = ValueType.Rotation Then
+                If Me.Type = "Picture Node" Then
+                    Return Me.PictureNodeData.StaticRotation
+                End If
+                Return 0
+            ElseIf ValName = ValueType.Color Then
+                If Me.Type = "Picture Node" Then
+                    Return Me.PictureNodeData.Color
+                ElseIf Me.Type = "Compass Node" Then
+                    Return Me.CompassNodeData.Color
+                ElseIf Me.Type = "Text Node" Then
+                    Return Me.TextNodeData.Color
+                ElseIf Me.Type = "Bar Node" Then
+                    Return Me.BarNodeData.Color
+                ElseIf Me.Type = "Object Marker Node" Then
+                    Return Me.ObjectMarkerNodeData.Color
+                ElseIf Me.Type = "Button Node" Then
+                    Return Me.ButtonNodeData.Color
+                End If
+            End If
+            Return Nothing
+        End Function
+        Public Enum ValueType
+            Position = 0
+            Size = 1
+            Rotation = 2
+            Color = 3
+        End Enum
 
+        Public Sub ApplyToImage(ByRef img As Bitmap)
+            Dim g As Graphics = Graphics.FromImage(img)
+            If Me._Render = True Then
+                If Me.Type = "Picture Node" Then
+                    g.DrawImage(Me.PictureNodeData.Render(), New Point(0, 0))
+                ElseIf Me.Type = "Text Node" Then
+                    g.DrawImage(Me.TextNodeData.Render(), New Point(0, 0))
+                ElseIf Me.Type = "Compass Node" Then
+                    g.DrawImage(Me.CompassNodeData.Render(), New Point(0, 0))
+                ElseIf Me.Type = "Bar Node" Then
+                    g.DrawImage(Me.BarNodeData.Render(), New Point(0, 0))
+                ElseIf Me.Type = "Button Node" Then
+                    g.DrawImage(Me.ButtonNodeData.Render(), New Point(0, 0))
+                End If
+            End If
+            g.Dispose()
+        End Sub
     End Structure
     Public Structure SplitNode
         Sub New(ByVal Parent As String, ByVal Name As String)
@@ -1329,7 +1287,9 @@ Module Module1
         Public Name As String
         Public Parent As String
     End Structure
-    Public Structure PictureNode
+
+
+    Public Class PictureNode
         'Render cycle:
         '1. Color it
         '2. Size it
@@ -1404,8 +1364,36 @@ Module Module1
         Public ColorChanged As Boolean
         Public SizeChanged As Boolean
         Public PosRotChanged As Boolean
-    End Structure
-    Public Structure TextNode
+
+        Public Function Render() As Image
+            Dim cchanged As Boolean = Me.ColorChanged
+            Dim schanged As Boolean = Me.SizeChanged
+            Dim pchanged As Boolean = Me.PosRotChanged
+            If cchanged = True Then
+                Me.ColorChanged = False
+                Me.ColoredImage = ColorImage(Me.TextureImage, Me.Color.A / 255, Me.Color.R / 255, Me.Color.G / 255, Me.Color.B / 255)
+            End If
+            If schanged = True Or cchanged = True Then
+                Me.SizeChanged = False
+                Me.SizedImage = ResizeImage(Me.ColoredImage, Me.Size.Width, Me.Size.Height, True)
+            End If
+            If schanged = True Or cchanged = True Or pchanged = True Then
+                Me.PosRotChanged = False
+                Me.FinalImage = New Bitmap(800, 600)
+                Dim g As Graphics = Graphics.FromImage(Me.FinalImage)
+                g.TranslateTransform(Me.DRotationMid.X + 400, Me.DRotationMid.Y + 300)
+                g.RotateTransform(Me.DRotation)
+                g.TranslateTransform((Me.Position.X + Me.DOffsetX) - Me.DRotationMid.X - 400 + Me.Size.Width * 0.5, (Me.Position.Y + Me.DOffsetY) - Me.DRotationMid.Y - 300 + Me.Size.Height * 0.5)
+                g.RotateTransform(Me.StaticRotation)
+                g.TranslateTransform(Me.Size.Width * -0.5, Me.Size.Height * -0.5)
+                g.DrawImage(Me.SizedImage, New Point(0, 0))
+                g.Dispose()
+            End If
+            If IsNothing(Me.FinalImage) Then Me.FinalImage = New Bitmap(800, 600)
+            Return Me.FinalImage
+        End Function
+    End Class
+    Public Class TextNode
         Sub New(ByVal Text As String)
             Me.Text = Text
             Me.FinalImage = New Bitmap(32, 32)
@@ -1441,8 +1429,46 @@ Module Module1
         Public Style As Integer
         Public Modified As Boolean
         Public FinalImage As Image
-    End Structure
-    Public Structure CompassNode
+
+        Public Function Render() As Image
+            If Me.Modified = True Then
+                If Me.StringVariable = "" Then
+                    Me.Text = GetTextString(Me.StringText)
+                ElseIf GetVariable(Me.StringVariable) <> Me.StringVariable Then
+                    Me.Text = GetVariable(Me.StringVariable)
+                ElseIf Me.Text = "" Then
+                    Me.Text = "100"
+                End If
+                Me.Modified = False
+                'Generate Text Bitmap (tbmp)
+                Dim tbox As New TextBox
+                tbox.Font = New Font("Arial", 8, FontStyle.Regular)
+                tbox.Text = Me.Text & " "
+                Dim tbmp As New Bitmap(tbox.GetPositionFromCharIndex(tbox.Text.Length - 1).X, 20)
+                Dim myBrush As New Drawing2D.LinearGradientBrush(New Rectangle(0, 0, 1, 1), Me.Color, Me.Color, Drawing2D.LinearGradientMode.Horizontal)
+                Dim tg As Graphics = Graphics.FromImage(tbmp)
+                tg.DrawString(Me.Text, tbox.Font, myBrush, -1, -1)
+                tg.Dispose()
+
+                'Draw this Text Bitmap inside the bounds
+                Me.FinalImage = New Bitmap(800, 600)
+                Dim g As Graphics = Graphics.FromImage(Me.FinalImage)
+                If Me.Style = 0 Then
+                    'center
+                    g.DrawImage(tbmp, New Point(Me.Position.X + Me.Size.Width * 0.5 - tbmp.Width * 0.5, Me.Position.Y))
+                ElseIf Me.Style = 1 Then
+                    'right
+                    g.DrawImage(tbmp, New Point(Me.Position.X + Me.Size.Width - tbmp.Width, Me.Position.Y))
+                ElseIf Me.Style = 2 Then
+                    'left
+                    g.DrawImage(tbmp, New Point(Me.Position.X, Me.Position.Y))
+                End If
+            End If
+            If IsNothing(Me.FinalImage) Then Me.FinalImage = New Bitmap(800, 600)
+            Return Me.FinalImage
+        End Function
+    End Class
+    Public Class CompassNode
         Sub New(ByVal TexturePath As String)
             Me.TexturePath = TexturePath
             Me.TextureImage = LoadImage(TexturePath)
@@ -1514,8 +1540,48 @@ Module Module1
         Public ColorChanged As Boolean
         Public SizeChanged As Boolean
         Public ValueChanged As Boolean
-    End Structure
-    Public Structure BarNode
+
+        Public Function Render() As Image
+            Dim cchanged As Boolean = Me.ColorChanged
+            Dim schanged As Boolean = Me.SizeChanged
+            Dim vchanged As Boolean = Me.ValueChanged
+            If cchanged = True Then
+                Me.ColorChanged = False
+                Me.ColoredImage = ColorImage(Me.TextureImage, Me.Color.A / 255, Me.Color.R / 255, Me.Color.G / 255, Me.Color.B / 255)
+            End If
+            If cchanged = True Or schanged = True Then
+                Me.SizeChanged = False
+                Me.SizedImage = ResizeImage(Me.ColoredImage, Me.TextureSize.Width, Me.TextureSize.Height, True)
+            End If
+            If cchanged = True Or schanged = True Or vchanged = True Then
+                Me.ValueChanged = False
+                'Tough rendering part
+                Me.FinalImage = New Bitmap(800, 600)
+                Dim g As Graphics = Graphics.FromImage(Me.FinalImage)
+                Dim bmp As New Bitmap(Me.Size.Width, Me.Size.Height)
+                If Me.Type = 3 Then
+                    'Step1: Convert value into offset
+                    Dim offset As Integer = -1 * (Me.TextureSize.Width - Me.Border) * Me.Value - Me.Offset
+
+                    'Step2: Write part 1 (main part)
+                    Dim cg As Graphics = Graphics.FromImage(bmp)
+                    cg.DrawImage(Me.SizedImage, New Point(offset, 0))
+                    cg.DrawImage(Me.SizedImage, New Point(offset + Me.TextureSize.Width - Me.Border, 0))
+                ElseIf Me.Type = 0 Then
+                    'Step1: Convert value into offset
+                    Dim offset As Integer = -1 * (Me.TextureSize.Height - Me.Border) * Me.Value - Me.Offset
+                    'Step2: Write part 1 (main part)
+                    Dim cg As Graphics = Graphics.FromImage(bmp)
+                    cg.DrawImage(Me.SizedImage, New Point(0, offset))
+                    cg.DrawImage(Me.SizedImage, New Point(0, offset + Me.TextureSize.Height - Me.Border))
+                End If
+                g.DrawImage(bmp, Me.Position)
+            End If
+            If IsNothing(Me.FinalImage) Then Me.FinalImage = New Bitmap(800, 600)
+            Return Me.FinalImage
+        End Function
+    End Class
+    Public Class BarNode
         Sub New(ByVal FullTexturePath As String, ByVal EmptyTexturePath As String)
             Me.FullTexturePath = FullTexturePath
             Me.FullTextureImage = LoadImage(FullTexturePath)
@@ -1583,9 +1649,80 @@ Module Module1
         Public ColorChanged As Boolean
         Public SizeChanged As Boolean
         Public ValueChanged As Boolean
-    End Structure
-    Public Structure HoverNode
-        Sub New(ByVal PlaceHolder As Boolean)
+
+        Public Function Render() As Image
+            Dim cchanged As Boolean = Me.ColorChanged
+            Dim schanged As Boolean = Me.SizeChanged
+            Dim vchanged As Boolean = Me.ValueChanged
+            If cchanged = True Then
+                Me.ColorChanged = False
+                Me.ColoredFullImage = ColorImage(Me.FullTextureImage, Me.Color.A / 255, Me.Color.R / 255, Me.Color.G / 255, Me.Color.B / 255)
+                Me.ColoredEmptyImage = ColorImage(Me.EmptyTextureImage, Me.Color.A / 255, Me.Color.R / 255, Me.Color.G / 255, Me.Color.B / 255)
+            End If
+            If schanged = True Or cchanged = True Then
+                Me.SizeChanged = False
+                Me.SizedFullImage = ResizeImage(Me.ColoredFullImage, Me.Size.Width, Me.Size.Height, True)
+                Me.SizedEmptyImage = ResizeImage(Me.ColoredEmptyImage, Me.Size.Width, Me.Size.Height, True)
+            End If
+            If schanged = True Or cchanged = True Or vchanged = True Then
+                Me.ValueChanged = False
+                Me.FinalImage = New Bitmap(800, 600)
+                Dim g As Graphics = Graphics.FromImage(Me.FinalImage)
+                Dim bmp As New Bitmap(Me.Size.Width, Me.Size.Height)
+                Dim bg As Graphics = Graphics.FromImage(bmp)
+                If Me.Style = 0 Then
+                    'Vertical increasing from below
+                    Dim h As Integer = Me.SizedFullImage.Size.Height - Me.SizedFullImage.Size.Height * Me.Value
+                    If h < Me.SizedFullImage.Size.Height Then
+                        Dim fullpart As Bitmap = CropImage(Me.SizedFullImage, 0, h, Me.SizedFullImage.Size.Width, Me.SizedFullImage.Size.Height - h)
+                        bg.DrawImage(fullpart, New Point(0, h))
+                    End If
+                    If h > 0 Then
+                        Dim emptypart As Bitmap = CropImage(Me.SizedEmptyImage, 0, 0, Me.SizedEmptyImage.Size.Width, h)
+                        bg.DrawImage(emptypart, New Point(0, 0))
+                    End If
+                ElseIf Me.Style = 1 Then
+                    'Vertical increasing from above
+                    Dim h As Integer = Me.SizedFullImage.Size.Height * Me.Value
+                    If h > 0 Then
+                        Dim fullpart As Bitmap = CropImage(Me.SizedFullImage, 0, 0, Me.SizedFullImage.Size.Width, h)
+                        bg.DrawImage(fullpart, New Point(0, 0))
+                    End If
+                    If h < Me.SizedFullImage.Size.Height Then
+                        Dim emptypart As Bitmap = CropImage(Me.SizedEmptyImage, 0, h, Me.SizedEmptyImage.Size.Width, Me.SizedEmptyImage.Size.Height - h)
+                        bg.DrawImage(emptypart, New Point(0, h))
+                    End If
+                ElseIf Me.Style = 2 Then
+                    'Horizontal increasing from right
+                    Dim w As Integer = Me.SizedFullImage.Size.Width - Me.SizedFullImage.Size.Width * Me.Value
+                    If w < Me.SizedFullImage.Size.Width Then
+                        Dim fullpart As Bitmap = CropImage(Me.SizedFullImage, w, 0, Me.SizedFullImage.Size.Width - w, Me.SizedFullImage.Size.Height)
+                        bg.DrawImage(fullpart, New Point(w, 0))
+                    End If
+                    If w > 0 Then
+                        Dim emptypart As Bitmap = CropImage(Me.SizedEmptyImage, 0, 0, w, Me.SizedEmptyImage.Height)
+                        bg.DrawImage(emptypart, New Point(0, 0))
+                    End If
+                ElseIf Me.Style = 3 Then
+                    'Horizontal increasing from left
+                    Dim w As Integer = Me.SizedFullImage.Size.Width * Me.Value
+                    If w > 0 Then
+                        Dim fullpart As Bitmap = CropImage(Me.SizedFullImage, 0, 0, w, Me.SizedFullImage.Size.Height)
+                        bg.DrawImage(fullpart, New Point(0, 0))
+                    End If
+                    If w < Me.SizedFullImage.Size.Width Then
+                        Dim emptypart As Bitmap = CropImage(Me.SizedEmptyImage, w, 0, Me.SizedEmptyImage.Size.Width - w, Me.SizedEmptyImage.Size.Height)
+                        bg.DrawImage(emptypart, New Point(w, 0))
+                    End If
+                End If
+                g.DrawImage(bmp, Me.Position)
+            End If
+            Return Me.FinalImage
+        End Function
+    End Class
+
+    Public Class HoverNode
+        Sub New()
             Me.Position = New Point(0, 0)
             Me.Size = New Size(32, 32)
             Me.MiddlePos = New Point(0, 0)
@@ -1611,8 +1748,8 @@ Module Module1
         Public MiddlePos As Point
         Public MaxValue As Single
         Public WidthLength As Size
-    End Structure
-    Public Structure ObjectMarkerNode
+    End Class
+    Public Class ObjectMarkerNode
         Sub New(ByVal FriendlyTpath As String, ByVal EnemyTpath As String, ByVal RangeLineTpath As String, ByVal LockedTpath As String)
             Me.Position = New Point(0, 0)
             Me.Size = New Size(32, 32)
@@ -1707,7 +1844,97 @@ Module Module1
         Public LockTextStyle As Integer
         Public LockTextOffSet As Point
         Public LockTextNodes As ListBox
-    End Structure
+    End Class
+    Public Class ButtonNode
+        Sub New(ByVal OnTexturePath As String, ByVal OffTexturePath As String)
+            Me.OnTexturePath = OnTexturePath
+            Me.OnTextureImage = LoadImage(OnTexturePath)
+            Me.OffTexturePath = OffTexturePath
+            Me.OffTextureImage = LoadImage(OffTexturePath)
+            Me.OffTextureColoredImage = New Bitmap(32, 32)
+            Me.OffTextureSizedImage = New Bitmap(32, 32)
+            Me.OnTextureColoredImage = New Bitmap(32, 32)
+            Me.OnTextureSizedImage = New Bitmap(32, 32)
+            Me.FinalImage = New Bitmap(32, 32)
+            Me.ColorChanged = True
+            Me.SizeChanged = True
+            Me.PosTypeChanged = True
+        End Sub
+        Function LoadLine(ByVal Line As String) As Boolean
+            Dim rval As Boolean = True
+            If Line.ToLower.Trim.StartsWith("hudbuilder.setbuttonnodetexture") Then
+                If Val(GetValueAt(Line, 1)) = 1 Then
+                    Me.OffTexturePath = FixTexturePath(GetValueAt(Line, 2))
+                    Me.OffTextureImage = LoadImage(Me.OffTexturePath)
+                ElseIf Val(GetValueAt(Line, 1)) = 2 Then
+                    Me.OnTexturePath = FixTexturePath(GetValueAt(Line, 2))
+                    Me.OnTextureImage = LoadImage(Me.OnTexturePath)
+                End If
+            ElseIf Line.ToLower.Trim.StartsWith("hudbuilder.setbuttonnodeconcmd") Then
+                Line = Line.Trim.Remove(0, 30).Trim
+                If Line.EndsWith("0") Then
+                    Line = StrReverse(StrReverse(Line).Remove(0, 1)).Trim
+                    If Me.PressCommands <> "" Then Me.PressCommands &= vbCrLf
+                    Me.PressCommands &= Line
+                ElseIf Line.EndsWith("1") Then
+                    Line = StrReverse(StrReverse(Line).Remove(0, 1)).Trim
+                    If Me.HoverCommands <> "" Then Me.HoverCommands &= vbCrLf
+                    Me.HoverCommands &= Line
+                End If
+            Else
+                'Line failed to load
+                rval = False
+            End If
+            Return rval
+        End Function
+
+        Public Position As New Point(0, 0)
+        Public Size As New Size(32, 32)
+        Public Color As Color = Color.FromArgb(255, 255, 255, 255)
+        Public OffTexturePath As String = ""
+        Public OffTextureImage As Image
+        Public OffTextureColoredImage As Image
+        Public OffTextureSizedImage As Image
+        Public OnTexturePath As String = ""
+        Public OnTextureImage As Image
+        Public OnTextureColoredImage As Image
+        Public OnTextureSizedImage As Image
+        Public DisplayMode As Integer = 0
+        '0 = off
+        '1 = on
+        Public FinalImage As Image
+        Public PressCommands As String = ""
+        Public HoverCommands As String = ""
+
+        Public ColorChanged As Boolean = False
+        Public SizeChanged As Boolean = False
+        Public PosTypeChanged As Boolean = False
+        Public Function Render() As Image
+            Dim cchanged As Boolean = Me.ColorChanged
+            Dim schanged As Boolean = Me.SizeChanged
+            Dim pchanged As Boolean = Me.PosTypeChanged
+            If cchanged = True Then
+                Me.ColorChanged = False
+                Me.OffTextureColoredImage = ColorImage(Me.OffTextureImage, Me.Color.A / 255, Me.Color.R / 255, Me.Color.G / 255, Me.Color.B / 255)
+                Me.OnTextureColoredImage = ColorImage(Me.OnTextureImage, Me.Color.A / 255, Me.Color.R / 255, Me.Color.G / 255, Me.Color.B / 255)
+            End If
+            If schanged = True Or cchanged = True Then
+                Me.SizeChanged = False
+                Me.OffTextureSizedImage = ResizeImage(Me.OffTextureColoredImage, Me.Size.Width, Me.Size.Height, True)
+                Me.OnTextureSizedImage = ResizeImage(Me.OnTextureColoredImage, Me.Size.Width, Me.Size.Height, True)
+            End If
+            If schanged = True Or cchanged = True Or pchanged = True Then
+                Me.PosTypeChanged = False
+                Me.FinalImage = New Bitmap(800, 600)
+                Dim g As Graphics = Graphics.FromImage(Me.FinalImage)
+                If DisplayMode = 0 Then g.DrawImage(Me.OffTextureSizedImage, Me.Position)
+                If DisplayMode = 1 Then g.DrawImage(Me.OnTextureSizedImage, Me.Position)
+                g.Dispose()
+            End If
+            If IsNothing(Me.FinalImage) Then Me.FinalImage = New Bitmap(800, 600)
+            Return Me.FinalImage
+        End Function
+    End Class
 #End Region
 
 End Module

@@ -24,11 +24,11 @@
                 End If
             ElseIf CurrentIndex <> -1 Then
                 'Resizing
-                SetCursor(ResizeType, Nodes(CurrentIndex).Rotation)
+                SetCursor(ResizeType, Nodes(CurrentIndex).GetValue(Node.ValueType.Rotation))
                 ResizeStartPosition = Cursor.Position
-                ResizeStartPosVal = Nodes(CurrentIndex).Position
+                ResizeStartPosVal = Nodes(CurrentIndex).GetValue(Node.ValueType.Position)
                 If ResizeType = SelectionType.SpecialMP Then ResizeStartPosVal = Nodes(CurrentIndex).PictureNodeData.DRotationMid
-                ResizeStartSizeVal = Nodes(CurrentIndex).Size
+                ResizeStartSizeVal = Nodes(CurrentIndex).GetValue(Node.ValueType.Size)
                 IsResizing = True
             End If
         End If
@@ -48,9 +48,9 @@
                     Return 10 'SpecialMP
                 End If
             End If
-            Dim Position As Point = Nodes(CurrentIndex).Position
-            Dim Size As Size = Nodes(CurrentIndex).Size
-            Dim Rotation As Integer = Nodes(CurrentIndex).Rotation
+            Dim Position As Point = Nodes(CurrentIndex).GetValue(Node.ValueType.Position)
+            Dim Size As Size = Nodes(CurrentIndex).GetValue(Node.ValueType.Size)
+            Dim Rotation As Integer = Nodes(CurrentIndex).GetValue(Node.ValueType.Rotation)
             Return GetSquareSelectionType(Point, New Rectangle(Position, Size), Rotation)
         Else
             Return 0
@@ -98,108 +98,120 @@
         PBCursorPosition = PictureBox1.PointToClient(Cursor.Position)
         PBCursorPosition.X *= ScaleX
         PBCursorPosition.Y *= ScaleY
-        If IsResizing = False Then
-            ResizeType = GetSelectionTypeAtPoint(PBCursorPosition)
-            If CurrentIndex <> -1 Then
-                'Me.Text = ResizeType
-                SetCursor(ResizeType, Nodes(CurrentIndex).Rotation)
-            Else
-                PictureBox1.Cursor = Cursors.Default
-            End If
-        ElseIf CurrentIndex <> -1 Then
-            Dim rotation As Integer = Nodes(CurrentIndex).Rotation
-            'Actual value changing
-            'Set new variables
-            Dim NewPosX As Integer = ResizeStartPosVal.X
-            Dim NewPosY As Integer = ResizeStartPosVal.Y
-            Dim NewSizeW As Integer = ResizeStartSizeVal.Width
-            Dim NewSizeH As Integer = ResizeStartSizeVal.Height
-            Dim offsetX As Integer = (Cursor.Position.X - ResizeStartPosition.X) * ScaleX
-            Dim offsetY As Integer = (Cursor.Position.Y - ResizeStartPosition.Y) * ScaleY
-            If ResizeType = SelectionType.Middle Or ResizeType = SelectionType.SpecialMP Then
-                'Move
-                NewPosX += offsetX
-                NewPosY += offsetY
-            Else
-                'Convert point to square-related
-                Dim point As Point = PictureBox1.PointToClient(Cursor.Position)
-                point.X *= ScaleX
-                point.Y *= ScaleY
-                Dim Square As New Rectangle(ResizeStartPosVal, ResizeStartSizeVal)
-                point.X -= Square.X + Square.Width * 0.5
-                point.Y -= Square.Y + Square.Height * 0.5
-                Dim rotradian As Double = rotation * Math.PI / -180
-                If point.X > 0 Then rotradian += 0.5 * Math.PI
-                If point.X < 0 Then rotradian += 1.5 * Math.PI
-                If point.Y > 0 And point.X = 0 Then rotradian += Math.PI
-                If point.Y <> 0 And point.X <> 0 Then rotradian += Math.Atan(point.Y / point.X)
-                Dim radius As Double = Math.Sqrt(point.X ^ 2 + point.Y ^ 2)
-                offsetX = Math.Sin(rotradian) * radius + Square.Width * 0.5
-                offsetY = Square.Height * 0.5 - Math.Cos(rotradian) * radius
-                'Disabling offset if not used
-                If ResizeType = SelectionType.TopMiddle Or ResizeType = SelectionType.BottomMiddle Then offsetX = 0
-                If ResizeType = SelectionType.MiddleLeft Or ResizeType = SelectionType.MiddleRight Then offsetY = 0
-                'Using correct movement; 
-                If ResizeType = SelectionType.TopMiddle Then
-                    If offsetY >= NewSizeH Then offsetY = NewSizeH
-                    NewPosY += offsetY
-                    NewSizeH -= offsetY
-                ElseIf ResizeType = SelectionType.BottomMiddle Then
-                    If offsetY < 0 Then offsetY = 0
-                    offsetY -= Square.Height
-                    NewSizeH += offsetY
-                ElseIf ResizeType = SelectionType.MiddleRight Then
-                    If offsetX < 0 Then offsetX = 0
-                    offsetX -= Square.Width
-                    NewSizeW += offsetX
-                ElseIf ResizeType = SelectionType.MiddleLeft Then
-                    If offsetX >= NewSizeW Then offsetX = NewSizeW
-                    NewPosX += offsetX
-                    NewSizeW -= offsetX
-                ElseIf ResizeType = SelectionType.TopLeft Then
-                    If offsetX >= NewSizeW Then offsetX = NewSizeW
-                    If offsetY >= NewSizeH Then offsetY = NewSizeH
-                    NewPosX += offsetX
-                    NewPosY += offsetY
-                    NewSizeW -= offsetX
-                    NewSizeH -= offsetY
-                ElseIf ResizeType = SelectionType.TopRight Then
-                    If offsetX < 0 Then offsetX = 0
-                    If offsetY >= NewSizeH Then offsetY = NewSizeH
-                    NewPosY += offsetY
-                    NewSizeH -= offsetY
-                    offsetX -= Square.Width
-                    NewSizeW += offsetX
-                ElseIf ResizeType = SelectionType.BottomRight Then
-                    If offsetX < 0 Then offsetX = 0
-                    If offsetY < 0 Then offsetY = 0
-                    offsetX -= Square.Width
-                    NewSizeW += offsetX
-                    offsetY -= Square.Height
-                    NewSizeH += offsetY
-                ElseIf ResizeType = SelectionType.BottomLeft Then
-                    If offsetX >= NewSizeW Then offsetX = NewSizeW
-                    If offsetY < 0 Then offsetY = 0
-                    NewPosX += offsetX
-                    NewSizeW -= offsetX
-                    offsetY -= Square.Height
-                    NewSizeH += offsetY
+        If CurrentIndex <> -1 Then
+            If Nodes(CurrentIndex).Type = "Button Node" Then
+                Dim oldm As Integer = Nodes(CurrentIndex).ButtonNodeData.DisplayMode
+                Dim newm As Integer = 0
+                If GetPointIsInNode(PBCursorPosition, CurrentIndex) = True Then newm = 1
+                If oldm <> newm Then
+                    Nodes(CurrentIndex).ButtonNodeData.DisplayMode = newm
+                    Nodes(CurrentIndex).ButtonNodeData.PosTypeChanged = True
+                    UpdateScreen = True
                 End If
-                NewPosX -= offsetX * 0.5 * (1 - Math.Cos(rotation / 180 * Math.PI))
-                NewPosY -= offsetY * 0.5 * (1 - Math.Cos(rotation / 180 * Math.PI))
-                NewPosX -= offsetY * 0.5 * Math.Sin(rotation / 180 * Math.PI)
-                NewPosY -= offsetX * -0.5 * Math.Sin(rotation / 180 * Math.PI)
             End If
-            Dim NewPos As New Point(NewPosX, NewPosY)
-            Dim NewSize As New Size(SetValueBounds(NewSizeW, 1, 2048), SetValueBounds(NewSizeH, 1, 2048))
-            If ResizeType = SelectionType.SpecialMP Then
-                Nodes(CurrentIndex).PictureNodeData.DRotationMid = NewPos
-                Nodes(CurrentIndex).PictureNodeData.PosRotChanged = True
-            Else
-                Nodes(CurrentIndex).Size = NewSize
-                Nodes(CurrentIndex).Position = NewPos
+            If IsResizing = False Then
+                ResizeType = GetSelectionTypeAtPoint(PBCursorPosition)
+                If CurrentIndex <> -1 Then
+                    'Me.Text = ResizeType
+                    SetCursor(ResizeType, Nodes(CurrentIndex).GetValue(Node.ValueType.Rotation))
+                Else
+                    PictureBox1.Cursor = Cursors.Default
+                End If
+            ElseIf CurrentIndex <> -1 Then
+                Dim rotation As Integer = Nodes(CurrentIndex).GetValue(Node.ValueType.Rotation)
+                'Actual value changing
+                'Set new variables
+                Dim NewPosX As Integer = ResizeStartPosVal.X
+                Dim NewPosY As Integer = ResizeStartPosVal.Y
+                Dim NewSizeW As Integer = ResizeStartSizeVal.Width
+                Dim NewSizeH As Integer = ResizeStartSizeVal.Height
+                Dim offsetX As Integer = (Cursor.Position.X - ResizeStartPosition.X) * ScaleX
+                Dim offsetY As Integer = (Cursor.Position.Y - ResizeStartPosition.Y) * ScaleY
+                If ResizeType = SelectionType.Middle Or ResizeType = SelectionType.SpecialMP Then
+                    'Move
+                    NewPosX += offsetX
+                    NewPosY += offsetY
+                Else
+                    'Convert point to square-related
+                    Dim point As Point = PictureBox1.PointToClient(Cursor.Position)
+                    point.X *= ScaleX
+                    point.Y *= ScaleY
+                    Dim Square As New Rectangle(ResizeStartPosVal, ResizeStartSizeVal)
+                    point.X -= Square.X + Square.Width * 0.5
+                    point.Y -= Square.Y + Square.Height * 0.5
+                    Dim rotradian As Double = rotation * Math.PI / -180
+                    If point.X > 0 Then rotradian += 0.5 * Math.PI
+                    If point.X < 0 Then rotradian += 1.5 * Math.PI
+                    If point.Y > 0 And point.X = 0 Then rotradian += Math.PI
+                    If point.Y <> 0 And point.X <> 0 Then rotradian += Math.Atan(point.Y / point.X)
+                    Dim radius As Double = Math.Sqrt(point.X ^ 2 + point.Y ^ 2)
+                    offsetX = Math.Sin(rotradian) * radius + Square.Width * 0.5
+                    offsetY = Square.Height * 0.5 - Math.Cos(rotradian) * radius
+                    'Disabling offset if not used
+                    If ResizeType = SelectionType.TopMiddle Or ResizeType = SelectionType.BottomMiddle Then offsetX = 0
+                    If ResizeType = SelectionType.MiddleLeft Or ResizeType = SelectionType.MiddleRight Then offsetY = 0
+                    'Using correct movement; 
+                    If ResizeType = SelectionType.TopMiddle Then
+                        If offsetY >= NewSizeH Then offsetY = NewSizeH
+                        NewPosY += offsetY
+                        NewSizeH -= offsetY
+                    ElseIf ResizeType = SelectionType.BottomMiddle Then
+                        If offsetY < 0 Then offsetY = 0
+                        offsetY -= Square.Height
+                        NewSizeH += offsetY
+                    ElseIf ResizeType = SelectionType.MiddleRight Then
+                        If offsetX < 0 Then offsetX = 0
+                        offsetX -= Square.Width
+                        NewSizeW += offsetX
+                    ElseIf ResizeType = SelectionType.MiddleLeft Then
+                        If offsetX >= NewSizeW Then offsetX = NewSizeW
+                        NewPosX += offsetX
+                        NewSizeW -= offsetX
+                    ElseIf ResizeType = SelectionType.TopLeft Then
+                        If offsetX >= NewSizeW Then offsetX = NewSizeW
+                        If offsetY >= NewSizeH Then offsetY = NewSizeH
+                        NewPosX += offsetX
+                        NewPosY += offsetY
+                        NewSizeW -= offsetX
+                        NewSizeH -= offsetY
+                    ElseIf ResizeType = SelectionType.TopRight Then
+                        If offsetX < 0 Then offsetX = 0
+                        If offsetY >= NewSizeH Then offsetY = NewSizeH
+                        NewPosY += offsetY
+                        NewSizeH -= offsetY
+                        offsetX -= Square.Width
+                        NewSizeW += offsetX
+                    ElseIf ResizeType = SelectionType.BottomRight Then
+                        If offsetX < 0 Then offsetX = 0
+                        If offsetY < 0 Then offsetY = 0
+                        offsetX -= Square.Width
+                        NewSizeW += offsetX
+                        offsetY -= Square.Height
+                        NewSizeH += offsetY
+                    ElseIf ResizeType = SelectionType.BottomLeft Then
+                        If offsetX >= NewSizeW Then offsetX = NewSizeW
+                        If offsetY < 0 Then offsetY = 0
+                        NewPosX += offsetX
+                        NewSizeW -= offsetX
+                        offsetY -= Square.Height
+                        NewSizeH += offsetY
+                    End If
+                    NewPosX -= offsetX * 0.5 * (1 - Math.Cos(rotation / 180 * Math.PI))
+                    NewPosY -= offsetY * 0.5 * (1 - Math.Cos(rotation / 180 * Math.PI))
+                    NewPosX -= offsetY * 0.5 * Math.Sin(rotation / 180 * Math.PI)
+                    NewPosY -= offsetX * -0.5 * Math.Sin(rotation / 180 * Math.PI)
+                End If
+                Dim NewPos As New Point(NewPosX, NewPosY)
+                Dim NewSize As New Size(SetValueBounds(NewSizeW, 1, 2048), SetValueBounds(NewSizeH, 1, 2048))
+                If ResizeType = SelectionType.SpecialMP Then
+                    Nodes(CurrentIndex).PictureNodeData.DRotationMid = NewPos
+                    Nodes(CurrentIndex).PictureNodeData.PosRotChanged = True
+                Else
+                    Nodes(CurrentIndex).SetValue(Node.ValueType.Size, NewSize)
+                    Nodes(CurrentIndex).SetValue(Node.ValueType.Position, NewPos)
+                End If
+                UpdateScreen = True
             End If
-            UpdateScreen = True
         End If
     End Sub
 #End Region
@@ -221,9 +233,9 @@
                     Dim CurSelRot As Integer = 0
                     If CurrentIndex <> -1 And DrawSelectionSquareToolStripMenuItem.Checked = True Then
                         If Nodes(CurrentIndex).Render = True Then
-                            CurSelPos = Nodes(CurrentIndex).Position
-                            CurSelSize = Nodes(CurrentIndex).Size
-                            CurSelRot = Nodes(CurrentIndex).Rotation
+                            CurSelPos = Nodes(CurrentIndex).GetValue(Node.ValueType.Position)
+                            CurSelSize = Nodes(CurrentIndex).GetValue(Node.ValueType.Size)
+                            CurSelRot = Nodes(CurrentIndex).GetValue(Node.ValueType.Rotation)
                         End If
                     End If
                     RenderNodes(g)
@@ -232,7 +244,7 @@
                     'Render node selection boxes
                     Try
                         If CurrentIndex <> -1 Then
-                            If Nodes(CurrentIndex).Render = True Then
+                            If Nodes(CurrentIndex).Render = True And Nodes(CurrentIndex).Type <> "Split Node" Then
                                 If DrawSelectionSquareToolStripMenuItem.Checked = True Then g.DrawImage(RenderSelectionBox(CurSelPos, CurSelSize, CurSelRot), New Point(0, 0))
                                 If ViewedDialog = 6 And Nodes(CurrentIndex).Type = "Picture Node" Then
                                     g.DrawPie(Pens.Red, New Rectangle(Nodes(CurrentIndex).PictureNodeData.DRotationMid.X + 395, Nodes(CurrentIndex).PictureNodeData.DRotationMid.Y + 295, 10, 10), 90, 360)
@@ -246,7 +258,7 @@
                 Else
                     System.Threading.Thread.Sleep(50)
                 End If
-                RefreshTime = s.ElapsedMilliseconds
+            RefreshTime = s.ElapsedMilliseconds
             Catch ex As Exception
                 MsgBox("Render error: " & vbCrLf & vbCrLf & ex.Message)
                 WriteLog("Render error: " & ex.Message)
@@ -628,10 +640,14 @@
     End Sub
     Private Sub AddNewNode()
         Dim SelNodeName As String = "VehicleHuds"
-        Try
-            SelNodeName = TreeView1.SelectedNode.Text
-        Catch
-        End Try
+        If CurrentIndex = -1 Then
+            Try
+                SelNodeName = TreeView1.SelectedNode.Text
+            Catch
+            End Try
+        Else
+            SelNodeName = Nodes(CurrentIndex).Name
+        End If
         Dim Type As Integer = 0 '0=splitnode; 1=other
         Dim Index As Integer = -1
         For i As Integer = 1 To Nodes.Count - 1
@@ -705,12 +721,12 @@
             If e.KeyCode = Keys.Down Then offset.Y = 1
             If e.KeyCode = Keys.Left Then offset.X = -1
             If e.KeyCode = Keys.Right Then offset.X = 1
-            Dim posval As Point = Nodes(CurrentIndex).Position
-            Dim sizeval As Size = Nodes(CurrentIndex).Size
+            Dim posval As Point = Nodes(CurrentIndex).GetValue(Node.ValueType.Position)
+            Dim sizeval As Size = Nodes(CurrentIndex).GetValue(Node.ValueType.Size)
             posval.X += offset.X
             posval.Y += offset.Y
-            Nodes(CurrentIndex).Position = posval
-            Nodes(CurrentIndex).Size = sizeval
+            Nodes(CurrentIndex).SetValue(Node.ValueType.Position, posval)
+            Nodes(CurrentIndex).SetValue(Node.ValueType.Size, sizeval)
             UpdateScreen = True
         End If
     End Sub
@@ -736,8 +752,8 @@
         DeleteToolStripMenuItem.Enabled = CurrentIndex <> -1
         If IsResizing = True Then
             'Set defaults back
-            Nodes(CurrentIndex).Position = ResizeStartPosVal
-            Nodes(CurrentIndex).Size = ResizeStartSizeVal
+            Nodes(CurrentIndex).SetValue(Node.ValueType.Position, ResizeStartPosVal)
+            Nodes(CurrentIndex).SetValue(Node.ValueType.Size, ResizeStartSizeVal)
             SetCursor(SelectionType.Outside, 0)
             IsResizing = False
             UpdateScreen = True
@@ -1144,5 +1160,21 @@
         LCForm.ShowDialog()
         LoadLibraries()
         Me.Show()
+    End Sub
+
+    Private Sub Form1_DragEnter(ByVal sender As System.Object, ByVal e As System.Windows.Forms.DragEventArgs) Handles MyBase.DragEnter
+        If e.Data.GetDataPresent(DataFormats.FileDrop) Then
+            For Each file As String In e.Data.GetData(DataFormats.FileDrop)
+                If file.ToLower.EndsWith(".con") Then e.Effect = DragDropEffects.Move
+            Next
+        End If
+    End Sub
+
+    Private Sub Form1_DragDrop(ByVal sender As System.Object, ByVal e As System.Windows.Forms.DragEventArgs) Handles MyBase.DragDrop
+        If e.Data.GetDataPresent(DataFormats.FileDrop) Then
+            For Each file As String In e.Data.GetData(DataFormats.FileDrop)
+                If file.ToLower.EndsWith(".con") Then LoadFile(file)
+            Next
+        End If
     End Sub
 End Class

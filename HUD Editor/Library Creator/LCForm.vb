@@ -394,8 +394,8 @@
             For Each line As String In data.Split(vbCrLf)
                 line = line.Trim
                 If Not line.StartsWith("#") And line.Split(" ").Count = 7 Then
-                    Dim a As New AtlasTexture(line.Split(" ")(0).Trim)
-                    If a.Path.ToLower.StartsWith("menu/hud/texture/") Then a.Path = a.Path.Remove(0, 17).Trim("\").Trim
+                    Dim a As New AtlasTexture(line.Split(" ")(0).Trim.Replace("/", "\"))
+                    If a.Path.ToLower.StartsWith("menu\hud\texture\") Then a.Path = a.Path.Remove(0, 17).Trim("\").Trim
                     a.AtlasPath = line.Split(" ")(1).TrimEnd(",").Trim
                     a.X = Val(line.Split(" ")(3).TrimEnd(",").Trim)
                     a.Y = Val(line.Split(" ")(4).TrimEnd(",").Trim)

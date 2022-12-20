@@ -1,5 +1,5 @@
 ﻿Public Class bnvariables
-    Private Sub ComboBox1_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ComboBox1.TextUpdate
+    Private Sub ComboBox1_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ComboBox1.TextUpdate, ComboBox1.SelectedIndexChanged
         If ComboBox1.SelectedItem = "Clear" Then ComboBox1.SelectedIndex = -1
         Nodes(CurrentIndex).BarNodeData.ValueVariable = ComboBox1.Text
     End Sub
@@ -21,4 +21,5 @@
         UpdateScreen = True
         ViewedDialog = 0
     End Sub
+
 End Class

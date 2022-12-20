@@ -70,6 +70,9 @@ Public Class MainDialog
         ElseIf Nodes(CurrentIndex).Type = "Bar Node" Then
             NumericUpDown3.Value = Nodes(CurrentIndex).BarNodeData.FullTextureImage.Width
             NumericUpDown4.Value = Nodes(CurrentIndex).BarNodeData.FullTextureImage.Height
+        ElseIf Nodes(CurrentIndex).Type = "Button Node" Then
+            NumericUpDown3.Value = Nodes(CurrentIndex).ButtonNodeData.OnTextureImage.Width
+            NumericUpDown4.Value = Nodes(CurrentIndex).ButtonNodeData.OnTextureImage.Height
         Else
             NumericUpDown3.Value = (400 - NumericUpDown1.Value) * 2
             NumericUpDown4.Value = (300 - NumericUpDown2.Value) * 2
@@ -115,6 +118,11 @@ Public Class MainDialog
                 Nodes(CurrentIndex).ObjectMarkerNodeData.Position.X = NumericUpDown1.Value
                 Nodes(CurrentIndex).ObjectMarkerNodeData.Position.Y = NumericUpDown2.Value
             End If
+            If Nodes(CurrentIndex).Type = "Button Node" Then
+                Nodes(CurrentIndex).ButtonNodeData.Position.X = NumericUpDown1.Value
+                Nodes(CurrentIndex).ButtonNodeData.Position.Y = NumericUpDown2.Value
+                Nodes(CurrentIndex).ButtonNodeData.PosTypeChanged = True
+            End If
             UpdateScreen = True
         End If
     End Sub
@@ -148,6 +156,11 @@ Public Class MainDialog
                 Nodes(CurrentIndex).ObjectMarkerNodeData.Size.Width = NumericUpDown3.Value
                 Nodes(CurrentIndex).ObjectMarkerNodeData.Size.Height = NumericUpDown4.Value
             End If
+            If Nodes(CurrentIndex).Type = "Button Node" Then
+                Nodes(CurrentIndex).ButtonNodeData.Size.Width = NumericUpDown3.Value
+                Nodes(CurrentIndex).ButtonNodeData.Size.Height = NumericUpDown4.Value
+                Nodes(CurrentIndex).ButtonNodeData.SizeChanged = True
+            End If
             UpdateScreen = True
         End If
     End Sub
@@ -165,6 +178,9 @@ Public Class MainDialog
             End If
             If Nodes(CurrentIndex).Type = "Bar Node" Then
                 s = Nodes(CurrentIndex).BarNodeData.FullTextureImage.Size
+            End If
+            If Nodes(CurrentIndex).Type = "Button Node" Then
+                s = Nodes(CurrentIndex).ButtonNodeData.OnTextureImage.Size
             End If
             isloading = True
             NumericUpDown3.Value = SetValueBounds(s.Width * NumericUpDown5.Value * 0.01, 1, 2048)

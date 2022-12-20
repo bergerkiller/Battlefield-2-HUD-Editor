@@ -2,7 +2,7 @@
 Imports System.Threading
 
 Public Class TextureBrowser
-    Dim dmode As Integer = 0 '0=default ; 1=full barnode texture ; 2=empty barnode texture
+    Dim dmode As Integer = 0 '0=default ; 1=full (on) texture ; 2=empty (off) texture
     Dim BrowseTimeLine As New List(Of String)
     Dim TimeLineIndex As Integer = 0
     Dim Textures As New List(Of String)
@@ -96,6 +96,12 @@ Public Class TextureBrowser
     End Sub
 
     Private Sub ComboBox1_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ComboBox1.SelectedIndexChanged
+        If IsLoadingImages = True Then
+            Try
+                ThreadLoadListviewImages.Abort()
+            Catch
+            End Try
+        End If
         ListView1.Items.Clear()
         tmpchecklistview.Items.Clear()
         If ComboBox1.SelectedIndex <> -1 Then
@@ -139,7 +145,9 @@ Public Class TextureBrowser
     End Sub
 
     Private Sub TextureBrowser_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
-        If Me.Text = "full" Then dmode = 1 Else If Me.Text = "empty" Then dmode = 2 Else dmode = 3
+        dmode = 0
+        If Me.Text = "full" Then dmode = 1
+        If Me.Text = "empty" Then dmode = 2
         Me.Text = "Texture Browser"
         If ComboBox2.SelectedIndex = -1 Then ComboBox2.SelectedIndex = 0
         Textures.Clear()
@@ -181,6 +189,8 @@ Public Class TextureBrowser
                 If .Type = "Compass Node" Then currentpath = .CompassNodeData.TexturePath.Trim
                 If .Type = "Bar Node" And dmode = 1 Then currentpath = .BarNodeData.FullTexturePath.Trim
                 If .Type = "Bar Node" And dmode = 2 Then currentpath = .BarNodeData.EmptyTexturePath.Trim
+                If .Type = "Button Node" And dmode = 1 Then currentpath = .ButtonNodeData.OnTexturePath
+                If .Type = "Button Node" And dmode = 2 Then currentpath = .ButtonNodeData.OffTexturePath
             End With
             If currentpath <> "" Then
                 Dim filefolder As String = StrReverse(StrReverse(currentpath).Remove(0, IO.Path.GetFileName(currentpath).Length).Trim("\"))
@@ -272,6 +282,15 @@ Public Class TextureBrowser
                     Nodes(CurrentIndex).BarNodeData.EmptyTextureImage = simage
                 End If
                 Nodes(CurrentIndex).BarNodeData.ColorChanged = True
+            ElseIf Nodes(CurrentIndex).Type = "Button Node" Then
+                If dmode = 1 Then
+                    Nodes(CurrentIndex).ButtonNodeData.OnTexturePath = filepath
+                    Nodes(CurrentIndex).ButtonNodeData.OnTextureImage = simage
+                ElseIf dmode = 2 Then
+                    Nodes(CurrentIndex).ButtonNodeData.OffTexturePath = filepath
+                    Nodes(CurrentIndex).ButtonNodeData.OffTextureImage = simage
+                End If
+                Nodes(CurrentIndex).ButtonNodeData.ColorChanged = True
             End If
             UpdateScreen = True
         Catch

@@ -108,40 +108,32 @@ Partial Class ColorDialog
         '
         'NumericUpDownBc
         '
-        Me.NumericUpDownBc.DecimalPlaces = 3
-        Me.NumericUpDownBc.Increment = New Decimal(New Integer() {1, 0, 0, 65536})
         Me.NumericUpDownBc.Location = New System.Drawing.Point(264, 88)
-        Me.NumericUpDownBc.Maximum = New Decimal(New Integer() {1, 0, 0, 0})
+        Me.NumericUpDownBc.Maximum = New Decimal(New Integer() {255, 0, 0, 0})
         Me.NumericUpDownBc.Name = "NumericUpDownBc"
         Me.NumericUpDownBc.Size = New System.Drawing.Size(48, 20)
         Me.NumericUpDownBc.TabIndex = 48
         '
         'NumericUpDownGc
         '
-        Me.NumericUpDownGc.DecimalPlaces = 3
-        Me.NumericUpDownGc.Increment = New Decimal(New Integer() {1, 0, 0, 65536})
         Me.NumericUpDownGc.Location = New System.Drawing.Point(264, 62)
-        Me.NumericUpDownGc.Maximum = New Decimal(New Integer() {1, 0, 0, 0})
+        Me.NumericUpDownGc.Maximum = New Decimal(New Integer() {255, 0, 0, 0})
         Me.NumericUpDownGc.Name = "NumericUpDownGc"
         Me.NumericUpDownGc.Size = New System.Drawing.Size(48, 20)
         Me.NumericUpDownGc.TabIndex = 47
         '
         'NumericUpDownRc
         '
-        Me.NumericUpDownRc.DecimalPlaces = 3
-        Me.NumericUpDownRc.Increment = New Decimal(New Integer() {1, 0, 0, 65536})
         Me.NumericUpDownRc.Location = New System.Drawing.Point(264, 36)
-        Me.NumericUpDownRc.Maximum = New Decimal(New Integer() {1, 0, 0, 0})
+        Me.NumericUpDownRc.Maximum = New Decimal(New Integer() {255, 0, 0, 0})
         Me.NumericUpDownRc.Name = "NumericUpDownRc"
         Me.NumericUpDownRc.Size = New System.Drawing.Size(48, 20)
         Me.NumericUpDownRc.TabIndex = 46
         '
         'NumericUpDownAc
         '
-        Me.NumericUpDownAc.DecimalPlaces = 3
-        Me.NumericUpDownAc.Increment = New Decimal(New Integer() {1, 0, 0, 65536})
         Me.NumericUpDownAc.Location = New System.Drawing.Point(264, 12)
-        Me.NumericUpDownAc.Maximum = New Decimal(New Integer() {1, 0, 0, 0})
+        Me.NumericUpDownAc.Maximum = New Decimal(New Integer() {255, 0, 0, 0})
         Me.NumericUpDownAc.Name = "NumericUpDownAc"
         Me.NumericUpDownAc.Size = New System.Drawing.Size(48, 20)
         Me.NumericUpDownAc.TabIndex = 45

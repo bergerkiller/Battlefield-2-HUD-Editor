@@ -48,6 +48,7 @@ Partial Class Form1
         Me.OverlayToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.ToolStripComboBox3 = New System.Windows.Forms.ToolStripComboBox
         Me.ToolStripSeparator3 = New System.Windows.Forms.ToolStripSeparator
+        Me.TextureLibraryCreatorToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.ForceUpdateToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.ResetScreenToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.ViewLogToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
@@ -80,7 +81,6 @@ Partial Class Form1
         Me.SaveFileDialog2 = New System.Windows.Forms.SaveFileDialog
         Me.Timer1 = New System.Windows.Forms.Timer(Me.components)
         Me.Label2 = New System.Windows.Forms.Label
-        Me.TextureLibraryCreatorToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.ToolStrip1.SuspendLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.ContextMenuStrip1.SuspendLayout()
@@ -109,36 +109,36 @@ Partial Class Form1
         'NewToolStripMenuItem
         '
         Me.NewToolStripMenuItem.Name = "NewToolStripMenuItem"
-        Me.NewToolStripMenuItem.Size = New System.Drawing.Size(149, 22)
+        Me.NewToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
         Me.NewToolStripMenuItem.Text = "New"
         '
         'LoadToolStripMenuItem
         '
         Me.LoadToolStripMenuItem.Name = "LoadToolStripMenuItem"
-        Me.LoadToolStripMenuItem.Size = New System.Drawing.Size(149, 22)
+        Me.LoadToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
         Me.LoadToolStripMenuItem.Text = "Load"
         '
         'SaveToolStripMenuItem
         '
         Me.SaveToolStripMenuItem.Name = "SaveToolStripMenuItem"
-        Me.SaveToolStripMenuItem.Size = New System.Drawing.Size(149, 22)
+        Me.SaveToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
         Me.SaveToolStripMenuItem.Text = "Save"
         '
         'SaveSnapshotToolStripMenuItem
         '
         Me.SaveSnapshotToolStripMenuItem.Name = "SaveSnapshotToolStripMenuItem"
-        Me.SaveSnapshotToolStripMenuItem.Size = New System.Drawing.Size(149, 22)
+        Me.SaveSnapshotToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
         Me.SaveSnapshotToolStripMenuItem.Text = "Save snapshot"
         '
         'ToolStripSeparator4
         '
         Me.ToolStripSeparator4.Name = "ToolStripSeparator4"
-        Me.ToolStripSeparator4.Size = New System.Drawing.Size(146, 6)
+        Me.ToolStripSeparator4.Size = New System.Drawing.Size(149, 6)
         '
         'ExitToolStripMenuItem
         '
         Me.ExitToolStripMenuItem.Name = "ExitToolStripMenuItem"
-        Me.ExitToolStripMenuItem.Size = New System.Drawing.Size(149, 22)
+        Me.ExitToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
         Me.ExitToolStripMenuItem.Text = "Exit"
         '
         'ToolStripSeparator2
@@ -267,6 +267,12 @@ Partial Class Form1
         Me.ToolStripSeparator3.Name = "ToolStripSeparator3"
         Me.ToolStripSeparator3.Size = New System.Drawing.Size(191, 6)
         '
+        'TextureLibraryCreatorToolStripMenuItem
+        '
+        Me.TextureLibraryCreatorToolStripMenuItem.Name = "TextureLibraryCreatorToolStripMenuItem"
+        Me.TextureLibraryCreatorToolStripMenuItem.Size = New System.Drawing.Size(194, 22)
+        Me.TextureLibraryCreatorToolStripMenuItem.Text = "Texture Library Creator"
+        '
         'ForceUpdateToolStripMenuItem
         '
         Me.ForceUpdateToolStripMenuItem.Name = "ForceUpdateToolStripMenuItem"
@@ -307,7 +313,7 @@ Partial Class Form1
         Me.ETextureButton.Image = CType(resources.GetObject("ETextureButton.Image"), System.Drawing.Image)
         Me.ETextureButton.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.ETextureButton.Name = "ETextureButton"
-        Me.ETextureButton.Size = New System.Drawing.Size(103, 20)
+        Me.ETextureButton.Size = New System.Drawing.Size(103, 22)
         Me.ETextureButton.Text = "Empty Texture"
         Me.ETextureButton.Visible = False
         '
@@ -316,7 +322,7 @@ Partial Class Form1
         Me.ShowButton.Image = CType(resources.GetObject("ShowButton.Image"), System.Drawing.Image)
         Me.ShowButton.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.ShowButton.Name = "ShowButton"
-        Me.ShowButton.Size = New System.Drawing.Size(56, 20)
+        Me.ShowButton.Size = New System.Drawing.Size(56, 22)
         Me.ShowButton.Text = "Show"
         Me.ShowButton.Visible = False
         '
@@ -528,14 +534,9 @@ Partial Class Form1
         Me.Label2.Text = "20 fps"
         Me.Label2.Visible = False
         '
-        'TextureLibraryCreatorToolStripMenuItem
-        '
-        Me.TextureLibraryCreatorToolStripMenuItem.Name = "TextureLibraryCreatorToolStripMenuItem"
-        Me.TextureLibraryCreatorToolStripMenuItem.Size = New System.Drawing.Size(194, 22)
-        Me.TextureLibraryCreatorToolStripMenuItem.Text = "Texture Library Creator"
-        '
         'Form1
         '
+        Me.AllowDrop = True
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(816, 627)

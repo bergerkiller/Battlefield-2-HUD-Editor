@@ -86,6 +86,12 @@
     <Compile Include="Dialogs\bnvariables.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Dialogs\btnvariables.Designer.vb">
+      <DependentUpon>btnvariables.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Dialogs\btnvariables.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Dialogs\cnvariables.Designer.vb">
       <DependentUpon>cnvariables.vb</DependentUpon>
     </Compile>
@@ -216,6 +222,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Dialogs\bnvariables.resx">
       <DependentUpon>bnvariables.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Dialogs\btnvariables.resx">
+      <DependentUpon>btnvariables.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Dialogs\cnvariables.resx">
       <DependentUpon>cnvariables.vb</DependentUpon>
