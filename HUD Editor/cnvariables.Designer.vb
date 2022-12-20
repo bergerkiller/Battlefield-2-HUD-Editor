@@ -51,7 +51,7 @@ Partial Class cnvariables
         '
         Me.ComboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.ComboBox1.FormattingEnabled = True
-        Me.ComboBox1.Items.AddRange(New Object() {"Clear", "VehicleAngle"})
+        Me.ComboBox1.Items.AddRange(New Object() {"Clear", "VehicleAngle", "VehicleElevationSpeedAngle", "GunnerAngle"})
         Me.ComboBox1.Location = New System.Drawing.Point(95, 6)
         Me.ComboBox1.Name = "ComboBox1"
         Me.ComboBox1.Size = New System.Drawing.Size(136, 21)

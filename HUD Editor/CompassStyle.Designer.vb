@@ -102,7 +102,7 @@ Partial Class CompassStyle
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(161, 133)
+        Me.ClientSize = New System.Drawing.Size(156, 136)
         Me.Controls.Add(Me.NumericUpDown2)
         Me.Controls.Add(Me.Label3)
         Me.Controls.Add(Me.NumericUpDown1)

@@ -4,6 +4,7 @@ Public Class Simulator
     Dim simfile As String = ""
     Dim threadsimulate As Thread
     Dim speed As Integer = 50
+    Dim simulationimages() As Image
 
     Private Sub Button1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button1.Click
         threadsimulate = New Thread(AddressOf Simulator)
@@ -61,6 +62,7 @@ Public Class Simulator
         Button2.Enabled = False
         Button1.Enabled = True
         ResetNodeSimvars()
+        simulationimages = Nothing
     End Sub
     Private Sub Simulator()
         If System.IO.File.Exists(simfile) Then
@@ -102,9 +104,10 @@ Public Class Simulator
                     End If
                 End If
             Loop
+            reader.Close()
             If SimulationScript.Items.Count Then
                 'Simulation script loaded
-                Dim simulationimages(SimulationScript.Items(0).SubItems.Count - 1) As Image
+                ReDim simulationimages(SimulationScript.Items(0).SubItems.Count - 1)
                 For i As Integer = 1 To SimulationScript.Items(0).SubItems.Count - 1
                     For Each VarItem As ListViewItem In SimulationScript.Items
                         Dim Variable As String = VarItem.Text.ToLower.Trim

@@ -1,22 +1,59 @@
 ﻿Imports System.Drawing.Imaging
 
 Module Module1
+    Public PBCursorPosition As New Point(0, 0)
     Public BGimage As Bitmap
     Public OVimage As Bitmap = New Bitmap(16, 16)
+
     Public UpdateScreen As Boolean = False
+
+    Public UpdateSelectionField As Boolean = False
+    Public UpdateDotField As Boolean = False
+    Public SelectionField As New Bitmap(800, 600)
+    Public DotField As New Bitmap(800, 600)
+    Public DotMoveType As Integer = -1
     Public CurrentIndex As Integer = -1
     Public ImageSelectorImagePath As String = "Textures"
     Public ViewedDialog As Integer = 0
+    Public ScaleX As Single = 1
+    Public ScaleY As Single = 1
 
     Public Nodes(0) As Node
+
+    Public Function GetTreeViewNodes(ByVal TreeView As TreeView) As TreeNode()
+        Dim rval(0) As TreeNode
+        rval(0) = New TreeNode
+        For Each Node As TreeNode In TreeView.Nodes
+            GetNodeSubNodes(Node, rval)
+        Next
+        Return rval
+    End Function
+    Private Sub GetNodeSubNodes(ByVal TNode As TreeNode, ByRef PrevNodes() As TreeNode)
+        ReDim Preserve PrevNodes(PrevNodes.Count)
+        PrevNodes(PrevNodes.Count - 1) = TNode
+        For Each subnode As TreeNode In TNode.Nodes
+            GetNodeSubNodes(subnode, PrevNodes)
+        Next
+    End Sub
+    Public Function GetTreeViewNode(ByVal TreeView As TreeView, ByVal Node As String) As TreeNode
+        Dim rnode As New TreeNode
+        For Each Tnode As TreeNode In GetTreeViewNodes(TreeView)
+            If Tnode.Name.ToLower.Trim = Node.ToLower.Trim Then rnode = Tnode
+        Next
+        Return rnode
+    End Function
+    Public Function GetNodeNameIndex(ByVal Name As String) As Integer
+        Dim rval As Integer = -1
+        For i As Integer = 1 To Nodes.Count - 1
+            If Nodes(i).Name.ToLower.Trim = Name.ToLower.Trim Then rval = i
+        Next
+        Return rval
+    End Function
 
     Public Function SetValueBounds(ByVal Value As Single, ByVal Min As Single, ByVal Max As Single) As Single
         If Value > Max Then Value = Max
         If Value < Min Then Value = Min
         Return Value
-    End Function
-    Public Function GetDistance(ByVal Point1 As Point, ByVal Point2 As Point) As Single
-        Return Math.Sqrt((Point1.X - Point2.X) ^ 2 + (Point1.Y - Point2.Y) ^ 2)
     End Function
     Public Function GetValueAt(ByVal Text As String, ByVal Index As Integer) As String
         Dim i As Integer = 0
@@ -41,7 +78,17 @@ Module Module1
     Public Function RemoveDoubleSpaces(ByVal Text As String) As String
         Return Text.Replace("   ", " ").Replace(vbTab, " ").Replace(ControlChars.Tab, " ").Replace("	", " ").Replace("  ", " ")
     End Function
-
+    Public Function ConvertColorToText(ByVal Color As Color)
+        Dim A As String = Color.A / 255
+        Dim R As String = Color.R / 255
+        Dim G As String = Color.G / 255
+        Dim B As String = Color.B / 255
+        If A.Length > 5 Then A = A.Substring(0, 5)
+        If R.Length > 5 Then R = R.Substring(0, 5)
+        If G.Length > 5 Then G = G.Substring(0, 5)
+        If B.Length > 5 Then B = B.Substring(0, 5)
+        Return (R & " " & G & " " & B & " " & A).Replace(",", ".")
+    End Function
 
     Public Sub SetCBSelectedItem(ByRef cb As ComboBox, ByVal Item As String)
         Item = Item.ToLower.Trim
@@ -50,9 +97,6 @@ Module Module1
             If cb.Items(i).tolower.trim = Item Then cb.SelectedIndex = i
         Next
     End Sub
-    Public Function RotatePointInCircle(ByVal point As Point, ByVal CircleRadius As Single, ByVal Angle As Integer) As Point
-        Return New Point(Math.Cos(Angle / 180 * Math.PI) * CircleRadius, Math.Sin(Angle / 180 * Math.PI) * CircleRadius)
-    End Function
     Public Delegate Sub myPictureBoxAdapter(ByVal PBImage As Image, ByVal Invokefrom As Control)
     Public Sub PictureBoxAdapter(ByVal PBImage As Image, ByVal Invokefrom As Control)
         Try
@@ -72,8 +116,8 @@ Module Module1
             On Error Resume Next
             If DialogIndex = 1 Then TextureBrowser.ShowDialog() Else TextureBrowser.Close()
             If DialogIndex = 2 Then ColorDialog.Show() Else ColorDialog.Close()
-            If DialogIndex = 3 Then SizeDialog.Show() Else SizeDialog.Close()
-            If DialogIndex = 4 Then PositionDialog.Show() Else PositionDialog.Close()
+            If DialogIndex = 3 Then MainDialog.Show() Else MainDialog.Close()
+            If DialogIndex = 4 Then TSizeDialog.Show() Else TSizeDialog.Close()
             If DialogIndex = 5 Then RotationDialog.Show() Else RotationDialog.Close()
             If DialogIndex = 6 Then
                 If Nodes(CurrentIndex).Type = "Picture Node" Then pnvariables.Show()
@@ -91,7 +135,6 @@ Module Module1
                 TextStyle.Close()
                 CompassStyle.Close()
             End If
-            If DialogIndex = 8 Then TSizeDialog.Show() Else TSizeDialog.Close()
         Else
             ViewedDialog = 0
             LoadNode(-1)
@@ -114,16 +157,6 @@ Module Module1
 
     Public Function ColorImage(ByVal source As Bitmap, ByVal Amult As Single, ByVal Rmult As Single, ByVal Gmult As Single, ByVal Bmult As Single) As Image
         Dim bm As New Bitmap(source.Width, source.Height)
-        'For y As Integer = 0 To bm.Height - 1
-        '    For x As Integer = 0 To bm.Width - 1
-        '        Dim c As Color = source.GetPixel(x, y)
-        '        Dim Alpha As Integer = SetValueBounds(c.A * Amult, 0, 255)
-        '        Dim Red As Integer = SetValueBounds(c.R * Rmult, 0, 255)
-        '        Dim Green As Integer = SetValueBounds(c.G * Gmult, 0, 255)
-        '        Dim Blue As Integer = SetValueBounds(c.B * Bmult, 0, 255)
-        '        bm.SetPixel(x, y, Color.FromArgb(Alpha, Red, Green, Blue))
-        '    Next
-        'Next
         Dim cmxPic As ColorMatrix = New ColorMatrix
         cmxPic.Matrix33 = Amult
         cmxPic.Matrix22 = Bmult
@@ -259,9 +292,32 @@ Module Module1
         Dim p As New Pen(Color.Black)
         p.DashStyle = Drawing2D.DashStyle.Dash
         g.DrawRectangle(p, New Rectangle(0, 0, Size.Width, Size.Height))
+        g.FillRectangle(New SolidBrush(Color.White), New Rectangle(-2, -2, 4, 4))
+        g.FillRectangle(New SolidBrush(Color.White), New Rectangle(Size.Width - 2, -2, 4, 4))
+        g.FillRectangle(New SolidBrush(Color.White), New Rectangle(Size.Width - 2, Size.Height - 2, 4, 4))
+        g.FillRectangle(New SolidBrush(Color.White), New Rectangle(-2, Size.Height - 2, 4, 4))
+        g.DrawRectangle(Pens.Black, New Rectangle(-3, -3, 6, 6))
+        g.DrawRectangle(Pens.Black, New Rectangle(Size.Width - 3, -3, 6, 6))
+        g.DrawRectangle(Pens.Black, New Rectangle(Size.Width - 3, Size.Height - 3, 6, 6))
+        g.DrawRectangle(Pens.Black, New Rectangle(-3, Size.Height - 3, 6, 6))
+        If Size.Width > 31 Then
+            g.FillRectangle(New SolidBrush(Color.White), New Rectangle(Size.Width * 0.5 - 2, -2, 4, 4))
+            g.DrawRectangle(Pens.Black, New Rectangle(Size.Width * 0.5 - 3, -3, 6, 6))
+            g.FillRectangle(New SolidBrush(Color.White), New Rectangle(Size.Width * 0.5 - 2, Size.Height - 2, 4, 4))
+            g.DrawRectangle(Pens.Black, New Rectangle(Size.Width * 0.5 - 3, Size.Height - 3, 6, 6))
+        End If
+        If Size.Height > 31 Then
+            g.FillRectangle(New SolidBrush(Color.White), New Rectangle(-2, Size.Height * 0.5 - 2, 4, 4))
+            g.DrawRectangle(Pens.Black, New Rectangle(-3, Size.Height * 0.5 - 3, 6, 6))
+            g.FillRectangle(New SolidBrush(Color.White), New Rectangle(Size.Width - 2, Size.Height * 0.5 - 2, 4, 4))
+            g.DrawRectangle(Pens.Black, New Rectangle(Size.Width - 3, Size.Height * 0.5 - 3, 6, 6))
+        End If
         g.Dispose()
         Return returnbm
     End Function
+
+
+
 
     Public Function ListFolderFiles(ByVal Path As String, ByVal Filter As String) As String()
         Dim rval As New List(Of String)
@@ -314,7 +370,7 @@ Module Module1
     Public Sub InsertNode(ByVal Node As Node, ByVal Index As Integer)
         ReDim Preserve Nodes(Nodes.Count)
         Dim buNodes(Nodes.Count - 1) As Node
-        Nodes.CopyTo(bunodes, 0)
+        Nodes.CopyTo(buNodes, 0)
         For i As Integer = Index To Nodes.Count - 2
             Nodes(i + 1) = buNodes(i)
         Next
@@ -323,50 +379,159 @@ Module Module1
     Public Sub LoadNode(ByVal NodeIndex As Integer)
         Form1.TextureButton.Visible = False
         Form1.ColorButton.Visible = False
-        Form1.SizeButton.Visible = False
-        Form1.PositionButton.Visible = False
+        Form1.MainButton.Visible = False
         Form1.VariablesButton.Visible = False
         Form1.RotationButton.Visible = False
         Form1.StyleButton.Visible = False
         Form1.TSizeButton.Visible = False
         CurrentIndex = NodeIndex
         If NodeIndex < Nodes.Count And NodeIndex > -1 Then
-            Form1.Text = "HUD Editor - " & Nodes(NodeIndex).Name
+            Form1.Text = "HUD Editor - " & Nodes(CurrentIndex).Name & " (" & Nodes(NodeIndex).Type & ")"
             'Set button visibility
             If Nodes(NodeIndex).Type = "Picture Node" Then
                 Form1.TextureButton.Visible = True
                 Form1.ColorButton.Visible = True
-                Form1.SizeButton.Visible = True
-                Form1.PositionButton.Visible = True
+                Form1.MainButton.Visible = True
                 Form1.VariablesButton.Visible = True
                 Form1.RotationButton.Visible = True
             ElseIf Nodes(NodeIndex).Type = "Text Node" Then
                 Form1.ColorButton.Visible = True
-                Form1.PositionButton.Visible = True
-                Form1.SizeButton.Visible = True
+                Form1.MainButton.Visible = True
                 Form1.StyleButton.Visible = True
                 Form1.VariablesButton.Visible = True
             ElseIf Nodes(CurrentIndex).Type = "Compass Node" Then
-                Form1.SizeButton.Visible = True
                 Form1.TSizeButton.Visible = True
-                Form1.PositionButton.Visible = True
+                Form1.MainButton.Visible = True
                 Form1.TextureButton.Visible = True
                 Form1.ColorButton.Visible = True
                 Form1.VariablesButton.Visible = True
                 Form1.StyleButton.Visible = True
             End If
-            Else
-                Form1.Text = "HUD Editor - No Node Selected"
-            End If
+        Else
+            Form1.Text = "HUD Editor - No Node Selected"
+        End If
+        UpdateScreen = True
     End Sub
+    Public Sub RefreshNodes()
+        For i As Integer = 1 To Nodes.Count - 1
+            If Nodes(i).Render = True Then
+                If Nodes(i).Type = "Picture Node" Then
+                    Nodes(i).PictureNodeData.SizeChanged = True
+                    Nodes(i).PictureNodeData.ColorChanged = True
+                    Nodes(i).PictureNodeData.PosRotChanged = True
+                End If
+                If Nodes(i).Type = "Compass Node" Then
+                    Nodes(i).CompassNodeData.SizeChanged = True
+                    Nodes(i).CompassNodeData.ColorChanged = True
+                    Nodes(i).CompassNodeData.ValueChanged = True
+                End If
+                If Nodes(i).Type = "Text Node" Then
+                    Nodes(i).TextNodeData.Modified = True
+                End If
+            End If
+        Next
+        UpdateScreen = True
+    End Sub
+    Public Function GetNodeIndexAtPoint(ByVal Point As Point) As Integer
+        If UpdateSelectionField = True Then
+            UpdateSelectionField = False
+            SelectionField = New Bitmap(800, 600)
+            Dim sfg As Graphics = Graphics.FromImage(SelectionField)
+            For i As Integer = 1 To Nodes.Count - 1
+                If Nodes(i).Render = True Then
+                    Dim Position As New Point(0, 0)
+                    Dim Size As New Size(32, 32)
+                    Dim Rotation As Integer = 0
+                    If Nodes(i).Type = "Picture Node" Then
+                        Position = Nodes(i).PictureNodeData.Position
+                        Size = Nodes(i).PictureNodeData.Size
+                        Rotation = Nodes(i).PictureNodeData.StaticRotation
+                    End If
+                    If Nodes(i).Type = "Text Node" Then
+                        Position = Nodes(i).TextNodeData.Position
+                        Size = Nodes(i).TextNodeData.Size
+                        Rotation = 0
+                    End If
+                    If Nodes(i).Type = "Compass Node" Then
+                        Position = Nodes(i).CompassNodeData.Position
+                        Size = Nodes(i).CompassNodeData.Size
+                        Rotation = 0
+                    End If
+                    Dim bmp As New Bitmap(800, 600)
+                    Dim g As Graphics = Graphics.FromImage(bmp)
+                    g.TranslateTransform(Position.X + Size.Width * 0.5, Position.Y + Size.Height * 0.5)
+                    g.RotateTransform(Rotation)
+                    g.TranslateTransform(Size.Width * -0.5, Size.Height * -0.5)
+                    g.FillRectangle(New SolidBrush(ColorTranslator.FromOle(i + 1)), New Rectangle(0, 0, Size.Width, Size.Height))
+                    g.Dispose()
+                    sfg.DrawImage(bmp, New Point(0, 0))
+                End If
+            Next
+            sfg.Dispose()
+        End If
+        Dim pcolor As Color = SelectionField.GetPixel(Point.X, Point.Y)
+        Dim selindex As Integer = -1
+        For i As Integer = 0 To Nodes.Count - 1
+            If pcolor = System.Drawing.ColorTranslator.FromOle(i + 1) = True Then
+                selindex = i
+                Exit For
+            End If
+        Next
+        Return selindex
+    End Function
+    Public Function GetDotIndexAtPoint(ByVal Point As Point) As Integer
+        Point.X = SetValueBounds(Point.X, 0, 800)
+        Point.Y = SetValueBounds(Point.Y, 0, 600)
+        If CurrentIndex <> -1 Then
+            If UpdateDotField = True Then
+                DotField = New Bitmap(800, 600)
+                Dim position As New Point(0, 0)
+                Dim size As New Size(32, 32)
+                Dim rotation As Integer = 0
+                If Nodes(CurrentIndex).Type = "Picture Node" Then
+                    position = Nodes(CurrentIndex).PictureNodeData.Position
+                    size = Nodes(CurrentIndex).PictureNodeData.Size
+                    rotation = Nodes(CurrentIndex).PictureNodeData.StaticRotation
+                ElseIf Nodes(CurrentIndex).Type = "Compass Node" Then
+                    position = Nodes(CurrentIndex).CompassNodeData.Position
+                    size = Nodes(CurrentIndex).CompassNodeData.Size
+                ElseIf Nodes(CurrentIndex).Type = "Text Node" Then
+                    position = Nodes(CurrentIndex).TextNodeData.Position
+                    size = Nodes(CurrentIndex).TextNodeData.Size
+                End If
+                Dim g As Graphics = Graphics.FromImage(DotField)
+                g.TranslateTransform(position.X + size.Width * 0.5, position.Y + size.Height * 0.5)
+                g.RotateTransform(rotation)
+                g.TranslateTransform(size.Width * -0.5, size.Height * -0.5)
+                g.FillRectangle(New SolidBrush(Color.FromArgb(255, 1, 0, 0)), New Rectangle(-4, -4, 8, 8))
+                g.FillRectangle(New SolidBrush(Color.FromArgb(255, 2, 0, 0)), New Rectangle(size.Width - 4, -4, 8, 8))
+                g.FillRectangle(New SolidBrush(Color.FromArgb(255, 3, 0, 0)), New Rectangle(size.Width - 4, size.Height - 4, 8, 8))
+                g.FillRectangle(New SolidBrush(Color.FromArgb(255, 4, 0, 0)), New Rectangle(-4, size.Height - 4, 8, 8))
+                If size.Width > 31 Then
+                    g.FillRectangle(New SolidBrush(Color.FromArgb(255, 5, 0, 0)), New Rectangle(size.Width * 0.5 - 4, -4, 8, 8))
+                    g.FillRectangle(New SolidBrush(Color.FromArgb(255, 6, 0, 0)), New Rectangle(size.Width * 0.5 - 4, size.Height - 4, 8, 8))
+                End If
+                If size.Height > 31 Then
+                    g.FillRectangle(New SolidBrush(Color.FromArgb(255, 7, 0, 0)), New Rectangle(-4, size.Height * 0.5 - 4, 8, 8))
+                    g.FillRectangle(New SolidBrush(Color.FromArgb(255, 8, 0, 0)), New Rectangle(size.Width - 4, size.Height * 0.5 - 4, 8, 8))
+                End If
+                g.Dispose()
+            End If
+            Return DotField.GetPixel(Point.X, Point.Y).R - 1
+        Else
+            Return -1
+        End If
+    End Function
+
     Public Function SaveNodeData(ByVal Node As Node) As String
         Dim rdata As String = ""
         If Node.Type = "Picture Node" Then
             With Node.PictureNodeData
                 rdata = "hudBuilder.createPictureNode		" & Node.Parent & " " & Node.Name & " "
                 rdata &= .Position.X & " " & .Position.Y & " " & .Size.Width & " " & .Size.Height
-                rdata &= vbCrLf & "hudBuilder.setPictureNodeTexture 	" & .TexturePath.Remove(0, ImageSelectorImagePath.Length + 1)
-                rdata &= vbCrLf & "hudBuilder.setNodeColor		 	" & .Color.R \ 255 & " " & .Color.G \ 255 & " " & .Color.B \ 255 & " " & .Color.A \ 255
+                If .TexturePath <> "" Then rdata &= vbCrLf & "hudBuilder.setPictureNodeTexture 	" & .TexturePath.Remove(0, ImageSelectorImagePath.Length + 1)
+                rdata &= vbCrLf & "hudBuilder.setNodeColor		 	" & ConvertColorToText(.Color)
+                If .StaticRotation <> 0 And .StaticRotation <> 360 Then rdata &= vbCrLf & "hudBuilder.setPictureNodeRotation 	" & 360 - .StaticRotation
                 If .DOffsetXVar <> "" Then rdata &= vbCrLf & "hudBuilder.setNodePosVariable		0 " & .DOffsetXVar
                 If .DOffsetYVar <> "" Then rdata &= vbCrLf & "hudBuilder.setNodePosVariable		1 " & .DOffsetYVar
                 If .DRotationVar <> "" Then rdata &= vbCrLf & "hudBuilder.setPictureNodeRotateVariable " & .DRotationVar
@@ -378,7 +543,7 @@ Module Module1
                 rdata &= .Position.X & " " & .Position.Y & " " & .Size.Width & " " & .Size.Height
                 rdata &= vbCrLf & "hudBuilder.setTextNodeStyle		Fonts/vehicleHudFont_6.dif " & .Style
                 rdata &= vbCrLf & "hudBuilder.setTextNodeStringVariable	" & .StringVariable
-                rdata &= vbCrLf & "hudBuilder.setNodeColor		 	" & .Color.R \ 255 & " " & .Color.G \ 255 & " " & .Color.B \ 255 & " " & .Color.A \ 255
+                rdata &= vbCrLf & "hudBuilder.setNodeColor		 	" & ConvertColorToText(.Color)
             End With
         ElseIf Node.Type = "Compass Node" Then
             With Node.CompassNodeData
@@ -392,62 +557,175 @@ Module Module1
                 If .Type = 0 Then rdata &= vbCrLf & "hudBuilder.setCompassNodeBorder		0 " & .Border & " 0 0"
                 rdata &= vbCrLf & "hudBuilder.setCompassNodeValueVariable	" & .ValueVariable
                 rdata &= vbCrLf & "hudBuilder.setCompassNodeOffset		" & .Offset
-                rdata &= vbCrLf & "hudBuilder.setNodeColor		 	" & .Color.R \ 255 & " " & .Color.G \ 255 & " " & .Color.B \ 255 & " " & .Color.A \ 255
+                If .Type = 3 Then rdata &= vbCrLf & "hudBuilder.setCompassNodeSnapOffset	0 0 " & .OffsetSnapMin & " " & .OffsetSnapMax
+                If .Type = 0 Then rdata &= vbCrLf & "hudBuilder.setCompassNodeSnapOffset	" & .OffsetSnapMin & " " & .OffsetSnapMax & " 0 0"
+                rdata &= vbCrLf & "hudBuilder.setNodeColor		 	" & ConvertColorToText(.Color)
             End With
         End If
         Return rdata
     End Function
-    Public Function LoadNodeData(ByVal Data As String) As Node
+    Public Function LoadNodeData(ByVal Data As String) As Node()
         Data = RemoveDoubleSpaces(Data)
-        Dim RNode As New Node("", "", "")
+        Dim RNodes(0) As Node
+        Dim FailedLines As String = ""
+        Dim isinrem As Boolean = False
         For Each line As String In Data.Split(vbCrLf)
-            If line.ToLower.Trim.StartsWith("hudbuilder.createcompassnode") Then
-                Dim Parent As String = GetValueAt(line, 1)
-                Dim Name As String = GetValueAt(line, 2)
-                Dim Type As Integer = Val(GetValueAt(line, 3))
-                Dim Position As New Point(Val(GetValueAt(line, 4)), Val(GetValueAt(line, 5)))
-                Dim Size As New Size(Val(GetValueAt(line, 6)), Val(GetValueAt(line, 7)))
-                If Parent = "" Then Parent = "no_parent"
-                If Name = "" Then Name = "no_name"
-                If Size.Width = 0 Then Size.Width = 32
-                If Size.Height = 0 Then Size.Height = 32
-                If Type <> 3 And Type <> 0 Then Type = 3
-                RNode = New Node(Parent, Name, "Compass Node")
-                RNode.CompassNodeData.Position = Position
-                RNode.CompassNodeData.Size = Size
-                RNode.CompassNodeData.Type = Type
-            ElseIf line.ToLower.Trim.StartsWith("hudbuilder.setcompassnodetexturesize") Then
-                RNode.CompassNodeData.TextureSize.Width = Val(GetValueAt(line, 1))
-                RNode.CompassNodeData.TextureSize.Height = Val(GetValueAt(line, 2))
-                If RNode.CompassNodeData.TextureSize.Width = 0 Then RNode.CompassNodeData.TextureSize.Width = 32
-                If RNode.CompassNodeData.TextureSize.Height = 0 Then RNode.CompassNodeData.TextureSize.Height = 32
-            ElseIf line.ToLower.Trim.StartsWith("hudbuilder.setcompassnodetexture") Then
-                RNode.CompassNodeData.TexturePath = FixTexturePath(ImageSelectorImagePath & "\" & GetValueAt(line, 2))
-                RNode.CompassNodeData.TextureImage = LoadImage(RNode.CompassNodeData.TexturePath)
-            ElseIf line.ToLower.Trim.StartsWith("hudbuilder.setcompassnodeborder") Then
-                RNode.CompassNodeData.Border = Val(GetValueAt(line, 4))
-            ElseIf line.ToLower.Trim.StartsWith("hudbuilder.setcompassnodevaluevariable") Then
-                RNode.CompassNodeData.ValueVariable = GetValueAt(line, 1)
-            ElseIf line.ToLower.Trim.StartsWith("hudbuilder.setcompassnodeoffset") Then
-                RNode.CompassNodeData.Offset = Val(GetValueAt(line, 1))
-            ElseIf line.ToLower.Trim.StartsWith("hudbuilder.setnodecolor") Then
-                Dim R As Integer = SetValueBounds(GetValueAt(line, 1).Replace(".", ",") * 255, 0, 255)
-                Dim G As Integer = SetValueBounds(GetValueAt(line, 2).Replace(".", ",") * 255, 0, 255)
-                Dim B As Integer = SetValueBounds(GetValueAt(line, 3).Replace(".", ",") * 255, 0, 255)
-                Dim A As Integer = SetValueBounds(GetValueAt(line, 4).Replace(".", ",") * 255, 0, 255)
-                Dim c As Color = Color.FromArgb(A, R, G, B)
-                If RNode.Type = "Compass Node" Then RNode.CompassNodeData.Color = c
-                If RNode.Type = "Picture Node" Then RNode.PictureNodeData.Color = c
-                If RNode.Type = "Text Node" Then RNode.TextNodeData.Color = c
-            Else
-                MsgBox("Failed to process line: " & vbCrLf & line, MsgBoxStyle.Critical)
+            If line.ToLower.Trim = "beginrem" Then isinrem = True
+            If line.ToLower.Trim = "endrem" Then isinrem = False
+            If isinrem = False And Not line.ToLower.Trim.StartsWith("rem ") And Not line.ToLower.Trim.StartsWith("# ") And Not line.Trim = "" Then
+                'New node generation
+                If line.ToLower.Trim.StartsWith("hudbuilder.createcompassnode") Then
+                    Dim Parent As String = GetValueAt(line, 1)
+                    Dim Name As String = GetValueAt(line, 2)
+                    Dim Type As Integer = Val(GetValueAt(line, 3))
+                    Dim Position As New Point(Val(GetValueAt(line, 4)), Val(GetValueAt(line, 5)))
+                    Dim Size As New Size(SetValueBounds(Val(GetValueAt(line, 6)), 1, 2048), SetValueBounds(Val(GetValueAt(line, 7)), 1, 2048))
+                    If Parent = "" Then Parent = "no_parent"
+                    If Name = "" Then Name = "no_name"
+                    If Size.Width = 0 Then Size.Width = 32
+                    If Size.Height = 0 Then Size.Height = 32
+                    If Type <> 3 And Type <> 0 Then Type = 3
+                    ReDim Preserve RNodes(RNodes.Count)
+                    RNodes(RNodes.Count - 1) = New Node(Parent, Name, "Compass Node")
+                    RNodes(RNodes.Count - 1).CompassNodeData.Position = Position
+                    RNodes(RNodes.Count - 1).CompassNodeData.Size = Size
+                    RNodes(RNodes.Count - 1).CompassNodeData.Type = Type
+                ElseIf line.ToLower.Trim.StartsWith("hudbuilder.createtextnode") Then
+                    Dim Parent As String = GetValueAt(line, 1)
+                    Dim Name As String = GetValueAt(line, 2)
+                    Dim Position As New Point(Val(GetValueAt(line, 3)), Val(GetValueAt(line, 4)))
+                    Dim Size As New Size(SetValueBounds(Val(GetValueAt(line, 5)), 1, 2048), SetValueBounds(Val(GetValueAt(line, 6)), 1, 2048))
+                    If Parent = "" Then Parent = "no_parent"
+                    If Name = "" Then Name = "no_name"
+                    ReDim Preserve RNodes(RNodes.Count)
+                    RNodes(RNodes.Count - 1) = New Node(Parent, Name, "Text Node")
+                    RNodes(RNodes.Count - 1).TextNodeData.Position = Position
+                    RNodes(RNodes.Count - 1).TextNodeData.Size = Size
+                ElseIf line.ToLower.Trim.StartsWith("hudbuilder.createpicturenode") Then
+                    Dim Parent As String = GetValueAt(line, 1)
+                    Dim Name As String = GetValueAt(line, 2)
+                    Dim Position As New Point(Val(GetValueAt(line, 3)), Val(GetValueAt(line, 4)))
+                    Dim Size As New Size(SetValueBounds(Val(GetValueAt(line, 5)), 1, 2048), SetValueBounds(Val(GetValueAt(line, 6)), 1, 2048))
+                    If Parent = "" Then Parent = "no_parent"
+                    If Name = "" Then Name = "no_name"
+                    ReDim Preserve RNodes(RNodes.Count)
+                    RNodes(RNodes.Count - 1) = New Node(Parent, Name, "Picture Node")
+                    RNodes(RNodes.Count - 1).PictureNodeData.Position = Position
+                    RNodes(RNodes.Count - 1).PictureNodeData.Size = Size
+                ElseIf line.ToLower.Trim.StartsWith("hudbuilder.createsplitnode") Then
+                    Dim Parent As String = GetValueAt(line, 1)
+                    Dim Name As String = GetValueAt(line, 2)
+                    ReDim Preserve RNodes(RNodes.Count)
+                    RNodes(RNodes.Count - 1) = New Node(Parent, Name, "Split Node")
+                ElseIf RNodes(RNodes.Count - 1).Type = "Split Node" Then
+
+
+
+                    'Split Node Data
+                    If line.ToLower.Trim.StartsWith("hudbuilder.setnodelogicshowvariable") Then
+                        RNodes(RNodes.Count - 1).ShowVariables.Items.Add(line.Remove(0, 36).Trim)
+                    ElseIf line.ToLower.Trim.StartsWith("hudbuilder.addnodeblendeffect") Then
+                        RNodes(RNodes.Count - 1).SplitNodeData.BlendEffectA = Val(GetValueAt(line, 1))
+                        RNodes(RNodes.Count - 1).SplitNodeData.BlendEffectB = Val(GetValueAt(line, 2))
+                    Else
+                        FailedLines &= line
+                    End If
+                ElseIf RNodes(RNodes.Count - 1).Type = "Text Node" Then
+
+
+
+                    'Text Node Data
+                    If line.ToLower.Trim.StartsWith("hudbuilder.settextnodestyle") Then
+                        RNodes(RNodes.Count - 1).TextNodeData.Style = SetValueBounds(Val(GetValueAt(line, 2)), 0, 2)
+                    ElseIf line.ToLower.Trim.StartsWith("hudbuilder.settextnodestringvariable") Then
+                        RNodes(RNodes.Count - 1).TextNodeData.StringVariable = GetValueAt(line, 1)
+                    ElseIf line.ToLower.Trim.StartsWith("hudbuilder.setnodecolor") Then
+                        Dim R As Integer = SetValueBounds(GetValueAt(line, 1).Replace(".", ",") * 255, 0, 255)
+                        Dim G As Integer = SetValueBounds(GetValueAt(line, 2).Replace(".", ",") * 255, 0, 255)
+                        Dim B As Integer = SetValueBounds(GetValueAt(line, 3).Replace(".", ",") * 255, 0, 255)
+                        Dim A As Integer = SetValueBounds(GetValueAt(line, 4).Replace(".", ",") * 255, 0, 255)
+                        RNodes(RNodes.Count - 1).TextNodeData.Color = Color.FromArgb(A, R, G, B)
+                    Else
+                        FailedLines &= line
+                    End If
+                ElseIf RNodes(RNodes.Count - 1).Type = "Picture Node" Then
+
+
+
+
+
+                    'Picture Node Data
+                    If line.ToLower.Trim.StartsWith("hudbuilder.setpicturenodetexture") Then
+                        RNodes(RNodes.Count - 1).PictureNodeData.TexturePath = FixTexturePath(ImageSelectorImagePath & "\" & GetValueAt(line, 1))
+                        RNodes(RNodes.Count - 1).PictureNodeData.TextureImage = LoadImage(RNodes(RNodes.Count - 1).PictureNodeData.TexturePath)
+                    ElseIf line.ToLower.Trim.StartsWith("hudbuilder.setnodeposvariable") Then
+                        If Val(GetValueAt(line, 1)) = 0 Then RNodes(RNodes.Count - 1).PictureNodeData.DOffsetXVar = GetValueAt(line, 2)
+                        If Val(GetValueAt(line, 1)) = 1 Then RNodes(RNodes.Count - 1).PictureNodeData.DOffsetYVar = GetValueAt(line, 2)
+                    ElseIf line.ToLower.Trim.StartsWith("hudbuilder.setpicturenoderotatevariable") Then
+                        RNodes(RNodes.Count - 1).PictureNodeData.DRotationVar = GetValueAt(line, 1)
+                    ElseIf line.ToLower.Trim.StartsWith("hudbuilder.setpicturenodecenterpoint") Then
+                        RNodes(RNodes.Count - 1).PictureNodeData.DRotationMid = New Point(Val(GetValueAt(line, 1)), Val(GetValueAt(line, 2)))
+                    ElseIf line.ToLower.Trim.StartsWith("hudbuilder.setpicturenoderotation") Then
+                        Dim srotation As Integer = Val(GetValueAt(line, 1))
+                        Do While srotation < 0
+                            srotation += 360
+                        Loop
+                        If srotation = 0 Then srotation = 360
+                        RNodes(RNodes.Count - 1).PictureNodeData.StaticRotation = 360 - srotation
+                    ElseIf line.ToLower.Trim.StartsWith("hudbuilder.setnodecolor") Then
+                        Dim R As Integer = SetValueBounds(GetValueAt(line, 1).Replace(".", ",") * 255, 0, 255)
+                        Dim G As Integer = SetValueBounds(GetValueAt(line, 2).Replace(".", ",") * 255, 0, 255)
+                        Dim B As Integer = SetValueBounds(GetValueAt(line, 3).Replace(".", ",") * 255, 0, 255)
+                        Dim A As Integer = SetValueBounds(GetValueAt(line, 4).Replace(".", ",") * 255, 0, 255)
+                        RNodes(RNodes.Count - 1).PictureNodeData.Color = Color.FromArgb(A, R, G, B)
+                    Else
+                        FailedLines &= line
+                    End If
+                ElseIf RNodes(RNodes.Count - 1).Type = "Compass Node" Then
+
+
+
+
+
+                    'Compass Node Data
+                    If line.ToLower.Trim.StartsWith("hudbuilder.setcompassnodetexturesize") Then
+                        RNodes(RNodes.Count - 1).CompassNodeData.TextureSize.Width = Val(GetValueAt(line, 1))
+                        RNodes(RNodes.Count - 1).CompassNodeData.TextureSize.Height = Val(GetValueAt(line, 2))
+                        If RNodes(RNodes.Count - 1).CompassNodeData.TextureSize.Width = 0 Then RNodes(RNodes.Count - 1).CompassNodeData.TextureSize.Width = 32
+                        If RNodes(RNodes.Count - 1).CompassNodeData.TextureSize.Height = 0 Then RNodes(RNodes.Count - 1).CompassNodeData.TextureSize.Height = 32
+                    ElseIf line.ToLower.Trim.StartsWith("hudbuilder.setcompassnodetexture") Then
+                        RNodes(RNodes.Count - 1).CompassNodeData.TexturePath = FixTexturePath(ImageSelectorImagePath & "\" & GetValueAt(line, 2))
+                        RNodes(RNodes.Count - 1).CompassNodeData.TextureImage = LoadImage(RNodes(RNodes.Count - 1).CompassNodeData.TexturePath)
+                    ElseIf line.ToLower.Trim.StartsWith("hudbuilder.setcompassnodeborder") Then
+                        If RNodes(RNodes.Count - 1).CompassNodeData.Type = 3 Then RNodes(RNodes.Count - 1).CompassNodeData.Border = Val(GetValueAt(line, 4))
+                        If RNodes(RNodes.Count - 1).CompassNodeData.Type = 0 Then RNodes(RNodes.Count - 1).CompassNodeData.Border = Val(GetValueAt(line, 2))
+                    ElseIf line.ToLower.Trim.StartsWith("hudbuilder.setcompassnodevaluevariable") Then
+                        RNodes(RNodes.Count - 1).CompassNodeData.ValueVariable = GetValueAt(line, 1)
+                    ElseIf line.ToLower.Trim.StartsWith("hudbuilder.setcompassnodesnapoffset") Then
+                        If RNodes(RNodes.Count - 1).CompassNodeData.Type = 0 Then RNodes(RNodes.Count - 1).CompassNodeData.OffsetSnapMin = Val(GetValueAt(line, 1))
+                        If RNodes(RNodes.Count - 1).CompassNodeData.Type = 0 Then RNodes(RNodes.Count - 1).CompassNodeData.OffsetSnapMax = Val(GetValueAt(line, 2))
+                        If RNodes(RNodes.Count - 1).CompassNodeData.Type = 3 Then RNodes(RNodes.Count - 1).CompassNodeData.OffsetSnapMin = Val(GetValueAt(line, 3))
+                        If RNodes(RNodes.Count - 1).CompassNodeData.Type = 3 Then RNodes(RNodes.Count - 1).CompassNodeData.OffsetSnapMax = Val(GetValueAt(line, 4))
+                    ElseIf line.ToLower.Trim.StartsWith("hudbuilder.setcompassnodeoffset") Then
+                        RNodes(RNodes.Count - 1).CompassNodeData.Offset = Val(GetValueAt(line, 1))
+                    ElseIf line.ToLower.Trim.StartsWith("hudbuilder.setnodecolor") Then
+                        Dim R As Integer = SetValueBounds(GetValueAt(line, 1).Replace(".", ",") * 255, 0, 255)
+                        Dim G As Integer = SetValueBounds(GetValueAt(line, 2).Replace(".", ",") * 255, 0, 255)
+                        Dim B As Integer = SetValueBounds(GetValueAt(line, 3).Replace(".", ",") * 255, 0, 255)
+                        Dim A As Integer = SetValueBounds(GetValueAt(line, 4).Replace(".", ",") * 255, 0, 255)
+                        RNodes(RNodes.Count - 1).CompassNodeData.Color = Color.FromArgb(A, R, G, B)
+                    Else
+                        FailedLines &= line
+                    End If
+                End If
             End If
         Next
-        Return RNode
+        If FailedLines <> "" Then MsgBox("Failed to process line(s): " & vbCrLf & FailedLines, MsgBoxStyle.Exclamation)
+        Return RNodes
     End Function
 
     Public Sub ResetNodeSimvars()
-        For i As Integer = 0 To Nodes.Count - 1
+        For i As Integer = 1 To Nodes.Count - 1
             If Nodes(i).Type = "Picture Node" Then
                 Nodes(i).PictureNodeData.DOffsetX = 0
                 Nodes(i).PictureNodeData.DOffsetY = 0
@@ -463,28 +741,106 @@ Module Module1
         Next
         UpdateScreen = True
     End Sub
+
+    Dim OLDINDEX As Integer = -1
+    Dim BackLayer As New Bitmap(800, 600)
+    Dim ActiveLayer As New Bitmap(800, 600)
+    Dim FrontLayer As New Bitmap(800, 600)
     Public Sub RenderNodes(ByRef g As Graphics)
-        'Render all the nodes
-        Try
-            For i As Integer = 0 To Nodes.Count - 1
+        'Get the layer modified types
+        Dim UpdateActiveLayer As Boolean = False
+        Dim UpdateBackLayer As Boolean = False
+        Dim UpdateFrontLayer As Boolean = False
+        If OLDINDEX = CurrentIndex Then
+            For i As Integer = 1 To Nodes.Count - 1
+                Dim NodeModified As Boolean = Nodes(i).PerformRefresh
+                If NodeModified = True Then Nodes(i).PerformRefresh = False
                 If Nodes(i).Render = True Then
                     If Nodes(i).Type = "Picture Node" Then
-                        g.DrawImage(RenderPictureNode(Nodes(i).PictureNodeData), New Point(0, 0))
+                        If Nodes(i).PictureNodeData.ColorChanged = True Then NodeModified = True
+                        If Nodes(i).PictureNodeData.PosRotChanged = True Then NodeModified = True
+                        If Nodes(i).PictureNodeData.SizeChanged = True Then NodeModified = True
+                    ElseIf Nodes(i).Type = "Compass Node" Then
+                        If Nodes(i).CompassNodeData.ColorChanged = True Then NodeModified = True
+                        If Nodes(i).CompassNodeData.ValueChanged = True Then NodeModified = True
+                        If Nodes(i).CompassNodeData.SizeChanged = True Then NodeModified = True
+                    ElseIf Nodes(i).Type = "Text Node" Then
+                        If Nodes(i).TextNodeData.Modified = True Then NodeModified = True
                     End If
-                    If Nodes(i).Type = "Text Node" Then
-                        g.DrawImage(RenderTextNode(Nodes(i).TextNodeData), New Point(0, 0))
-                    End If
-                    If Nodes(i).Type = "Compass Node" Then
-                        g.DrawImage(RenderCompassNode(Nodes(i).CompassNodeData), New Point(0, 0))
+                End If
+                If NodeModified = True And i < CurrentIndex Then UpdateBackLayer = True
+                If NodeModified = True And i > CurrentIndex Then UpdateFrontLayer = True
+                If NodeModified = True And i = CurrentIndex Then UpdateActiveLayer = True
+            Next
+        Else
+        UpdateBackLayer = True
+        UpdateActiveLayer = True
+        UpdateFrontLayer = True
+        End If
+        If UpdateActiveLayer = True Then ActiveLayer = New Bitmap(800, 600)
+        If UpdateFrontLayer = True Then FrontLayer = New Bitmap(800, 600)
+        If UpdateBackLayer = True Then BackLayer = New Bitmap(800, 600)
+        If UpdateBackLayer = True Or UpdateFrontLayer = True Or UpdateActiveLayer = True Then
+            Dim e As Integer = Nodes.Count - 1
+            Dim s As Integer = 1
+            If UpdateBackLayer = False Then s = CurrentIndex
+            If UpdateFrontLayer = False Then e = CurrentIndex
+            For i As Integer = s To e
+                If i < Nodes.Count And i > 0 And ((UpdateBackLayer = True And i < CurrentIndex) Or (UpdateFrontLayer = True And i > CurrentIndex) Or (UpdateActiveLayer = True And i = CurrentIndex)) Then
+                    If Nodes(i).Render = True Then
+                        Dim lg As Graphics = Graphics.FromImage(ActiveLayer)
+                        If i < CurrentIndex Then lg = Graphics.FromImage(BackLayer)
+                        If i > CurrentIndex Then lg = Graphics.FromImage(FrontLayer)
+                        If Nodes(i).Type = "Picture Node" Then
+                            lg.DrawImage(RenderPictureNode(Nodes(i).PictureNodeData), New Point(0, 0))
+                        End If
+                        If Nodes(i).Type = "Text Node" Then
+                            lg.DrawImage(RenderTextNode(Nodes(i).TextNodeData), New Point(0, 0))
+                        End If
+                        If Nodes(i).Type = "Compass Node" Then
+                            lg.DrawImage(RenderCompassNode(Nodes(i).CompassNodeData), New Point(0, 0))
+                        End If
                     End If
                 End If
             Next
-        Catch ex As Exception
-            MsgBox(ex.Message, MsgBoxStyle.Critical)
-        End Try
-        'Render overlay
+        End If
+        'Render all the nodes 
+        If CurrentIndex <> 1 Then g.DrawImage(BackLayer, New Point(0, 0))
+        If CurrentIndex <> -1 Then g.DrawImage(ActiveLayer, New Point(0, 0))
+        If CurrentIndex <> Nodes.Count - 1 Then g.DrawImage(FrontLayer, New Point(0, 0))
         g.DrawImage(OVimage, New Point(0, 0))
+        OLDINDEX = CurrentIndex
     End Sub
+    Public Function GetNodeTree(ByVal Node As Node) As String
+        Dim path As String = Node.Parent & "\" & Node.Name
+        Dim oldparent As String = ""
+        Dim currentparent As String = Node.Parent.ToLower.Trim
+        Do While oldparent <> currentparent
+            oldparent = currentparent
+            For i As Integer = 1 To Nodes.Count - 1
+                If Nodes(i).Name.ToLower.Trim = currentparent Then
+                    path = Nodes(i).Parent & "\" & path
+                    currentparent = Nodes(i).Parent.ToLower.Trim
+                End If
+            Next
+        Loop
+        Return path
+    End Function
+    Public Function GetTreeNodeTree(ByVal TNodes As TreeNode(), ByVal Node As TreeNode) As String
+        Dim path As String = Node.Parent.Name & "\" & Node.Name
+        Dim oldparent As String = ""
+        Dim currentparent As String = Node.Parent.Name.ToLower.Trim
+        Do While oldparent <> currentparent
+            oldparent = currentparent
+            For i As Integer = 0 To TNodes.Count - 1
+                If TNodes(i).Name.ToLower.Trim = currentparent Then
+                    path = TNodes(i).Parent.Name & "\" & path
+                    currentparent = TNodes(i).Parent.Name.ToLower.Trim
+                End If
+            Next
+        Loop
+        Return path
+    End Function
 
     Public Structure Node
         Sub New(ByVal Parent As String, ByVal Name As String, ByVal Type As String)
@@ -492,17 +848,49 @@ Module Module1
             Me.Name = Name
             Me.Type = Type
             Me.Render = True
+            Me.ShowVariables = New ListBox
+            Me.InTime = 0
+            Me.OutTime = 0
             If Type = "Picture Node" Then Me.PictureNodeData = New PictureNode("")
-            If Type = "Text Node" Then Me.TextNodeData = New TextNode("0000")
+            If Type = "Text Node" Then Me.TextNodeData = New TextNode("100")
             If Type = "Compass Node" Then Me.CompassNodeData = New CompassNode("")
+            If Type = "Split Node" Then Me.SplitNodeData = New SplitNode("no_parent", "new_splitnode")
+            PerformRefresh = True
         End Sub
         Public Name As String
         Public Parent As String
         Public Type As String
-        Public Render As Boolean
+        Public ShowVariables As ListBox
+        Public InTime As Single
+        Public OutTime As Single
+        Private _Render As Boolean
+        Public Property Render() As Boolean
+            Get
+                Return _Render
+            End Get
+            Set(ByVal value As Boolean)
+                _Render = value
+                Me.PerformRefresh = True
+            End Set
+        End Property
+        Public PerformRefresh As Boolean
         Public PictureNodeData As PictureNode
         Public TextNodeData As TextNode
         Public CompassNodeData As CompassNode
+        Public SplitNodeData As SplitNode
+    End Structure
+    Public Structure SplitNode
+        Sub New(ByVal Parent As String, ByVal Name As String)
+            Me.Name = Name
+            Me.Parent = Parent
+            Me.BlendEffectA = 0
+            Me.BlendEffectB = 0
+        End Sub
+        Public Name As String
+        Public Parent As String
+        Public BlendEffectA As Integer
+        Public BlendEffectB As Integer
+        Public Guiindices() As Integer
     End Structure
     Public Structure PictureNode
         'Render cycle:
@@ -512,6 +900,9 @@ Module Module1
         Sub New(ByVal TexturePath As String)
             Me.TexturePath = TexturePath
             Me.TextureImage = LoadImage(TexturePath)
+            Me.SizedImage = New Bitmap(32, 32)
+            Me.ColoredImage = New Bitmap(32, 32)
+            Me.FinalImage = New Bitmap(32, 32)
             Me.Color = Color.FromArgb(255, 255, 255, 255)
             Me.Position = New Point(0, 0)
             Me.Size = Me.TextureImage.Size
@@ -554,6 +945,7 @@ Module Module1
     Public Structure TextNode
         Sub New(ByVal Text As String)
             Me.Text = Text
+            Me.FinalImage = New Bitmap(32, 32)
             Me.Position = New Point(0, 0)
             Me.Size = New Size(40, 10)
             Me.Style = 0
@@ -574,6 +966,9 @@ Module Module1
         Sub New(ByVal TexturePath As String)
             Me.TexturePath = TexturePath
             Me.TextureImage = LoadImage(TexturePath)
+            Me.SizedImage = New Bitmap(32, 32)
+            Me.ColoredImage = New Bitmap(32, 32)
+            Me.FinalImage = New Bitmap(32, 32)
             Me.Color = Color.FromArgb(255, 255, 255, 255)
             Me.Position = New Point(0, 0)
             Me.TextureSize = Me.TextureImage.Size
@@ -582,9 +977,9 @@ Module Module1
             Me.Type = 3
             Me.Value = 0
             Me.Border = 0
+            Me.OffsetSnapMin = 0
+            Me.OffsetSnapMax = 0
             Me.Offset = 0
-            Me.tmpval1 = 0
-            Me.tmpval2 = 0
             Me.ColorChanged = True
             Me.SizeChanged = True
             Me.ValueChanged = True
@@ -599,11 +994,9 @@ Module Module1
         Public Value As Single
         Public Border As Integer
         Public Offset As Integer
+        Public OffsetSnapMax As Integer
+        Public OffsetSnapMin As Integer
         Public Type As Integer '0=vertical; 3=horizontal
-
-
-        Public tmpval1 As Single
-        Public tmpval2 As Single
 
         'Node render information
         Public ColoredImage As Image
@@ -613,4 +1006,6 @@ Module Module1
         Public SizeChanged As Boolean
         Public ValueChanged As Boolean
     End Structure
+
+
 End Module

@@ -140,7 +140,7 @@ Partial Class TextureBrowser
         '
         Me.ImageList1.ImageStream = CType(resources.GetObject("ImageList1.ImageStream"), System.Windows.Forms.ImageListStreamer)
         Me.ImageList1.TransparentColor = System.Drawing.Color.Transparent
-        Me.ImageList1.Images.SetKeyName(0, "Folder.png")
+        Me.ImageList1.Images.SetKeyName(0, "Folder")
         Me.ImageList1.Images.SetKeyName(1, "file.png")
         '
         'ListView1

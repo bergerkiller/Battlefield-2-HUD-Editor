@@ -9,7 +9,7 @@ Public Class TSizeDialog
             NumericUpDown2.Value = Nodes(CurrentIndex).CompassNodeData.TextureSize.Height
         End If
         isloading = False
-        ViewedDialog = 3
+        ViewedDialog = 4
     End Sub
     Private Sub TSizeDialog_FormClosing(ByVal sender As System.Object, ByVal e As System.Windows.Forms.FormClosingEventArgs) Handles MyBase.FormClosing
         Form1.TSizeButton.BackColor = Color.FromKnownColor(KnownColor.Control)
