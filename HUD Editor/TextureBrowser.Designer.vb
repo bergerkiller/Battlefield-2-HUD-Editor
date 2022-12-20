@@ -47,7 +47,7 @@ Partial Class TextureBrowser
         Me.ComboBox2.DropDownWidth = 158
         Me.ComboBox2.FormattingEnabled = True
         Me.ComboBox2.Items.AddRange(New Object() {"Grey", "Black", "White"})
-        Me.ComboBox2.Location = New System.Drawing.Point(45, 436)
+        Me.ComboBox2.Location = New System.Drawing.Point(45, 373)
         Me.ComboBox2.Name = "ComboBox2"
         Me.ComboBox2.Size = New System.Drawing.Size(158, 21)
         Me.ComboBox2.TabIndex = 32
@@ -61,14 +61,14 @@ Partial Class TextureBrowser
         Me.ComboBox1.FormattingEnabled = True
         Me.ComboBox1.Location = New System.Drawing.Point(77, 0)
         Me.ComboBox1.Name = "ComboBox1"
-        Me.ComboBox1.Size = New System.Drawing.Size(493, 21)
+        Me.ComboBox1.Size = New System.Drawing.Size(412, 21)
         Me.ComboBox1.TabIndex = 25
         '
         'Label1
         '
         Me.Label1.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.Label1.AutoSize = True
-        Me.Label1.Location = New System.Drawing.Point(7, 439)
+        Me.Label1.Location = New System.Drawing.Point(7, 376)
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(33, 13)
         Me.Label1.TabIndex = 31
@@ -99,7 +99,7 @@ Partial Class TextureBrowser
         '
         Me.forwardpaths.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.forwardpaths.FormattingEnabled = True
-        Me.forwardpaths.Location = New System.Drawing.Point(239, 440)
+        Me.forwardpaths.Location = New System.Drawing.Point(239, 377)
         Me.forwardpaths.Name = "forwardpaths"
         Me.forwardpaths.Size = New System.Drawing.Size(16, 17)
         Me.forwardpaths.TabIndex = 29
@@ -130,7 +130,7 @@ Partial Class TextureBrowser
         '
         Me.backwardpaths.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.backwardpaths.FormattingEnabled = True
-        Me.backwardpaths.Location = New System.Drawing.Point(215, 440)
+        Me.backwardpaths.Location = New System.Drawing.Point(215, 377)
         Me.backwardpaths.Name = "backwardpaths"
         Me.backwardpaths.Size = New System.Drawing.Size(14, 17)
         Me.backwardpaths.TabIndex = 28
@@ -157,7 +157,7 @@ Partial Class TextureBrowser
         Me.ListView1.Location = New System.Drawing.Point(-1, 20)
         Me.ListView1.MultiSelect = False
         Me.ListView1.Name = "ListView1"
-        Me.ListView1.Size = New System.Drawing.Size(571, 402)
+        Me.ListView1.Size = New System.Drawing.Size(490, 339)
         Me.ListView1.SmallImageList = Me.ImageList1
         Me.ListView1.TabIndex = 24
         Me.ListView1.UseCompatibleStateImageBehavior = False
@@ -170,7 +170,7 @@ Partial Class TextureBrowser
         Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
         Me.TableLayoutPanel1.Controls.Add(Me.OK_Button, 0, 0)
         Me.TableLayoutPanel1.Controls.Add(Me.Cancel_Button, 1, 0)
-        Me.TableLayoutPanel1.Location = New System.Drawing.Point(414, 431)
+        Me.TableLayoutPanel1.Location = New System.Drawing.Point(333, 368)
         Me.TableLayoutPanel1.Name = "TableLayoutPanel1"
         Me.TableLayoutPanel1.RowCount = 1
         Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
@@ -181,7 +181,7 @@ Partial Class TextureBrowser
         '
         Me.SelectedPath.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.SelectedPath.AutoSize = True
-        Me.SelectedPath.Location = New System.Drawing.Point(34, 434)
+        Me.SelectedPath.Location = New System.Drawing.Point(34, 371)
         Me.SelectedPath.Name = "SelectedPath"
         Me.SelectedPath.Size = New System.Drawing.Size(0, 13)
         Me.SelectedPath.TabIndex = 26
@@ -191,23 +191,24 @@ Partial Class TextureBrowser
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(570, 469)
+        Me.ClientSize = New System.Drawing.Size(489, 406)
         Me.Controls.Add(Me.ComboBox2)
         Me.Controls.Add(Me.ComboBox1)
         Me.Controls.Add(Me.Label1)
         Me.Controls.Add(Me.Button2)
-        Me.Controls.Add(Me.forwardpaths)
         Me.Controls.Add(Me.Button1)
-        Me.Controls.Add(Me.backwardpaths)
         Me.Controls.Add(Me.ListView1)
         Me.Controls.Add(Me.TableLayoutPanel1)
         Me.Controls.Add(Me.SelectedPath)
-        Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
+        Me.Controls.Add(Me.forwardpaths)
+        Me.Controls.Add(Me.backwardpaths)
         Me.MinimizeBox = False
+        Me.MinimumSize = New System.Drawing.Size(383, 260)
         Me.Name = "TextureBrowser"
+        Me.ShowIcon = False
         Me.ShowInTaskbar = False
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
-        Me.Text = "TextureBrowser"
+        Me.Text = "Texture Browser"
         Me.TableLayoutPanel1.ResumeLayout(False)
         Me.ResumeLayout(False)
         Me.PerformLayout()

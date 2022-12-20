@@ -23,16 +23,15 @@ Partial Class Form1
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Form1))
-        Me.PictureBox1 = New System.Windows.Forms.PictureBox
-        Me.TrackBarXPos = New System.Windows.Forms.TrackBar
-        Me.TrackBarYpos = New System.Windows.Forms.TrackBar
         Me.ToolStrip1 = New System.Windows.Forms.ToolStrip
         Me.ToolStripDropDownButton2 = New System.Windows.Forms.ToolStripDropDownButton
         Me.LoadToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.SaveToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.ToolStripButton1 = New System.Windows.Forms.ToolStripButton
         Me.ToolStripSeparator2 = New System.Windows.Forms.ToolStripSeparator
+        Me.StyleButton = New System.Windows.Forms.ToolStripButton
         Me.TextureButton = New System.Windows.Forms.ToolStripButton
+        Me.TSizeButton = New System.Windows.Forms.ToolStripButton
         Me.ColorButton = New System.Windows.Forms.ToolStripButton
         Me.SizeButton = New System.Windows.Forms.ToolStripButton
         Me.PositionButton = New System.Windows.Forms.ToolStripButton
@@ -40,66 +39,31 @@ Partial Class Form1
         Me.VariablesButton = New System.Windows.Forms.ToolStripButton
         Me.ToolStripDropDownButton1 = New System.Windows.Forms.ToolStripDropDownButton
         Me.DrawReferenceCrossToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
+        Me.DrawSelectionSquareToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.BackgroundToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.ToolStripComboBox2 = New System.Windows.Forms.ToolStripComboBox
         Me.OverlayToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.ToolStripComboBox3 = New System.Windows.Forms.ToolStripComboBox
         Me.ToolStripSeparator3 = New System.Windows.Forms.ToolStripSeparator
-        Me.OpenFileDialog1 = New System.Windows.Forms.OpenFileDialog
+        Me.ForceUpdateToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
+        Me.SimulateButton = New System.Windows.Forms.ToolStripButton
+        Me.TrackBarXPos = New System.Windows.Forms.TrackBar
+        Me.TrackBarYpos = New System.Windows.Forms.TrackBar
+        Me.PictureBox1 = New System.Windows.Forms.PictureBox
         Me.SaveFileDialog1 = New System.Windows.Forms.SaveFileDialog
-        Me.ToolStripButton2 = New System.Windows.Forms.ToolStripButton
-        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.ToolStrip1.SuspendLayout()
         CType(Me.TrackBarXPos, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.TrackBarYpos, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.ToolStrip1.SuspendLayout()
+        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
-        '
-        'PictureBox1
-        '
-        Me.PictureBox1.BackgroundImage = CType(resources.GetObject("PictureBox1.BackgroundImage"), System.Drawing.Image)
-        Me.PictureBox1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
-        Me.PictureBox1.Location = New System.Drawing.Point(10, 34)
-        Me.PictureBox1.Name = "PictureBox1"
-        Me.PictureBox1.Size = New System.Drawing.Size(800, 600)
-        Me.PictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
-        Me.PictureBox1.TabIndex = 35
-        Me.PictureBox1.TabStop = False
-        '
-        'TrackBarXPos
-        '
-        Me.TrackBarXPos.Enabled = False
-        Me.TrackBarXPos.LargeChange = 400
-        Me.TrackBarXPos.Location = New System.Drawing.Point(-1, 634)
-        Me.TrackBarXPos.Maximum = 800
-        Me.TrackBarXPos.Name = "TrackBarXPos"
-        Me.TrackBarXPos.Size = New System.Drawing.Size(824, 45)
-        Me.TrackBarXPos.TabIndex = 57
-        Me.TrackBarXPos.TickFrequency = 400
-        Me.TrackBarXPos.TickStyle = System.Windows.Forms.TickStyle.TopLeft
-        '
-        'TrackBarYpos
-        '
-        Me.TrackBarYpos.Enabled = False
-        Me.TrackBarYpos.LargeChange = 300
-        Me.TrackBarYpos.Location = New System.Drawing.Point(809, 19)
-        Me.TrackBarYpos.Maximum = 0
-        Me.TrackBarYpos.Minimum = -600
-        Me.TrackBarYpos.Name = "TrackBarYpos"
-        Me.TrackBarYpos.Orientation = System.Windows.Forms.Orientation.Vertical
-        Me.TrackBarYpos.RightToLeft = System.Windows.Forms.RightToLeft.Yes
-        Me.TrackBarYpos.Size = New System.Drawing.Size(45, 626)
-        Me.TrackBarYpos.TabIndex = 58
-        Me.TrackBarYpos.TabStop = False
-        Me.TrackBarYpos.TickFrequency = 300
-        Me.TrackBarYpos.TickStyle = System.Windows.Forms.TickStyle.TopLeft
         '
         'ToolStrip1
         '
-        Me.ToolStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripDropDownButton2, Me.ToolStripButton1, Me.ToolStripSeparator2, Me.TextureButton, Me.ColorButton, Me.SizeButton, Me.PositionButton, Me.RotationButton, Me.VariablesButton, Me.ToolStripDropDownButton1, Me.ToolStripButton2})
+        Me.ToolStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripDropDownButton2, Me.ToolStripButton1, Me.ToolStripSeparator2, Me.StyleButton, Me.TextureButton, Me.TSizeButton, Me.ColorButton, Me.SizeButton, Me.PositionButton, Me.RotationButton, Me.VariablesButton, Me.ToolStripDropDownButton1, Me.SimulateButton})
         Me.ToolStrip1.Location = New System.Drawing.Point(0, 0)
         Me.ToolStrip1.Name = "ToolStrip1"
         Me.ToolStrip1.Size = New System.Drawing.Size(844, 25)
-        Me.ToolStrip1.TabIndex = 59
+        Me.ToolStrip1.TabIndex = 60
         Me.ToolStrip1.Text = "ToolStrip1"
         '
         'ToolStripDropDownButton2
@@ -138,6 +102,15 @@ Partial Class Form1
         Me.ToolStripSeparator2.Name = "ToolStripSeparator2"
         Me.ToolStripSeparator2.Size = New System.Drawing.Size(6, 25)
         '
+        'StyleButton
+        '
+        Me.StyleButton.Image = CType(resources.GetObject("StyleButton.Image"), System.Drawing.Image)
+        Me.StyleButton.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.StyleButton.Name = "StyleButton"
+        Me.StyleButton.Size = New System.Drawing.Size(52, 22)
+        Me.StyleButton.Text = "Style"
+        Me.StyleButton.Visible = False
+        '
         'TextureButton
         '
         Me.TextureButton.Image = CType(resources.GetObject("TextureButton.Image"), System.Drawing.Image)
@@ -147,8 +120,18 @@ Partial Class Form1
         Me.TextureButton.Text = "Texture"
         Me.TextureButton.Visible = False
         '
+        'TSizeButton
+        '
+        Me.TSizeButton.Image = CType(resources.GetObject("TSizeButton.Image"), System.Drawing.Image)
+        Me.TSizeButton.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.TSizeButton.Name = "TSizeButton"
+        Me.TSizeButton.Size = New System.Drawing.Size(89, 22)
+        Me.TSizeButton.Text = "Texture Size"
+        Me.TSizeButton.Visible = False
+        '
         'ColorButton
         '
+        Me.ColorButton.BackColor = System.Drawing.SystemColors.Control
         Me.ColorButton.Image = CType(resources.GetObject("ColorButton.Image"), System.Drawing.Image)
         Me.ColorButton.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.ColorButton.Name = "ColorButton"
@@ -195,7 +178,7 @@ Partial Class Form1
         'ToolStripDropDownButton1
         '
         Me.ToolStripDropDownButton1.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right
-        Me.ToolStripDropDownButton1.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.DrawReferenceCrossToolStripMenuItem, Me.BackgroundToolStripMenuItem, Me.OverlayToolStripMenuItem, Me.ToolStripSeparator3})
+        Me.ToolStripDropDownButton1.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.DrawReferenceCrossToolStripMenuItem, Me.DrawSelectionSquareToolStripMenuItem, Me.BackgroundToolStripMenuItem, Me.OverlayToolStripMenuItem, Me.ToolStripSeparator3, Me.ForceUpdateToolStripMenuItem})
         Me.ToolStripDropDownButton1.Image = CType(resources.GetObject("ToolStripDropDownButton1.Image"), System.Drawing.Image)
         Me.ToolStripDropDownButton1.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.ToolStripDropDownButton1.Name = "ToolStripDropDownButton1"
@@ -206,14 +189,23 @@ Partial Class Form1
         '
         Me.DrawReferenceCrossToolStripMenuItem.CheckOnClick = True
         Me.DrawReferenceCrossToolStripMenuItem.Name = "DrawReferenceCrossToolStripMenuItem"
-        Me.DrawReferenceCrossToolStripMenuItem.Size = New System.Drawing.Size(188, 22)
+        Me.DrawReferenceCrossToolStripMenuItem.Size = New System.Drawing.Size(191, 22)
         Me.DrawReferenceCrossToolStripMenuItem.Text = "Draw Reference Cross"
+        '
+        'DrawSelectionSquareToolStripMenuItem
+        '
+        Me.DrawSelectionSquareToolStripMenuItem.Checked = True
+        Me.DrawSelectionSquareToolStripMenuItem.CheckOnClick = True
+        Me.DrawSelectionSquareToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.DrawSelectionSquareToolStripMenuItem.Name = "DrawSelectionSquareToolStripMenuItem"
+        Me.DrawSelectionSquareToolStripMenuItem.Size = New System.Drawing.Size(191, 22)
+        Me.DrawSelectionSquareToolStripMenuItem.Text = "Draw Selection Square"
         '
         'BackgroundToolStripMenuItem
         '
         Me.BackgroundToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripComboBox2})
         Me.BackgroundToolStripMenuItem.Name = "BackgroundToolStripMenuItem"
-        Me.BackgroundToolStripMenuItem.Size = New System.Drawing.Size(188, 22)
+        Me.BackgroundToolStripMenuItem.Size = New System.Drawing.Size(191, 22)
         Me.BackgroundToolStripMenuItem.Text = "Background"
         '
         'ToolStripComboBox2
@@ -226,7 +218,7 @@ Partial Class Form1
         '
         Me.OverlayToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripComboBox3})
         Me.OverlayToolStripMenuItem.Name = "OverlayToolStripMenuItem"
-        Me.OverlayToolStripMenuItem.Size = New System.Drawing.Size(188, 22)
+        Me.OverlayToolStripMenuItem.Size = New System.Drawing.Size(191, 22)
         Me.OverlayToolStripMenuItem.Text = "Overlay"
         '
         'ToolStripComboBox3
@@ -238,56 +230,98 @@ Partial Class Form1
         'ToolStripSeparator3
         '
         Me.ToolStripSeparator3.Name = "ToolStripSeparator3"
-        Me.ToolStripSeparator3.Size = New System.Drawing.Size(185, 6)
+        Me.ToolStripSeparator3.Size = New System.Drawing.Size(188, 6)
         '
-        'OpenFileDialog1
+        'ForceUpdateToolStripMenuItem
         '
-        Me.OpenFileDialog1.Filter = "Text Files|*.txt|Con Files|*.con"
-        Me.OpenFileDialog1.FilterIndex = 2
+        Me.ForceUpdateToolStripMenuItem.Name = "ForceUpdateToolStripMenuItem"
+        Me.ForceUpdateToolStripMenuItem.Size = New System.Drawing.Size(191, 22)
+        Me.ForceUpdateToolStripMenuItem.Text = "Force Update"
+        '
+        'SimulateButton
+        '
+        Me.SimulateButton.Image = CType(resources.GetObject("SimulateButton.Image"), System.Drawing.Image)
+        Me.SimulateButton.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.SimulateButton.Name = "SimulateButton"
+        Me.SimulateButton.Size = New System.Drawing.Size(73, 22)
+        Me.SimulateButton.Text = "Simulate"
+        '
+        'TrackBarXPos
+        '
+        Me.TrackBarXPos.Enabled = False
+        Me.TrackBarXPos.LargeChange = 400
+        Me.TrackBarXPos.Location = New System.Drawing.Point(-1, 634)
+        Me.TrackBarXPos.Maximum = 800
+        Me.TrackBarXPos.Name = "TrackBarXPos"
+        Me.TrackBarXPos.Size = New System.Drawing.Size(824, 45)
+        Me.TrackBarXPos.TabIndex = 62
+        Me.TrackBarXPos.TickFrequency = 400
+        Me.TrackBarXPos.TickStyle = System.Windows.Forms.TickStyle.TopLeft
+        '
+        'TrackBarYpos
+        '
+        Me.TrackBarYpos.Enabled = False
+        Me.TrackBarYpos.LargeChange = 300
+        Me.TrackBarYpos.Location = New System.Drawing.Point(809, 19)
+        Me.TrackBarYpos.Maximum = 0
+        Me.TrackBarYpos.Minimum = -600
+        Me.TrackBarYpos.Name = "TrackBarYpos"
+        Me.TrackBarYpos.Orientation = System.Windows.Forms.Orientation.Vertical
+        Me.TrackBarYpos.RightToLeft = System.Windows.Forms.RightToLeft.Yes
+        Me.TrackBarYpos.Size = New System.Drawing.Size(45, 626)
+        Me.TrackBarYpos.TabIndex = 63
+        Me.TrackBarYpos.TabStop = False
+        Me.TrackBarYpos.TickFrequency = 300
+        Me.TrackBarYpos.TickStyle = System.Windows.Forms.TickStyle.TopLeft
+        '
+        'PictureBox1
+        '
+        Me.PictureBox1.BackgroundImage = CType(resources.GetObject("PictureBox1.BackgroundImage"), System.Drawing.Image)
+        Me.PictureBox1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
+        Me.PictureBox1.Location = New System.Drawing.Point(10, 34)
+        Me.PictureBox1.Name = "PictureBox1"
+        Me.PictureBox1.Size = New System.Drawing.Size(800, 600)
+        Me.PictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
+        Me.PictureBox1.TabIndex = 61
+        Me.PictureBox1.TabStop = False
         '
         'SaveFileDialog1
         '
-        Me.SaveFileDialog1.Filter = "Text Files|*.txt"
-        Me.SaveFileDialog1.Title = "Set the output directory for all the node information"
-        '
-        'ToolStripButton2
-        '
-        Me.ToolStripButton2.Image = CType(resources.GetObject("ToolStripButton2.Image"), System.Drawing.Image)
-        Me.ToolStripButton2.ImageTransparentColor = System.Drawing.Color.Magenta
-        Me.ToolStripButton2.Name = "ToolStripButton2"
-        Me.ToolStripButton2.Size = New System.Drawing.Size(73, 22)
-        Me.ToolStripButton2.Text = "Simulate"
+        Me.SaveFileDialog1.Filter = "Text files|*.txt"
         '
         'Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(844, 667)
-        Me.Controls.Add(Me.TrackBarXPos)
         Me.Controls.Add(Me.ToolStrip1)
+        Me.Controls.Add(Me.TrackBarXPos)
         Me.Controls.Add(Me.TrackBarYpos)
         Me.Controls.Add(Me.PictureBox1)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.MaximizeBox = False
         Me.Name = "Form1"
         Me.Text = "HUD Editor - No Node Selected"
-        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.TrackBarXPos, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.TrackBarYpos, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ToolStrip1.ResumeLayout(False)
         Me.ToolStrip1.PerformLayout()
+        CType(Me.TrackBarXPos, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.TrackBarYpos, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
     End Sub
-    Friend WithEvents PictureBox1 As System.Windows.Forms.PictureBox
-    Friend WithEvents TrackBarXPos As System.Windows.Forms.TrackBar
-    Friend WithEvents TrackBarYpos As System.Windows.Forms.TrackBar
     Friend WithEvents ToolStrip1 As System.Windows.Forms.ToolStrip
+    Friend WithEvents ToolStripDropDownButton2 As System.Windows.Forms.ToolStripDropDownButton
+    Friend WithEvents LoadToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents SaveToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents ToolStripButton1 As System.Windows.Forms.ToolStripButton
+    Friend WithEvents ToolStripSeparator2 As System.Windows.Forms.ToolStripSeparator
     Friend WithEvents TextureButton As System.Windows.Forms.ToolStripButton
     Friend WithEvents ColorButton As System.Windows.Forms.ToolStripButton
     Friend WithEvents SizeButton As System.Windows.Forms.ToolStripButton
     Friend WithEvents PositionButton As System.Windows.Forms.ToolStripButton
+    Friend WithEvents RotationButton As System.Windows.Forms.ToolStripButton
     Friend WithEvents VariablesButton As System.Windows.Forms.ToolStripButton
     Friend WithEvents ToolStripDropDownButton1 As System.Windows.Forms.ToolStripDropDownButton
     Friend WithEvents DrawReferenceCrossToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
@@ -295,15 +329,15 @@ Partial Class Form1
     Friend WithEvents ToolStripComboBox2 As System.Windows.Forms.ToolStripComboBox
     Friend WithEvents OverlayToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents ToolStripComboBox3 As System.Windows.Forms.ToolStripComboBox
-    Friend WithEvents ToolStripButton1 As System.Windows.Forms.ToolStripButton
-    Friend WithEvents ToolStripSeparator2 As System.Windows.Forms.ToolStripSeparator
     Friend WithEvents ToolStripSeparator3 As System.Windows.Forms.ToolStripSeparator
-    Friend WithEvents ToolStripDropDownButton2 As System.Windows.Forms.ToolStripDropDownButton
-    Friend WithEvents LoadToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents SaveToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents OpenFileDialog1 As System.Windows.Forms.OpenFileDialog
-    Friend WithEvents RotationButton As System.Windows.Forms.ToolStripButton
+    Friend WithEvents SimulateButton As System.Windows.Forms.ToolStripButton
+    Friend WithEvents TrackBarXPos As System.Windows.Forms.TrackBar
+    Friend WithEvents TrackBarYpos As System.Windows.Forms.TrackBar
+    Friend WithEvents PictureBox1 As System.Windows.Forms.PictureBox
+    Friend WithEvents DrawSelectionSquareToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents ForceUpdateToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents StyleButton As System.Windows.Forms.ToolStripButton
+    Friend WithEvents TSizeButton As System.Windows.Forms.ToolStripButton
     Friend WithEvents SaveFileDialog1 As System.Windows.Forms.SaveFileDialog
-    Friend WithEvents ToolStripButton2 As System.Windows.Forms.ToolStripButton
 
 End Class

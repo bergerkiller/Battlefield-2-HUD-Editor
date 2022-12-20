@@ -24,34 +24,35 @@ Partial Class NodeSelect
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(NodeSelect))
-        Me.NodeSelector = New System.Windows.Forms.ListView
+        Me.ListView1 = New System.Windows.Forms.ListView
         Me.ColumnHeader1 = New System.Windows.Forms.ColumnHeader
         Me.ColumnHeader2 = New System.Windows.Forms.ColumnHeader
         Me.Label3 = New System.Windows.Forms.Label
         Me.TextBox1 = New System.Windows.Forms.TextBox
-        Me.Button1 = New System.Windows.Forms.Button
-        Me.Button2 = New System.Windows.Forms.Button
+        Me.AddButton = New System.Windows.Forms.Button
+        Me.DeleteButton = New System.Windows.Forms.Button
         Me.UpButton = New System.Windows.Forms.Button
         Me.DownButton = New System.Windows.Forms.Button
         Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
+        Me.CloneButton = New System.Windows.Forms.Button
         Me.SuspendLayout()
         '
-        'NodeSelector
+        'ListView1
         '
-        Me.NodeSelector.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+        Me.ListView1.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
                     Or System.Windows.Forms.AnchorStyles.Left) _
                     Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.NodeSelector.CheckBoxes = True
-        Me.NodeSelector.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.ColumnHeader1, Me.ColumnHeader2})
-        Me.NodeSelector.FullRowSelect = True
-        Me.NodeSelector.HideSelection = False
-        Me.NodeSelector.Location = New System.Drawing.Point(-1, 48)
-        Me.NodeSelector.MultiSelect = False
-        Me.NodeSelector.Name = "NodeSelector"
-        Me.NodeSelector.Size = New System.Drawing.Size(312, 271)
-        Me.NodeSelector.TabIndex = 6
-        Me.NodeSelector.UseCompatibleStateImageBehavior = False
-        Me.NodeSelector.View = System.Windows.Forms.View.Details
+        Me.ListView1.CheckBoxes = True
+        Me.ListView1.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.ColumnHeader1, Me.ColumnHeader2})
+        Me.ListView1.FullRowSelect = True
+        Me.ListView1.HideSelection = False
+        Me.ListView1.Location = New System.Drawing.Point(-1, 48)
+        Me.ListView1.MultiSelect = False
+        Me.ListView1.Name = "ListView1"
+        Me.ListView1.Size = New System.Drawing.Size(312, 271)
+        Me.ListView1.TabIndex = 6
+        Me.ListView1.UseCompatibleStateImageBehavior = False
+        Me.ListView1.View = System.Windows.Forms.View.Details
         '
         'ColumnHeader1
         '
@@ -83,32 +84,32 @@ Partial Class NodeSelect
         Me.TextBox1.Size = New System.Drawing.Size(312, 20)
         Me.TextBox1.TabIndex = 8
         '
-        'Button1
+        'AddButton
         '
-        Me.Button1.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.Button1.BackgroundImage = CType(resources.GetObject("Button1.BackgroundImage"), System.Drawing.Image)
-        Me.Button1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
-        Me.Button1.ForeColor = System.Drawing.Color.DarkOliveGreen
-        Me.Button1.Location = New System.Drawing.Point(317, 242)
-        Me.Button1.Name = "Button1"
-        Me.Button1.Size = New System.Drawing.Size(25, 25)
-        Me.Button1.TabIndex = 4
-        Me.ToolTip1.SetToolTip(Me.Button1, "Add new node")
-        Me.Button1.UseVisualStyleBackColor = True
+        Me.AddButton.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.AddButton.BackgroundImage = CType(resources.GetObject("AddButton.BackgroundImage"), System.Drawing.Image)
+        Me.AddButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
+        Me.AddButton.ForeColor = System.Drawing.Color.DarkOliveGreen
+        Me.AddButton.Location = New System.Drawing.Point(317, 242)
+        Me.AddButton.Name = "AddButton"
+        Me.AddButton.Size = New System.Drawing.Size(25, 25)
+        Me.AddButton.TabIndex = 4
+        Me.ToolTip1.SetToolTip(Me.AddButton, "Add new node")
+        Me.AddButton.UseVisualStyleBackColor = True
         '
-        'Button2
+        'DeleteButton
         '
-        Me.Button2.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.Button2.BackgroundImage = CType(resources.GetObject("Button2.BackgroundImage"), System.Drawing.Image)
-        Me.Button2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
-        Me.Button2.Enabled = False
-        Me.Button2.ForeColor = System.Drawing.Color.DarkRed
-        Me.Button2.Location = New System.Drawing.Point(317, 48)
-        Me.Button2.Name = "Button2"
-        Me.Button2.Size = New System.Drawing.Size(25, 25)
-        Me.Button2.TabIndex = 5
-        Me.ToolTip1.SetToolTip(Me.Button2, "Delete this node")
-        Me.Button2.UseVisualStyleBackColor = True
+        Me.DeleteButton.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.DeleteButton.BackgroundImage = CType(resources.GetObject("DeleteButton.BackgroundImage"), System.Drawing.Image)
+        Me.DeleteButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
+        Me.DeleteButton.Enabled = False
+        Me.DeleteButton.ForeColor = System.Drawing.Color.DarkRed
+        Me.DeleteButton.Location = New System.Drawing.Point(317, 48)
+        Me.DeleteButton.Name = "DeleteButton"
+        Me.DeleteButton.Size = New System.Drawing.Size(25, 25)
+        Me.DeleteButton.TabIndex = 5
+        Me.ToolTip1.SetToolTip(Me.DeleteButton, "Delete this node")
+        Me.DeleteButton.UseVisualStyleBackColor = True
         '
         'UpButton
         '
@@ -134,18 +135,34 @@ Partial Class NodeSelect
         Me.ToolTip1.SetToolTip(Me.DownButton, "Move node DOWN")
         Me.DownButton.UseVisualStyleBackColor = True
         '
+        'CloneButton
+        '
+        Me.CloneButton.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.CloneButton.BackgroundImage = CType(resources.GetObject("CloneButton.BackgroundImage"), System.Drawing.Image)
+        Me.CloneButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
+        Me.CloneButton.Enabled = False
+        Me.CloneButton.ForeColor = System.Drawing.Color.DarkOliveGreen
+        Me.CloneButton.Location = New System.Drawing.Point(317, 315)
+        Me.CloneButton.Name = "CloneButton"
+        Me.CloneButton.Size = New System.Drawing.Size(25, 25)
+        Me.CloneButton.TabIndex = 12
+        Me.ToolTip1.SetToolTip(Me.CloneButton, "Clone selected node")
+        Me.CloneButton.UseVisualStyleBackColor = True
+        '
         'NodeSelect
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(347, 345)
+        Me.Controls.Add(Me.CloneButton)
         Me.Controls.Add(Me.DownButton)
         Me.Controls.Add(Me.UpButton)
-        Me.Controls.Add(Me.Button1)
-        Me.Controls.Add(Me.Button2)
+        Me.Controls.Add(Me.AddButton)
+        Me.Controls.Add(Me.DeleteButton)
         Me.Controls.Add(Me.TextBox1)
         Me.Controls.Add(Me.Label3)
-        Me.Controls.Add(Me.NodeSelector)
+        Me.Controls.Add(Me.ListView1)
+        Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow
         Me.MaximizeBox = False
         Me.MinimizeBox = False
         Me.MinimumSize = New System.Drawing.Size(290, 310)
@@ -153,20 +170,20 @@ Partial Class NodeSelect
         Me.ShowInTaskbar = False
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "Select Node"
-        Me.TopMost = True
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
     End Sub
-    Friend WithEvents NodeSelector As System.Windows.Forms.ListView
+    Friend WithEvents ListView1 As System.Windows.Forms.ListView
     Friend WithEvents ColumnHeader1 As System.Windows.Forms.ColumnHeader
     Friend WithEvents ColumnHeader2 As System.Windows.Forms.ColumnHeader
     Friend WithEvents Label3 As System.Windows.Forms.Label
     Friend WithEvents TextBox1 As System.Windows.Forms.TextBox
-    Friend WithEvents Button1 As System.Windows.Forms.Button
-    Friend WithEvents Button2 As System.Windows.Forms.Button
+    Friend WithEvents AddButton As System.Windows.Forms.Button
+    Friend WithEvents DeleteButton As System.Windows.Forms.Button
     Friend WithEvents UpButton As System.Windows.Forms.Button
     Friend WithEvents ToolTip1 As System.Windows.Forms.ToolTip
     Friend WithEvents DownButton As System.Windows.Forms.Button
+    Friend WithEvents CloneButton As System.Windows.Forms.Button
 
 End Class

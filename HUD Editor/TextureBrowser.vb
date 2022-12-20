@@ -11,7 +11,7 @@ Public Class TextureBrowser
     Dim threadabort As Boolean = False
 
     Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
-        Me.DialogResult = System.Windows.Forms.DialogResult.OK
+        Me.DialogResult = Windows.Forms.DialogResult.OK
         Me.Close()
     End Sub
     Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cancel_Button.Click
@@ -39,15 +39,23 @@ Public Class TextureBrowser
             If ComboBox2.SelectedIndex = -1 Then ComboBox2.SelectedIndex = 0
 
             'Set preset file
+            If Nodes(CurrentIndex).Type = "Picture Node" Then
+                SelectedPath.Text = Nodes(CurrentIndex).PictureNodeData.TexturePath
+            End If
+            If Nodes(CurrentIndex).Type = "Compass Node" Then
+                SelectedPath.Text = Nodes(CurrentIndex).CompassNodeData.TexturePath
+            End If
             If System.IO.File.Exists(SelectedPath.Text) Then
                 Dim filename As String = SelectedPath.Text
                 Dim filefolder As String = StrReverse(StrReverse(SelectedPath.Text).Remove(0, IO.Path.GetFileName(SelectedPath.Text).Length + 1))
-                ComboBox1.SelectedItem = filefolder
+                SetCBSelectedItem(ComboBox1, filefolder)
                 For i As Integer = 0 To ListView1.Items.Count - 1
-                    Dim name As String = ListView1.Items.Item(i).Text
-                    If IO.Path.GetFileName(SelectedPath.Text) = name Then ListView1.Items.Item(i).Selected = True
+                    Dim name As String = ListView1.Items.Item(i).Text.ToLower.Trim
+                    If IO.Path.GetFileName(SelectedPath.Text).ToLower.Trim = name Then ListView1.Items.Item(i).Selected = True
                 Next
             End If
+            Form1.TextureButton.BackColor = Color.FromKnownColor(KnownColor.ActiveCaption)
+            ViewedDialog = 1
         Else
             MsgBox("Error: " & ImageSelectorImagePath & " does not exist", MsgBoxStyle.Critical)
             Me.Close()
@@ -94,7 +102,7 @@ Public Class TextureBrowser
             ThreadLoadListviewImages = New Thread(AddressOf LoadListviewImages)
             ThreadLoadListviewImages.IsBackground = True
             ThreadLoadListviewImages.Start()
-        Else
+        ElseIf ComboBox1.SelectedIndex <> -1 Then
             ComboBox1.Items.Remove(ComboBox1.SelectedItem)
             MsgBox("Error: " & ComboBox1.SelectedItem & " does not exist", MsgBoxStyle.Critical)
         End If
@@ -153,6 +161,25 @@ Public Class TextureBrowser
         ImageList1.Images.Add("folder", fldrim)
         ImageList1.Images.Add("file", fileim)
         ListView1.Items.Clear()
+        Form1.TextureButton.BackColor = Color.FromKnownColor(KnownColor.Control)
+        'Save it
+        If Me.DialogResult = Windows.Forms.DialogResult.OK Then
+            Try
+                Dim simage As Image = LoadImage(SelectedPath.Text)
+                If Nodes(CurrentIndex).Type = "Picture Node" Then
+                    Nodes(CurrentIndex).PictureNodeData.TexturePath = SelectedPath.Text
+                    Nodes(CurrentIndex).PictureNodeData.TextureImage = simage
+                    Nodes(CurrentIndex).PictureNodeData.ColorChanged = True
+                End If
+                If Nodes(CurrentIndex).Type = "Compass Node" Then
+                    Nodes(CurrentIndex).CompassNodeData.TexturePath = SelectedPath.Text
+                    Nodes(CurrentIndex).CompassNodeData.TextureImage = simage
+                    Nodes(CurrentIndex).CompassNodeData.ColorChanged = True
+                End If
+                UpdateScreen = True
+            Catch
+            End Try
+        End If
     End Sub
     Private Sub ContextMenuStrip1_Opening(ByVal sender As System.Object, ByVal e As System.ComponentModel.CancelEventArgs)
         If ListView1.SelectedItems.Count <> 0 Then
@@ -170,8 +197,6 @@ Public Class TextureBrowser
                 Dim filepath As String = comboboxitem & "\" & item.Text
                 If System.IO.File.Exists(filepath) Then
                     ListViewImageSelector(index, filepath.ToLower, ResizeImage(LoadImage(filepath), 128, 128, False))
-                Else
-                    MsgBox(filepath)
                 End If
             End If
             index += 1
@@ -213,4 +238,5 @@ Public Class TextureBrowser
     Private Sub ListView1_MouseHover(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ListView1.MouseHover
         ListView1.Focus()
     End Sub
+
 End Class

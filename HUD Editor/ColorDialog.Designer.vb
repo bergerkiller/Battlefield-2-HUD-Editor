@@ -36,7 +36,6 @@ Partial Class ColorDialog
         Me.Label2 = New System.Windows.Forms.Label
         Me.Label10 = New System.Windows.Forms.Label
         Me.Label11 = New System.Windows.Forms.Label
-        Me.Button1 = New System.Windows.Forms.Button
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.TrackBarB, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.TrackBarG, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -182,21 +181,11 @@ Partial Class ColorDialog
         Me.Label11.TabIndex = 43
         Me.Label11.Text = "Blue:"
         '
-        'Button1
-        '
-        Me.Button1.Location = New System.Drawing.Point(316, 114)
-        Me.Button1.Name = "Button1"
-        Me.Button1.Size = New System.Drawing.Size(60, 23)
-        Me.Button1.TabIndex = 54
-        Me.Button1.Text = "Set Color"
-        Me.Button1.UseVisualStyleBackColor = True
-        '
         'ColorDialog
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(385, 145)
-        Me.Controls.Add(Me.Button1)
+        Me.ClientSize = New System.Drawing.Size(385, 123)
         Me.Controls.Add(Me.PictureBox2)
         Me.Controls.Add(Me.TrackBarB)
         Me.Controls.Add(Me.TrackBarG)
@@ -244,6 +233,5 @@ Partial Class ColorDialog
     Friend WithEvents Label2 As System.Windows.Forms.Label
     Friend WithEvents Label10 As System.Windows.Forms.Label
     Friend WithEvents Label11 As System.Windows.Forms.Label
-    Friend WithEvents Button1 As System.Windows.Forms.Button
 
 End Class

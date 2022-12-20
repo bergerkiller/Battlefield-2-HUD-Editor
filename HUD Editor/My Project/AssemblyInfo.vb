@@ -10,15 +10,15 @@ Imports System.Runtime.InteropServices
 
 <Assembly: AssemblyTitle("HUD Editor")> 
 <Assembly: AssemblyDescription("")> 
-<Assembly: AssemblyCompany("Hewlett-Packard Company")> 
+<Assembly: AssemblyCompany("")> 
 <Assembly: AssemblyProduct("HUD Editor")> 
-<Assembly: AssemblyCopyright("Copyright © Hewlett-Packard Company 2010")> 
+<Assembly: AssemblyCopyright("Copyright ©  2010")> 
 <Assembly: AssemblyTrademark("")> 
 
 <Assembly: ComVisible(False)>
 
 'The following GUID is for the ID of the typelib if this project is exposed to COM
-<Assembly: Guid("e038c445-84d4-442f-afff-0ae231d3ea20")> 
+<Assembly: Guid("a0d6555a-eee7-4c8d-bfc3-523133d1bbc5")> 
 
 ' Version information for an assembly consists of the following four values:
 '

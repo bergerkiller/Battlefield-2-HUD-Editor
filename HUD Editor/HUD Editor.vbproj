@@ -5,7 +5,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{DAFCD265-E2F0-4529-88DF-69AF83E68E78}</ProjectGuid>
+    <ProjectGuid>{8A4CB736-5053-4CE4-84E5-C7D92CB96C61}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <StartupObject>HUD_Editor.My.MyApplication</StartupObject>
     <RootNamespace>HUD_Editor</RootNamespace>
@@ -73,10 +73,28 @@
     <Compile Include="AddNode.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="cnvariables.Designer.vb">
+      <DependentUpon>cnvariables.vb</DependentUpon>
+    </Compile>
+    <Compile Include="cnvariables.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="ColorDialog.Designer.vb">
       <DependentUpon>ColorDialog.vb</DependentUpon>
     </Compile>
     <Compile Include="ColorDialog.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CompassStyle.Designer.vb">
+      <DependentUpon>CompassStyle.vb</DependentUpon>
+    </Compile>
+    <Compile Include="CompassStyle.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Dialog1.Designer.vb">
+      <DependentUpon>Dialog1.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Dialog1.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Form1.vb">
@@ -84,12 +102,6 @@
     </Compile>
     <Compile Include="Form1.Designer.vb">
       <DependentUpon>Form1.vb</DependentUpon>
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="LoadFileDialog.Designer.vb">
-      <DependentUpon>LoadFileDialog.vb</DependentUpon>
-    </Compile>
-    <Compile Include="LoadFileDialog.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Module1.vb" />
@@ -114,6 +126,12 @@
     <Compile Include="NodeSelect.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="pnvariables.Designer.vb">
+      <DependentUpon>pnvariables.vb</DependentUpon>
+    </Compile>
+    <Compile Include="pnvariables.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="PositionDialog.Designer.vb">
       <DependentUpon>PositionDialog.vb</DependentUpon>
     </Compile>
@@ -126,10 +144,10 @@
     <Compile Include="RotationDialog.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="SimulateDialog.Designer.vb">
-      <DependentUpon>SimulateDialog.vb</DependentUpon>
+    <Compile Include="Simulator.Designer.vb">
+      <DependentUpon>Simulator.vb</DependentUpon>
     </Compile>
-    <Compile Include="SimulateDialog.vb">
+    <Compile Include="Simulator.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="SizeDialog.Designer.vb">
@@ -138,16 +156,28 @@
     <Compile Include="SizeDialog.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="TextStyle.Designer.vb">
+      <DependentUpon>TextStyle.vb</DependentUpon>
+    </Compile>
+    <Compile Include="TextStyle.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="TextureBrowser.Designer.vb">
       <DependentUpon>TextureBrowser.vb</DependentUpon>
     </Compile>
     <Compile Include="TextureBrowser.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="VariablesDialog.Designer.vb">
-      <DependentUpon>VariablesDialog.vb</DependentUpon>
+    <Compile Include="tnvariables.Designer.vb">
+      <DependentUpon>tnvariables.vb</DependentUpon>
     </Compile>
-    <Compile Include="VariablesDialog.vb">
+    <Compile Include="tnvariables.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TSizeDialog.Designer.vb">
+      <DependentUpon>TSizeDialog.vb</DependentUpon>
+    </Compile>
+    <Compile Include="TSizeDialog.vb">
       <SubType>Form</SubType>
     </Compile>
   </ItemGroup>
@@ -155,14 +185,20 @@
     <EmbeddedResource Include="AddNode.resx">
       <DependentUpon>AddNode.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="cnvariables.resx">
+      <DependentUpon>cnvariables.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="ColorDialog.resx">
       <DependentUpon>ColorDialog.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="CompassStyle.resx">
+      <DependentUpon>CompassStyle.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Dialog1.resx">
+      <DependentUpon>Dialog1.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="LoadFileDialog.resx">
-      <DependentUpon>LoadFileDialog.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">
       <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
@@ -173,23 +209,32 @@
     <EmbeddedResource Include="NodeSelect.resx">
       <DependentUpon>NodeSelect.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="pnvariables.resx">
+      <DependentUpon>pnvariables.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="PositionDialog.resx">
       <DependentUpon>PositionDialog.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="RotationDialog.resx">
       <DependentUpon>RotationDialog.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="SimulateDialog.resx">
-      <DependentUpon>SimulateDialog.vb</DependentUpon>
+    <EmbeddedResource Include="Simulator.resx">
+      <DependentUpon>Simulator.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="SizeDialog.resx">
       <DependentUpon>SizeDialog.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="TextStyle.resx">
+      <DependentUpon>TextStyle.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="TextureBrowser.resx">
       <DependentUpon>TextureBrowser.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="VariablesDialog.resx">
-      <DependentUpon>VariablesDialog.vb</DependentUpon>
+    <EmbeddedResource Include="tnvariables.resx">
+      <DependentUpon>tnvariables.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TSizeDialog.resx">
+      <DependentUpon>TSizeDialog.vb</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

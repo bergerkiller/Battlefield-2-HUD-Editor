@@ -40,6 +40,7 @@ Partial Class RotationDialog
         '
         Me.NumericUpDown1.Location = New System.Drawing.Point(68, 7)
         Me.NumericUpDown1.Maximum = New Decimal(New Integer() {360, 0, 0, 0})
+        Me.NumericUpDown1.Minimum = New Decimal(New Integer() {1, 0, 0, -2147483648})
         Me.NumericUpDown1.Name = "NumericUpDown1"
         Me.NumericUpDown1.Size = New System.Drawing.Size(49, 20)
         Me.NumericUpDown1.TabIndex = 2
