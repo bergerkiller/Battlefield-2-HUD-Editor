@@ -17,6 +17,7 @@
     <OptionCompare>Binary</OptionCompare>
     <OptionStrict>Off</OptionStrict>
     <OptionInfer>On</OptionInfer>
+    <ApplicationIcon>object send to back-2.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -67,28 +68,40 @@
     <Import Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AddNode.Designer.vb">
+    <Compile Include="Dialogs\AddNode.Designer.vb">
       <DependentUpon>AddNode.vb</DependentUpon>
     </Compile>
-    <Compile Include="AddNode.vb">
+    <Compile Include="Dialogs\AddNode.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="cnvariables.Designer.vb">
+    <Compile Include="Dialogs\BarStyle.Designer.vb">
+      <DependentUpon>BarStyle.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Dialogs\BarStyle.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Dialogs\bnvariables.Designer.vb">
+      <DependentUpon>bnvariables.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Dialogs\bnvariables.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Dialogs\cnvariables.Designer.vb">
       <DependentUpon>cnvariables.vb</DependentUpon>
     </Compile>
-    <Compile Include="cnvariables.vb">
+    <Compile Include="Dialogs\cnvariables.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ColorDialog.Designer.vb">
+    <Compile Include="Dialogs\ColorDialog.Designer.vb">
       <DependentUpon>ColorDialog.vb</DependentUpon>
     </Compile>
-    <Compile Include="ColorDialog.vb">
+    <Compile Include="Dialogs\ColorDialog.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="CompassStyle.Designer.vb">
+    <Compile Include="Dialogs\CompassStyle.Designer.vb">
       <DependentUpon>CompassStyle.vb</DependentUpon>
     </Compile>
-    <Compile Include="CompassStyle.vb">
+    <Compile Include="Dialogs\CompassStyle.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Form1.vb">
@@ -98,10 +111,29 @@
       <DependentUpon>Form1.vb</DependentUpon>
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="MainDialog.Designer.vb">
+    <Compile Include="Dialogs\MainDialog.Designer.vb">
       <DependentUpon>MainDialog.vb</DependentUpon>
     </Compile>
-    <Compile Include="MainDialog.vb">
+    <Compile Include="Dialogs\MainDialog.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Library Creator\LCForm.Designer.vb">
+      <DependentUpon>LCForm.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Library Creator\LCForm.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Library Creator\LCmodule.vb" />
+    <Compile Include="Library Creator\Progress.Designer.vb">
+      <DependentUpon>Progress.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Library Creator\Progress.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Library Creator\ReplaceDiag.Designer.vb">
+      <DependentUpon>ReplaceDiag.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Library Creator\ReplaceDiag.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Module1.vb" />
@@ -120,73 +152,94 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Compile Include="pnvariables.Designer.vb">
+    <Compile Include="Dialogs\pnvariables.Designer.vb">
       <DependentUpon>pnvariables.vb</DependentUpon>
     </Compile>
-    <Compile Include="pnvariables.vb">
+    <Compile Include="Dialogs\pnvariables.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="RotationDialog.Designer.vb">
+    <Compile Include="Dialogs\RotationDialog.Designer.vb">
       <DependentUpon>RotationDialog.vb</DependentUpon>
     </Compile>
-    <Compile Include="RotationDialog.vb">
+    <Compile Include="Dialogs\RotationDialog.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ShowVars.Designer.vb">
-      <DependentUpon>ShowVars.vb</DependentUpon>
+    <Compile Include="ShowDialog.Designer.vb">
+      <DependentUpon>ShowDialog.vb</DependentUpon>
     </Compile>
-    <Compile Include="ShowVars.vb">
+    <Compile Include="ShowDialog.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Simulator.Designer.vb">
+    <Compile Include="Dialogs\Simulator.Designer.vb">
       <DependentUpon>Simulator.vb</DependentUpon>
     </Compile>
-    <Compile Include="Simulator.vb">
+    <Compile Include="Dialogs\Simulator.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="TextStyle.Designer.vb">
+    <Compile Include="Dialogs\TextStyle.Designer.vb">
       <DependentUpon>TextStyle.vb</DependentUpon>
     </Compile>
-    <Compile Include="TextStyle.vb">
+    <Compile Include="Dialogs\TextStyle.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="TextureBrowser.Designer.vb">
+    <Compile Include="Dialogs\TextureBrowser.Designer.vb">
       <DependentUpon>TextureBrowser.vb</DependentUpon>
     </Compile>
-    <Compile Include="TextureBrowser.vb">
+    <Compile Include="Dialogs\TextureBrowser.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="tnvariables.Designer.vb">
+    <Compile Include="Dialogs\tnvariables.Designer.vb">
       <DependentUpon>tnvariables.vb</DependentUpon>
     </Compile>
-    <Compile Include="tnvariables.vb">
+    <Compile Include="Dialogs\tnvariables.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="TSizeDialog.Designer.vb">
+    <Compile Include="Dialogs\TSizeDialog.Designer.vb">
       <DependentUpon>TSizeDialog.vb</DependentUpon>
     </Compile>
-    <Compile Include="TSizeDialog.vb">
+    <Compile Include="Dialogs\TSizeDialog.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="VariableTester.Designer.vb">
+      <DependentUpon>VariableTester.vb</DependentUpon>
+    </Compile>
+    <Compile Include="VariableTester.vb">
       <SubType>Form</SubType>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="AddNode.resx">
+    <EmbeddedResource Include="Dialogs\AddNode.resx">
       <DependentUpon>AddNode.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="cnvariables.resx">
+    <EmbeddedResource Include="Dialogs\BarStyle.resx">
+      <DependentUpon>BarStyle.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Dialogs\bnvariables.resx">
+      <DependentUpon>bnvariables.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Dialogs\cnvariables.resx">
       <DependentUpon>cnvariables.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="ColorDialog.resx">
+    <EmbeddedResource Include="Dialogs\ColorDialog.resx">
       <DependentUpon>ColorDialog.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="CompassStyle.resx">
+    <EmbeddedResource Include="Dialogs\CompassStyle.resx">
       <DependentUpon>CompassStyle.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="MainDialog.resx">
+    <EmbeddedResource Include="Dialogs\MainDialog.resx">
       <DependentUpon>MainDialog.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Library Creator\LCForm.resx">
+      <DependentUpon>LCForm.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Library Creator\Progress.resx">
+      <DependentUpon>Progress.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Library Creator\ReplaceDiag.resx">
+      <DependentUpon>ReplaceDiag.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">
       <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
@@ -194,29 +247,32 @@
       <CustomToolNamespace>My.Resources</CustomToolNamespace>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="pnvariables.resx">
+    <EmbeddedResource Include="Dialogs\pnvariables.resx">
       <DependentUpon>pnvariables.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="RotationDialog.resx">
+    <EmbeddedResource Include="Dialogs\RotationDialog.resx">
       <DependentUpon>RotationDialog.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="ShowVars.resx">
-      <DependentUpon>ShowVars.vb</DependentUpon>
+    <EmbeddedResource Include="ShowDialog.resx">
+      <DependentUpon>ShowDialog.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Simulator.resx">
+    <EmbeddedResource Include="Dialogs\Simulator.resx">
       <DependentUpon>Simulator.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="TextStyle.resx">
+    <EmbeddedResource Include="Dialogs\TextStyle.resx">
       <DependentUpon>TextStyle.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="TextureBrowser.resx">
+    <EmbeddedResource Include="Dialogs\TextureBrowser.resx">
       <DependentUpon>TextureBrowser.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="tnvariables.resx">
+    <EmbeddedResource Include="Dialogs\tnvariables.resx">
       <DependentUpon>tnvariables.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="TSizeDialog.resx">
+    <EmbeddedResource Include="Dialogs\TSizeDialog.resx">
       <DependentUpon>TSizeDialog.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="VariableTester.resx">
+      <DependentUpon>VariableTester.vb</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
@@ -229,6 +285,9 @@
       <CustomToolNamespace>My</CustomToolNamespace>
       <LastGenOutput>Settings.Designer.vb</LastGenOutput>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="object send to back-2.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
