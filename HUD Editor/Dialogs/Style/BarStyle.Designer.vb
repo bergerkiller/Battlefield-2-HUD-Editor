@@ -27,6 +27,10 @@ Partial Class BarStyle
         Me.RadioButton2 = New System.Windows.Forms.RadioButton
         Me.RadioButton3 = New System.Windows.Forms.RadioButton
         Me.RadioButton4 = New System.Windows.Forms.RadioButton
+        Me.Label2 = New System.Windows.Forms.Label
+        Me.ComboBox1 = New System.Windows.Forms.ComboBox
+        Me.TrackBar1 = New System.Windows.Forms.TrackBar
+        CType(Me.TrackBar1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'Label1
@@ -81,11 +85,40 @@ Partial Class BarStyle
         Me.RadioButton4.Text = "Horizontal bar: Value increasing from left"
         Me.RadioButton4.UseVisualStyleBackColor = True
         '
+        'Label2
+        '
+        Me.Label2.AutoSize = True
+        Me.Label2.Location = New System.Drawing.Point(9, 141)
+        Me.Label2.Name = "Label2"
+        Me.Label2.Size = New System.Drawing.Size(48, 13)
+        Me.Label2.TabIndex = 6
+        Me.Label2.Text = "Variable:"
+        '
+        'ComboBox1
+        '
+        Me.ComboBox1.FormattingEnabled = True
+        Me.ComboBox1.Location = New System.Drawing.Point(63, 138)
+        Me.ComboBox1.Name = "ComboBox1"
+        Me.ComboBox1.Size = New System.Drawing.Size(182, 21)
+        Me.ComboBox1.TabIndex = 7
+        '
+        'TrackBar1
+        '
+        Me.TrackBar1.Location = New System.Drawing.Point(12, 165)
+        Me.TrackBar1.Maximum = 1000
+        Me.TrackBar1.Name = "TrackBar1"
+        Me.TrackBar1.Size = New System.Drawing.Size(233, 45)
+        Me.TrackBar1.TabIndex = 8
+        Me.TrackBar1.TickFrequency = 50
+        '
         'BarStyle
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(236, 136)
+        Me.ClientSize = New System.Drawing.Size(257, 211)
+        Me.Controls.Add(Me.TrackBar1)
+        Me.Controls.Add(Me.ComboBox1)
+        Me.Controls.Add(Me.Label2)
         Me.Controls.Add(Me.RadioButton4)
         Me.Controls.Add(Me.RadioButton3)
         Me.Controls.Add(Me.RadioButton2)
@@ -99,6 +132,7 @@ Partial Class BarStyle
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "Style"
         Me.TopMost = True
+        CType(Me.TrackBar1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -108,5 +142,8 @@ Partial Class BarStyle
     Friend WithEvents RadioButton2 As System.Windows.Forms.RadioButton
     Friend WithEvents RadioButton3 As System.Windows.Forms.RadioButton
     Friend WithEvents RadioButton4 As System.Windows.Forms.RadioButton
+    Friend WithEvents Label2 As System.Windows.Forms.Label
+    Friend WithEvents ComboBox1 As System.Windows.Forms.ComboBox
+    Friend WithEvents TrackBar1 As System.Windows.Forms.TrackBar
 
 End Class

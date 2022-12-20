@@ -18,124 +18,6 @@
         If OldPath.ToLower.StartsWith(Wdir) Then OldPath = OldPath.Remove(0, Wdir.Length).Trim("\")
         Return OldPath
     End Function
-    Public Function ListFolderFiles(ByVal Path As String, ByVal Filter As String) As String()
-        Dim rval As New List(Of String)
-        For Each file As String In IO.Directory.GetFiles(Path)
-            '--Filter--
-            Dim add As Boolean = False
-            For Each f As String In Filter.Split("|")
-                f = f.ToLower.Trim("*")
-                If file.EndsWith(f) Then add = True
-                If f = "." Then add = True
-            Next
-            '--end--
-            If add Then rval.Add(file)
-        Next
-        For Each directory As String In IO.Directory.GetDirectories(Path)
-            For Each file As String In ListFolderFiles(directory, Filter)
-                rval.Add(file)
-            Next
-        Next
-        Dim frval(rval.Count - 1) As String
-        For i As Integer = 0 To rval.Count - 1
-            frval(i) = rval(i)
-        Next
-        Return frval
-    End Function
-
-    Public Class ImagePointer
-        Sub New(ByVal Path As String, ByVal SourceFile As String, ByVal ImageOffset As Long, ByVal ImageLength As Long)
-            Me.Path = Path
-            Me.SourceFile = SourceFile
-            Me.ImageOffset = ImageOffset
-            Me.ImageLength = ImageLength
-        End Sub
-        Public Path As String = ""
-        Public SourceFile As String = ""
-        Public ImageOffset As Long = 0
-        Public ImageLength As Long = 0
-        Public Function GetImage() As Image
-            Dim s As New System.IO.FileStream(Me.SourceFile, IO.FileMode.Open)
-            Dim imgbytes(Me.ImageLength) As Byte
-            s.Position = Me.ImageOffset
-            s.Read(imgbytes, 0, Me.ImageLength)
-            s.Close()
-            Dim ms As New System.IO.MemoryStream(imgbytes, 0, imgbytes.Length)
-            ms.Write(imgbytes, 0, imgbytes.Length)
-            GetImage = Image.FromStream(ms)
-            ms.Close()
-        End Function
-    End Class
-    Public Class ImageData
-        Sub New(ByVal Path As String, ByVal Image As Image)
-            Me.Image = Image
-            Me.Path = Path
-        End Sub
-        Public Path As String = ""
-        Private _Image As Image
-        Public Property Image() As Image
-            Get
-                Return Me._Image
-            End Get
-            Set(ByVal value As Image)
-                Me._Image = value
-                Dim ms As New System.IO.MemoryStream()
-                value.Save(ms, System.Drawing.Imaging.ImageFormat.Png)
-                Me.imageBytes = ms.ToArray
-                ms.Close()
-            End Set
-        End Property
-        Public imageBytes() As Byte
-        Public Function GetHeader() As String
-            Return Me.imageBytes.Length & "|" & Me.Path
-        End Function
-    End Class
-    Public Sub SaveImageData(ByVal DestFile As String, ByVal Images() As ImageData)
-        If System.IO.File.Exists(DestFile) Then
-            SetAttr(DestFile, FileAttribute.Normal)
-            System.IO.File.Delete(DestFile)
-        End If
-        Dim s As New System.IO.FileStream(DestFile, System.IO.FileMode.OpenOrCreate)
-        Dim headerstring As String = ""
-        For Each img As ImageData In Images
-            headerstring &= img.GetHeader() & vbCrLf
-        Next
-        headerstring &= "==================================================================="
-        Dim header() As Byte = New System.Text.ASCIIEncoding().GetBytes(headerstring)
-        s.Write(header, 0, header.Length)
-        For Each img As ImageData In Images
-            s.Write(img.imageBytes, 0, img.imageBytes.Length)
-        Next
-        s.Close()
-    End Sub
-    Public Function LoadImageData(ByVal SourceFile As String) As ImagePointer()
-        Dim s As New System.IO.FileStream(SourceFile, System.IO.FileMode.Open)
-        Dim header As String = ""
-        Dim hid As String = "==================================================================="
-        Dim libdata(s.Length) As Byte
-        s.Read(libdata, 0, s.Length)
-        header = New System.Text.ASCIIEncoding().GetString(libdata)
-        header = header.Substring(0, header.IndexOf(hid) + hid.Length)
-
-        'Do While s.Position < s.Length
-        '    Dim b() As Byte = {s.ReadByte}
-        '    header &= New System.Text.ASCIIEncoding().GetString(b)
-        '    If header.EndsWith("===================================================================") Then Exit Do
-        'Loop
-        s.Close()
-        Dim posoffset As Long = header.Length
-        Dim img(-1) As ImagePointer
-        For Each line As String In header.Split(vbCrLf)
-            If line.Split("|").Count = 2 Then
-                Dim bytelength As Long = line.Split("|")(0)
-                Dim path As String = line.Split("|")(1)
-                ReDim Preserve img(img.Count)
-                img(img.Count - 1) = New ImagePointer(path, SourceFile, posoffset, bytelength)
-                posoffset += bytelength
-            End If
-        Next
-        Return img
-    End Function
 
     Private Sub Button1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button1.Click
         If System.IO.Directory.Exists(Application.StartupPath & "\Textures") Then SaveFileDialog1.InitialDirectory = Application.StartupPath & "\Textures"
@@ -153,7 +35,7 @@
         If OpenFileDialog1.ShowDialog = Windows.Forms.DialogResult.OK Then
             Dim img As Image = Nothing
             Try
-                img = FreeImageAPI.FreeImage.LoadBitmap(OpenFileDialog1.FileName, 0, -1)
+                img = FreeImageAPI.FreeImage.GetBitmap(FreeImageAPI.FreeImage.LoadEx(OpenFileDialog1.FileName))
             Catch
             End Try
             Try
@@ -662,7 +544,7 @@
             PictureBox1.BackgroundImage = Image.FromFile(Application.StartupPath & "\bin\checkboard.png")
         Catch
         End Try
-        PictureBox1.BackColor = Color.FromKnownColor(KnownColor.Control)
+        PictureBox1.BackColor = Color.Control
     End Sub
     Private Sub BlackToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BlackToolStripMenuItem.Click
         PictureBox1.BackgroundImage = Nothing
@@ -670,7 +552,7 @@
     End Sub
     Private Sub GreyToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles GreyToolStripMenuItem.Click
         PictureBox1.BackgroundImage = Nothing
-        PictureBox1.BackColor = Color.DarkGray
+        PictureBox1.BackColor = Color.Grey
     End Sub
     Private Sub WhiteToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles WhiteToolStripMenuItem.Click
         PictureBox1.BackgroundImage = Nothing
@@ -686,4 +568,5 @@
             LoadThread.Start()
         End If
     End Sub
+
 End Class

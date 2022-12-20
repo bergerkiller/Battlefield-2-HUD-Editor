@@ -82,7 +82,7 @@ Public Class TextureBrowser
     End Sub
     Private Sub ComboBox2_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ComboBox2.SelectedIndexChanged
         If ComboBox2.SelectedIndex = 0 Then
-            ListView1.BackColor = Color.LightGray
+            ListView1.BackColor = Color.Grey
             ListView1.ForeColor = Color.Black
         End If
         If ComboBox2.SelectedIndex = 1 Then
@@ -102,46 +102,50 @@ Public Class TextureBrowser
             Catch
             End Try
         End If
-        ListView1.Items.Clear()
-        tmpchecklistview.Items.Clear()
-        If ComboBox1.SelectedIndex <> -1 Then
-            'Loading folders into listview
-            Dim addedfolders As New List(Of String)
-            For Each folder As String In ComboBox1.Items
-                If folder.ToLower.StartsWith(ComboBox1.SelectedItem.ToString.ToLower) Then
-                    folder = folder.Remove(0, ComboBox1.SelectedItem.ToString.Length)
-                    If folder.StartsWith("\") Then
-                        folder = folder.Trim("\").Split("\").First
-                        If Not addedfolders.Contains(folder.ToLower) Then
-                            addedfolders.Add(folder.ToLower)
-                            ListView1.Items.Add(System.IO.Path.GetFileName(folder), 0)
-                            tmpchecklistview.Items.Add(System.IO.Path.GetFileName(folder), 0)
+        Try
+            ListView1.Items.Clear()
+            tmpchecklistview.Items.Clear()
+            If ComboBox1.SelectedIndex <> -1 Then
+                'Loading folders into listview
+                Dim addedfolders As New List(Of String)
+                For Each folder As String In ComboBox1.Items
+                    If folder.ToLower.StartsWith(ComboBox1.SelectedItem.ToString.ToLower) Then
+                        folder = folder.Remove(0, ComboBox1.SelectedItem.ToString.Length)
+                        If folder.StartsWith("\") Then
+                            folder = folder.Trim("\").Split("\").First
+                            If Not addedfolders.Contains(folder.ToLower) Then
+                                addedfolders.Add(folder.ToLower)
+                                ListView1.Items.Add(System.IO.Path.GetFileName(folder), 0)
+                                tmpchecklistview.Items.Add(System.IO.Path.GetFileName(folder), 0)
+                            End If
                         End If
                     End If
-                End If
-            Next
-            'Load filenames into listview
-            Dim addeditems As New List(Of String)
-            For Each file As String In Textures
-                Dim folder As String = StrReverse(StrReverse(file).Remove(0, IO.Path.GetFileName(file).Length)).Trim("\").Trim
-                file = System.IO.Path.GetFileName(file)
-                If folder.ToLower = ComboBox1.SelectedItem.ToString.ToLower And Not addeditems.Contains(file.ToLower) Then
-                    ListView1.Items.Add(System.IO.Path.GetFileName(file), 1)
-                    tmpchecklistview.Items.Add(System.IO.Path.GetFileName(file), 1)
-                    addeditems.Add(file.ToLower)
-                End If
-            Next
-        End If
-        'Start loading textures
-        CurrentFolder = ComboBox1.SelectedItem
-        Dim fldrim As Image = ImageList1.Images(0)
-        Dim fileim As Image = ImageList1.Images(1)
-        ImageList1.Images.Clear()
-        ImageList1.Images.Add("folder", fldrim)
-        ImageList1.Images.Add("file", fileim)
-        ThreadLoadListviewImages = New Thread(AddressOf LoadListviewImages)
-        ThreadLoadListviewImages.IsBackground = True
-        ThreadLoadListviewImages.Start()
+                Next
+                'Load filenames into listview
+                Dim addeditems As New List(Of String)
+                For Each file As String In Textures
+                    Dim folder As String = StrReverse(StrReverse(file).Remove(0, IO.Path.GetFileName(file).Length)).Trim("\").Trim
+                    file = System.IO.Path.GetFileName(file)
+                    If folder.ToLower = ComboBox1.SelectedItem.ToString.ToLower And Not addeditems.Contains(file.ToLower) Then
+                        ListView1.Items.Add(System.IO.Path.GetFileName(file), 1)
+                        tmpchecklistview.Items.Add(System.IO.Path.GetFileName(file), 1)
+                        addeditems.Add(file.ToLower)
+                    End If
+                Next
+            End If
+            'Start loading textures
+            CurrentFolder = ComboBox1.SelectedItem
+            Dim fldrim As Image = ImageList1.Images(0)
+            Dim fileim As Image = ImageList1.Images(1)
+            ImageList1.Images.Clear()
+            ImageList1.Images.Add("folder", fldrim)
+            ImageList1.Images.Add("file", fileim)
+            ThreadLoadListviewImages = New Thread(AddressOf LoadListviewImages)
+            ThreadLoadListviewImages.IsBackground = True
+            ThreadLoadListviewImages.Start()
+        Catch ex As Exception
+            WriteLog("Error in texture browser: " & ex.Message)
+        End Try
     End Sub
 
     Private Sub TextureBrowser_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
@@ -184,32 +188,29 @@ Public Class TextureBrowser
         If ComboBox1.Items.Count <> 0 Then
             'Setting current file
             Dim currentpath As String = ""
-            With Nodes(CurrentIndex)
-                If .Type = "Picture Node" Then currentpath = .PictureNodeData.TexturePath.Trim
-                If .Type = "Compass Node" Then currentpath = .CompassNodeData.TexturePath.Trim
-                If .Type = "Bar Node" And dmode = 1 Then currentpath = .BarNodeData.FullTexturePath.Trim
-                If .Type = "Bar Node" And dmode = 2 Then currentpath = .BarNodeData.EmptyTexturePath.Trim
-                If .Type = "Button Node" And dmode = 1 Then currentpath = .ButtonNodeData.OnTexturePath
-                If .Type = "Button Node" And dmode = 2 Then currentpath = .ButtonNodeData.OffTexturePath
+            With Form1.MainScreen.SelectedNodes(0)
+                If .Type = "Picture Node" Then currentpath = .PictureNode.Texture.Path.Trim
+                If .Type = "Compass Node" Then currentpath = .CompassNode.Texture.Path.Trim
+                If .Type = "Bar Node" And dmode = 1 Then currentpath = .BarNode.FullTexture.Path.Trim
+                If .Type = "Bar Node" And dmode = 2 Then currentpath = .BarNode.EmptyTexture.Path.Trim
+                If .Type = "Button Node" And dmode = 1 Then currentpath = .ButtonNode.OnTexture.Path
+                If .Type = "Button Node" And dmode = 2 Then currentpath = .ButtonNode.OffTexture.Path
             End With
             If currentpath <> "" Then
-                Dim filefolder As String = StrReverse(StrReverse(currentpath).Remove(0, IO.Path.GetFileName(currentpath).Length).Trim("\"))
+                Dim filefolder As String = StrReverse(StrReverse(currentpath).Remove(0, IO.Path.GetFileName(currentpath).Length).Trim("\")).Replace("/", "\").Trim("\")
                 SetCBSelectedItem(ComboBox1, filefolder)
                 For i As Integer = 0 To ListView1.Items.Count - 1
                     Dim name As String = ListView1.Items.Item(i).Text.ToLower.Trim
-                    If IO.Path.GetFileName(currentpath).ToLower.Trim = name Then
+                    If IO.Path.GetFileNameWithoutExtension(currentpath).ToLower.Trim = IO.Path.GetFileNameWithoutExtension(name) Then
                         ListView1.Items(i).EnsureVisible()
                         ListView1.Items(i).Selected = True
+                        If IO.Path.GetFileName(currentpath).ToLower.Trim = name Then Exit For
                     End If
                 Next
             Else
                 ComboBox1.SelectedIndex = 0
             End If
             'Setting the loaded state
-            If dmode = 0 Then Form1.TextureButton.BackColor = Color.FromKnownColor(KnownColor.ActiveCaption)
-            If dmode = 1 Then Form1.FTextureButton.BackColor = Color.FromKnownColor(KnownColor.ActiveCaption)
-            If dmode = 2 Then Form1.ETextureButton.BackColor = Color.FromKnownColor(KnownColor.ActiveCaption)
-            ViewedDialog = 1
         Else
             'Close because no textures were found
             MsgBox("Failed to find any textures to display.", MsgBoxStyle.Critical)
@@ -247,9 +248,6 @@ Public Class TextureBrowser
         ImageList1.Images.Clear()
         ImageList1.Images.Add("folder", fldrim)
         ImageList1.Images.Add("file", fileim)
-        If dmode = 0 Then Form1.TextureButton.BackColor = Color.FromKnownColor(KnownColor.Control)
-        If dmode = 1 Then Form1.FTextureButton.BackColor = Color.FromKnownColor(KnownColor.Control)
-        If dmode = 2 Then Form1.ETextureButton.BackColor = Color.FromKnownColor(KnownColor.Control)
     End Sub
     Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cancel_Button.Click
         Me.Close()
@@ -257,44 +255,30 @@ Public Class TextureBrowser
     Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
         Dim filepath As String = ComboBox1.SelectedItem & "\" & ListView1.SelectedItems(0).Text
         Try
-            Dim simage As Image
-            If System.IO.File.Exists(Application.StartupPath & "\" & TexturesPath & "\" & filepath) Then
-                simage = LoadImage(Application.StartupPath & "\" & TexturesPath & "\" & filepath)
-            Else
-                simage = LoadImage(filepath)
+            Dim snode As Node = Form1.MainScreen.SelectedNodes(0)
+            If snode.Type = "Picture Node" Then
+                snode.PictureNode.Texture.Path = filepath
             End If
-            If Nodes(CurrentIndex).Type = "Picture Node" Then
-                Nodes(CurrentIndex).PictureNodeData.TexturePath = filepath
-                Nodes(CurrentIndex).PictureNodeData.TextureImage = simage
-                Nodes(CurrentIndex).PictureNodeData.ColorChanged = True
+            If snode.Type = "Compass Node" Then
+                snode.CompassNode.Texture.Path = filepath
             End If
-            If Nodes(CurrentIndex).Type = "Compass Node" Then
-                Nodes(CurrentIndex).CompassNodeData.TexturePath = filepath
-                Nodes(CurrentIndex).CompassNodeData.TextureImage = simage
-                Nodes(CurrentIndex).CompassNodeData.ColorChanged = True
-            End If
-            If Nodes(CurrentIndex).Type = "Bar Node" Then
+            If snode.Type = "Bar Node" Then
                 If dmode = 1 Then
-                    Nodes(CurrentIndex).BarNodeData.FullTexturePath = filepath
-                    Nodes(CurrentIndex).BarNodeData.FullTextureImage = simage
+                    snode.BarNode.FullTexture.Path = filepath
                 ElseIf dmode = 2 Then
-                    Nodes(CurrentIndex).BarNodeData.EmptyTexturePath = filepath
-                    Nodes(CurrentIndex).BarNodeData.EmptyTextureImage = simage
+                    snode.BarNode.EmptyTexture.Path = filepath
                 End If
-                Nodes(CurrentIndex).BarNodeData.ColorChanged = True
-            ElseIf Nodes(CurrentIndex).Type = "Button Node" Then
-                If dmode = 1 Then
-                    Nodes(CurrentIndex).ButtonNodeData.OnTexturePath = filepath
-                    Nodes(CurrentIndex).ButtonNodeData.OnTextureImage = simage
-                ElseIf dmode = 2 Then
-                    Nodes(CurrentIndex).ButtonNodeData.OffTexturePath = filepath
-                    Nodes(CurrentIndex).ButtonNodeData.OffTextureImage = simage
-                End If
-                Nodes(CurrentIndex).ButtonNodeData.ColorChanged = True
             End If
-            UpdateScreen = True
+            If snode.Type = "Button Node" Then
+                If dmode = 1 Then
+                    snode.ButtonNode.OnTexture.Path = filepath
+                ElseIf dmode = 2 Then
+                    snode.ButtonNode.OffTexture.Path = filepath
+                End If
+            End If
         Catch
         End Try
+        UpdateScreen()
         Me.Close()
     End Sub
 End Class

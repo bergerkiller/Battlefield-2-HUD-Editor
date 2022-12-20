@@ -37,6 +37,8 @@ Partial Class ColorDialog
         Me.Label10 = New System.Windows.Forms.Label
         Me.Label11 = New System.Windows.Forms.Label
         Me.ColorDialog1 = New System.Windows.Forms.ColorDialog
+        Me.Label1 = New System.Windows.Forms.Label
+        Me.ComboBox1 = New System.Windows.Forms.ComboBox
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.TrackBarB, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.TrackBarG, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -179,11 +181,34 @@ Partial Class ColorDialog
         Me.ColorDialog1.AnyColor = True
         Me.ColorDialog1.FullOpen = True
         '
+        'Label1
+        '
+        Me.Label1.AutoSize = True
+        Me.Label1.Location = New System.Drawing.Point(11, 124)
+        Me.Label1.Name = "Label1"
+        Me.Label1.Size = New System.Drawing.Size(38, 13)
+        Me.Label1.TabIndex = 54
+        Me.Label1.Text = "Effect:"
+        Me.Label1.Visible = False
+        '
+        'ComboBox1
+        '
+        Me.ComboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.ComboBox1.FormattingEnabled = True
+        Me.ComboBox1.Items.AddRange(New Object() {"None", "RGB to Alpha; Minimum threshold", "Disabled Alpha", "RGB to Alpha; Middle threshold"})
+        Me.ComboBox1.Location = New System.Drawing.Point(55, 121)
+        Me.ComboBox1.Name = "ComboBox1"
+        Me.ComboBox1.Size = New System.Drawing.Size(318, 21)
+        Me.ComboBox1.TabIndex = 55
+        Me.ComboBox1.Visible = False
+        '
         'ColorDialog
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(385, 120)
+        Me.ClientSize = New System.Drawing.Size(385, 118)
+        Me.Controls.Add(Me.ComboBox1)
+        Me.Controls.Add(Me.Label1)
         Me.Controls.Add(Me.PictureBox2)
         Me.Controls.Add(Me.TrackBarB)
         Me.Controls.Add(Me.TrackBarG)
@@ -232,5 +257,7 @@ Partial Class ColorDialog
     Friend WithEvents Label10 As System.Windows.Forms.Label
     Friend WithEvents Label11 As System.Windows.Forms.Label
     Friend WithEvents ColorDialog1 As System.Windows.Forms.ColorDialog
+    Friend WithEvents Label1 As System.Windows.Forms.Label
+    Friend WithEvents ComboBox1 As System.Windows.Forms.ComboBox
 
 End Class

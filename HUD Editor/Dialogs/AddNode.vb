@@ -3,8 +3,8 @@
 
     Private Sub AddNode_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         existingnames.Items.Clear()
-        For i As Integer = 1 To Nodes.Count - 1
-            existingnames.Items.Add(Nodes(i).Name.ToLower.Trim)
+        For Each n As Node In Form1.MainScreen.Root.All
+            existingnames.Items.Add(n.Name.ToLower.Trim)
         Next
         Button1.Enabled = TextBox1.Text <> "" And Not existingnames.Items.Contains(TextBox1.Text.ToLower.Trim) And ComboBox1.SelectedIndex <> -1
     End Sub

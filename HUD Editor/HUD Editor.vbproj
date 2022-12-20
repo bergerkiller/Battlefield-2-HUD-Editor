@@ -68,34 +68,40 @@
     <Import Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Canvas.Designer.vb">
+      <DependentUpon>Canvas.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Canvas.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Dialog1.Designer.vb">
+      <DependentUpon>Dialog1.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Dialog1.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Dialogs\AddNode.Designer.vb">
       <DependentUpon>AddNode.vb</DependentUpon>
     </Compile>
     <Compile Include="Dialogs\AddNode.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Dialogs\BarStyle.Designer.vb">
+    <Compile Include="Dialogs\NodeShowDialog.Designer.vb">
+      <DependentUpon>NodeShowDialog.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Dialogs\NodeShowDialog.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Dialogs\RotationDialog.Designer.vb">
+      <DependentUpon>RotationDialog.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Dialogs\RotationDialog.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Dialogs\Style\BarStyle.Designer.vb">
       <DependentUpon>BarStyle.vb</DependentUpon>
     </Compile>
-    <Compile Include="Dialogs\BarStyle.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Dialogs\bnvariables.Designer.vb">
-      <DependentUpon>bnvariables.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Dialogs\bnvariables.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Dialogs\btnvariables.Designer.vb">
-      <DependentUpon>btnvariables.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Dialogs\btnvariables.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Dialogs\cnvariables.Designer.vb">
-      <DependentUpon>cnvariables.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Dialogs\cnvariables.vb">
+    <Compile Include="Dialogs\Style\BarStyle.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Dialogs\ColorDialog.Designer.vb">
@@ -104,10 +110,34 @@
     <Compile Include="Dialogs\ColorDialog.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Dialogs\CompassStyle.Designer.vb">
+    <Compile Include="Dialogs\Style\ButtonStyle.Designer.vb">
+      <DependentUpon>ButtonStyle.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Dialogs\Style\ButtonStyle.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Dialogs\Style\CompassStyle.Designer.vb">
       <DependentUpon>CompassStyle.vb</DependentUpon>
     </Compile>
-    <Compile Include="Dialogs\CompassStyle.vb">
+    <Compile Include="Dialogs\Style\CompassStyle.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Dialogs\MainDialog.Designer.vb">
+      <DependentUpon>MainDialog.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Dialogs\MainDialog.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Dialogs\Style\TextStyle.Designer.vb">
+      <DependentUpon>TextStyle.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Dialogs\Style\TextStyle.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Dialogs\TextureBrowser.Designer.vb">
+      <DependentUpon>TextureBrowser.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Dialogs\TextureBrowser.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Form1.vb">
@@ -115,12 +145,6 @@
     </Compile>
     <Compile Include="Form1.Designer.vb">
       <DependentUpon>Form1.vb</DependentUpon>
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Dialogs\MainDialog.Designer.vb">
-      <DependentUpon>MainDialog.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Dialogs\MainDialog.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Library Creator\LCForm.Designer.vb">
@@ -158,88 +182,59 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Compile Include="Dialogs\pnvariables.Designer.vb">
-      <DependentUpon>pnvariables.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Dialogs\pnvariables.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Dialogs\RotationDialog.Designer.vb">
-      <DependentUpon>RotationDialog.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Dialogs\RotationDialog.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ShowDialog.Designer.vb">
-      <DependentUpon>ShowDialog.vb</DependentUpon>
-    </Compile>
-    <Compile Include="ShowDialog.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Dialogs\Simulator.Designer.vb">
-      <DependentUpon>Simulator.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Dialogs\Simulator.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Dialogs\TextStyle.Designer.vb">
-      <DependentUpon>TextStyle.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Dialogs\TextStyle.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Dialogs\TextureBrowser.Designer.vb">
-      <DependentUpon>TextureBrowser.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Dialogs\TextureBrowser.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Dialogs\tnvariables.Designer.vb">
-      <DependentUpon>tnvariables.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Dialogs\tnvariables.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Dialogs\TSizeDialog.Designer.vb">
-      <DependentUpon>TSizeDialog.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Dialogs\TSizeDialog.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="VariableTester.Designer.vb">
-      <DependentUpon>VariableTester.vb</DependentUpon>
-    </Compile>
-    <Compile Include="VariableTester.vb">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="Types\Color.vb" />
+    <Compile Include="Types\Node.vb" />
+    <Compile Include="Types\NodeTypes\BarNode.vb" />
+    <Compile Include="Types\NodeTypes\ButtonNode.vb" />
+    <Compile Include="Types\NodeTypes\CompassNode.vb" />
+    <Compile Include="Types\NodeTypes\HoverNode.vb" />
+    <Compile Include="Types\NodeTypes\ObjectMarkerNode.vb" />
+    <Compile Include="Types\NodeTypes\PictureNode.vb" />
+    <Compile Include="Types\NodeTypes\TextNode.vb" />
+    <Compile Include="Types\SelectionSquare.vb" />
+    <Compile Include="Types\VariableHandler.vb" />
+    <Compile Include="Types\Variable.vb" />
+    <Compile Include="Types\Structures.vb" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Canvas.resx">
+      <DependentUpon>Canvas.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Dialog1.resx">
+      <DependentUpon>Dialog1.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Dialogs\AddNode.resx">
       <DependentUpon>AddNode.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Dialogs\BarStyle.resx">
+    <EmbeddedResource Include="Dialogs\NodeShowDialog.resx">
+      <DependentUpon>NodeShowDialog.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Dialogs\RotationDialog.resx">
+      <DependentUpon>RotationDialog.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Dialogs\Style\BarStyle.resx">
       <DependentUpon>BarStyle.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Dialogs\bnvariables.resx">
-      <DependentUpon>bnvariables.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Dialogs\btnvariables.resx">
-      <DependentUpon>btnvariables.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Dialogs\cnvariables.resx">
-      <DependentUpon>cnvariables.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Dialogs\ColorDialog.resx">
       <DependentUpon>ColorDialog.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Dialogs\CompassStyle.resx">
-      <DependentUpon>CompassStyle.vb</DependentUpon>
+    <EmbeddedResource Include="Dialogs\Style\ButtonStyle.resx">
+      <DependentUpon>ButtonStyle.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Form1.resx">
-      <DependentUpon>Form1.vb</DependentUpon>
+    <EmbeddedResource Include="Dialogs\Style\CompassStyle.resx">
+      <DependentUpon>CompassStyle.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Dialogs\MainDialog.resx">
       <DependentUpon>MainDialog.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Dialogs\Style\TextStyle.resx">
+      <DependentUpon>TextStyle.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Dialogs\TextureBrowser.resx">
+      <DependentUpon>TextureBrowser.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form1.resx">
+      <DependentUpon>Form1.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Library Creator\LCForm.resx">
       <DependentUpon>LCForm.vb</DependentUpon>
@@ -255,33 +250,6 @@
       <LastGenOutput>Resources.Designer.vb</LastGenOutput>
       <CustomToolNamespace>My.Resources</CustomToolNamespace>
       <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Dialogs\pnvariables.resx">
-      <DependentUpon>pnvariables.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Dialogs\RotationDialog.resx">
-      <DependentUpon>RotationDialog.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ShowDialog.resx">
-      <DependentUpon>ShowDialog.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Dialogs\Simulator.resx">
-      <DependentUpon>Simulator.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Dialogs\TextStyle.resx">
-      <DependentUpon>TextStyle.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Dialogs\TextureBrowser.resx">
-      <DependentUpon>TextureBrowser.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Dialogs\tnvariables.resx">
-      <DependentUpon>tnvariables.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Dialogs\TSizeDialog.resx">
-      <DependentUpon>TSizeDialog.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="VariableTester.resx">
-      <DependentUpon>VariableTester.vb</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

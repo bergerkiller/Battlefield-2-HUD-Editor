@@ -39,17 +39,25 @@ Partial Class MainDialog
         Me.Button4 = New System.Windows.Forms.Button
         Me.Label7 = New System.Windows.Forms.Label
         Me.TextBox1 = New System.Windows.Forms.TextBox
+        Me.Panel1 = New System.Windows.Forms.Panel
+        Me.Label9 = New System.Windows.Forms.Label
+        Me.ComboBox2 = New System.Windows.Forms.ComboBox
+        Me.ComboBox1 = New System.Windows.Forms.ComboBox
+        Me.Label8 = New System.Windows.Forms.Label
+        Me.Panel2 = New System.Windows.Forms.Panel
         CType(Me.NumericUpDown2, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.NumericUpDown1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.NumericUpDown4, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.NumericUpDown3, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.NumericUpDown5, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.Panel1.SuspendLayout()
+        Me.Panel2.SuspendLayout()
         Me.SuspendLayout()
         '
         'Label1
         '
         Me.Label1.AutoSize = True
-        Me.Label1.Location = New System.Drawing.Point(10, 40)
+        Me.Label1.Location = New System.Drawing.Point(9, 35)
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(47, 13)
         Me.Label1.TabIndex = 0
@@ -58,7 +66,7 @@ Partial Class MainDialog
         'Label2
         '
         Me.Label2.AutoSize = True
-        Me.Label2.Location = New System.Drawing.Point(131, 40)
+        Me.Label2.Location = New System.Drawing.Point(130, 35)
         Me.Label2.Name = "Label2"
         Me.Label2.Size = New System.Drawing.Size(14, 13)
         Me.Label2.TabIndex = 1
@@ -66,18 +74,18 @@ Partial Class MainDialog
         '
         'NumericUpDown2
         '
-        Me.NumericUpDown2.Location = New System.Drawing.Point(149, 38)
+        Me.NumericUpDown2.Location = New System.Drawing.Point(148, 33)
         Me.NumericUpDown2.Maximum = New Decimal(New Integer() {600, 0, 0, 0})
-        Me.NumericUpDown2.Minimum = New Decimal(New Integer() {2048, 0, 0, -2147483648})
+        Me.NumericUpDown2.Minimum = New Decimal(New Integer() {4096, 0, 0, -2147483648})
         Me.NumericUpDown2.Name = "NumericUpDown2"
         Me.NumericUpDown2.Size = New System.Drawing.Size(63, 20)
         Me.NumericUpDown2.TabIndex = 11
         '
         'NumericUpDown1
         '
-        Me.NumericUpDown1.Location = New System.Drawing.Point(63, 38)
+        Me.NumericUpDown1.Location = New System.Drawing.Point(62, 33)
         Me.NumericUpDown1.Maximum = New Decimal(New Integer() {800, 0, 0, 0})
-        Me.NumericUpDown1.Minimum = New Decimal(New Integer() {2048, 0, 0, -2147483648})
+        Me.NumericUpDown1.Minimum = New Decimal(New Integer() {4096, 0, 0, -2147483648})
         Me.NumericUpDown1.Name = "NumericUpDown1"
         Me.NumericUpDown1.Size = New System.Drawing.Size(63, 20)
         Me.NumericUpDown1.TabIndex = 10
@@ -85,7 +93,7 @@ Partial Class MainDialog
         'Label3
         '
         Me.Label3.AutoSize = True
-        Me.Label3.Location = New System.Drawing.Point(27, 71)
+        Me.Label3.Location = New System.Drawing.Point(26, 7)
         Me.Label3.Name = "Label3"
         Me.Label3.Size = New System.Drawing.Size(30, 13)
         Me.Label3.TabIndex = 13
@@ -93,8 +101,8 @@ Partial Class MainDialog
         '
         'NumericUpDown4
         '
-        Me.NumericUpDown4.Location = New System.Drawing.Point(149, 67)
-        Me.NumericUpDown4.Maximum = New Decimal(New Integer() {2048, 0, 0, 0})
+        Me.NumericUpDown4.Location = New System.Drawing.Point(148, 3)
+        Me.NumericUpDown4.Maximum = New Decimal(New Integer() {4096, 0, 0, 0})
         Me.NumericUpDown4.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
         Me.NumericUpDown4.Name = "NumericUpDown4"
         Me.NumericUpDown4.Size = New System.Drawing.Size(63, 20)
@@ -103,8 +111,8 @@ Partial Class MainDialog
         '
         'NumericUpDown3
         '
-        Me.NumericUpDown3.Location = New System.Drawing.Point(63, 67)
-        Me.NumericUpDown3.Maximum = New Decimal(New Integer() {2048, 0, 0, 0})
+        Me.NumericUpDown3.Location = New System.Drawing.Point(62, 3)
+        Me.NumericUpDown3.Maximum = New Decimal(New Integer() {4096, 0, 0, 0})
         Me.NumericUpDown3.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
         Me.NumericUpDown3.Name = "NumericUpDown3"
         Me.NumericUpDown3.Size = New System.Drawing.Size(63, 20)
@@ -114,7 +122,7 @@ Partial Class MainDialog
         'Label4
         '
         Me.Label4.AutoSize = True
-        Me.Label4.Location = New System.Drawing.Point(131, 71)
+        Me.Label4.Location = New System.Drawing.Point(130, 7)
         Me.Label4.Name = "Label4"
         Me.Label4.Size = New System.Drawing.Size(14, 13)
         Me.Label4.TabIndex = 22
@@ -123,7 +131,7 @@ Partial Class MainDialog
         'Label5
         '
         Me.Label5.AutoSize = True
-        Me.Label5.Location = New System.Drawing.Point(17, 97)
+        Me.Label5.Location = New System.Drawing.Point(16, 33)
         Me.Label5.Name = "Label5"
         Me.Label5.Size = New System.Drawing.Size(69, 13)
         Me.Label5.TabIndex = 23
@@ -131,7 +139,7 @@ Partial Class MainDialog
         '
         'NumericUpDown5
         '
-        Me.NumericUpDown5.Location = New System.Drawing.Point(92, 93)
+        Me.NumericUpDown5.Location = New System.Drawing.Point(91, 29)
         Me.NumericUpDown5.Maximum = New Decimal(New Integer() {1000, 0, 0, 0})
         Me.NumericUpDown5.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
         Me.NumericUpDown5.Name = "NumericUpDown5"
@@ -142,7 +150,7 @@ Partial Class MainDialog
         'Label6
         '
         Me.Label6.AutoSize = True
-        Me.Label6.Location = New System.Drawing.Point(187, 97)
+        Me.Label6.Location = New System.Drawing.Point(183, 33)
         Me.Label6.Name = "Label6"
         Me.Label6.Size = New System.Drawing.Size(15, 13)
         Me.Label6.TabIndex = 25
@@ -150,7 +158,7 @@ Partial Class MainDialog
         '
         'Button1
         '
-        Me.Button1.Location = New System.Drawing.Point(218, 35)
+        Me.Button1.Location = New System.Drawing.Point(217, 30)
         Me.Button1.Name = "Button1"
         Me.Button1.Size = New System.Drawing.Size(49, 23)
         Me.Button1.TabIndex = 26
@@ -159,7 +167,7 @@ Partial Class MainDialog
         '
         'Button2
         '
-        Me.Button2.Location = New System.Drawing.Point(218, 64)
+        Me.Button2.Location = New System.Drawing.Point(217, 0)
         Me.Button2.Name = "Button2"
         Me.Button2.Size = New System.Drawing.Size(49, 23)
         Me.Button2.TabIndex = 27
@@ -168,7 +176,7 @@ Partial Class MainDialog
         '
         'Button3
         '
-        Me.Button3.Location = New System.Drawing.Point(273, 35)
+        Me.Button3.Location = New System.Drawing.Point(272, 30)
         Me.Button3.Name = "Button3"
         Me.Button3.Size = New System.Drawing.Size(81, 23)
         Me.Button3.TabIndex = 28
@@ -177,7 +185,7 @@ Partial Class MainDialog
         '
         'Button4
         '
-        Me.Button4.Location = New System.Drawing.Point(273, 64)
+        Me.Button4.Location = New System.Drawing.Point(272, 0)
         Me.Button4.Name = "Button4"
         Me.Button4.Size = New System.Drawing.Size(81, 23)
         Me.Button4.TabIndex = 29
@@ -200,28 +208,82 @@ Partial Class MainDialog
         Me.TextBox1.Size = New System.Drawing.Size(291, 20)
         Me.TextBox1.TabIndex = 32
         '
+        'Panel1
+        '
+        Me.Panel1.Controls.Add(Me.Label9)
+        Me.Panel1.Controls.Add(Me.ComboBox2)
+        Me.Panel1.Controls.Add(Me.ComboBox1)
+        Me.Panel1.Controls.Add(Me.Label8)
+        Me.Panel1.Controls.Add(Me.Label1)
+        Me.Panel1.Controls.Add(Me.Label2)
+        Me.Panel1.Controls.Add(Me.NumericUpDown1)
+        Me.Panel1.Controls.Add(Me.NumericUpDown2)
+        Me.Panel1.Controls.Add(Me.Button3)
+        Me.Panel1.Controls.Add(Me.Button1)
+        Me.Panel1.Location = New System.Drawing.Point(2, 38)
+        Me.Panel1.Name = "Panel1"
+        Me.Panel1.Size = New System.Drawing.Size(357, 58)
+        Me.Panel1.TabIndex = 33
+        '
+        'Label9
+        '
+        Me.Label9.AutoSize = True
+        Me.Label9.Location = New System.Drawing.Point(224, 6)
+        Me.Label9.Name = "Label9"
+        Me.Label9.Size = New System.Drawing.Size(14, 13)
+        Me.Label9.TabIndex = 32
+        Me.Label9.Text = "X"
+        '
+        'ComboBox2
+        '
+        Me.ComboBox2.FormattingEnabled = True
+        Me.ComboBox2.Location = New System.Drawing.Point(244, 3)
+        Me.ComboBox2.Name = "ComboBox2"
+        Me.ComboBox2.Size = New System.Drawing.Size(108, 21)
+        Me.ComboBox2.TabIndex = 31
+        '
+        'ComboBox1
+        '
+        Me.ComboBox1.FormattingEnabled = True
+        Me.ComboBox1.Location = New System.Drawing.Point(110, 3)
+        Me.ComboBox1.Name = "ComboBox1"
+        Me.ComboBox1.Size = New System.Drawing.Size(108, 21)
+        Me.ComboBox1.TabIndex = 30
+        '
+        'Label8
+        '
+        Me.Label8.AutoSize = True
+        Me.Label8.Location = New System.Drawing.Point(12, 6)
+        Me.Label8.Name = "Label8"
+        Me.Label8.Size = New System.Drawing.Size(92, 13)
+        Me.Label8.TabIndex = 29
+        Me.Label8.Text = "Position variables:"
+        '
+        'Panel2
+        '
+        Me.Panel2.Controls.Add(Me.NumericUpDown3)
+        Me.Panel2.Controls.Add(Me.Label5)
+        Me.Panel2.Controls.Add(Me.NumericUpDown5)
+        Me.Panel2.Controls.Add(Me.Button4)
+        Me.Panel2.Controls.Add(Me.Label4)
+        Me.Panel2.Controls.Add(Me.Label6)
+        Me.Panel2.Controls.Add(Me.NumericUpDown4)
+        Me.Panel2.Controls.Add(Me.Label3)
+        Me.Panel2.Controls.Add(Me.Button2)
+        Me.Panel2.Location = New System.Drawing.Point(2, 102)
+        Me.Panel2.Name = "Panel2"
+        Me.Panel2.Size = New System.Drawing.Size(357, 60)
+        Me.Panel2.TabIndex = 34
+        '
         'MainDialog
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(365, 128)
+        Me.ClientSize = New System.Drawing.Size(364, 159)
+        Me.Controls.Add(Me.Panel2)
+        Me.Controls.Add(Me.Panel1)
         Me.Controls.Add(Me.TextBox1)
         Me.Controls.Add(Me.Label7)
-        Me.Controls.Add(Me.Button4)
-        Me.Controls.Add(Me.Button3)
-        Me.Controls.Add(Me.Button2)
-        Me.Controls.Add(Me.Button1)
-        Me.Controls.Add(Me.Label6)
-        Me.Controls.Add(Me.NumericUpDown5)
-        Me.Controls.Add(Me.Label5)
-        Me.Controls.Add(Me.Label4)
-        Me.Controls.Add(Me.NumericUpDown4)
-        Me.Controls.Add(Me.NumericUpDown3)
-        Me.Controls.Add(Me.Label3)
-        Me.Controls.Add(Me.NumericUpDown2)
-        Me.Controls.Add(Me.NumericUpDown1)
-        Me.Controls.Add(Me.Label2)
-        Me.Controls.Add(Me.Label1)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.MaximizeBox = False
         Me.MinimizeBox = False
@@ -235,6 +297,10 @@ Partial Class MainDialog
         CType(Me.NumericUpDown4, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.NumericUpDown3, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.NumericUpDown5, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.Panel1.ResumeLayout(False)
+        Me.Panel1.PerformLayout()
+        Me.Panel2.ResumeLayout(False)
+        Me.Panel2.PerformLayout()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -256,5 +322,11 @@ Partial Class MainDialog
     Friend WithEvents Button4 As System.Windows.Forms.Button
     Friend WithEvents Label7 As System.Windows.Forms.Label
     Friend WithEvents TextBox1 As System.Windows.Forms.TextBox
+    Friend WithEvents Panel1 As System.Windows.Forms.Panel
+    Friend WithEvents Panel2 As System.Windows.Forms.Panel
+    Friend WithEvents Label9 As System.Windows.Forms.Label
+    Friend WithEvents ComboBox2 As System.Windows.Forms.ComboBox
+    Friend WithEvents ComboBox1 As System.Windows.Forms.ComboBox
+    Friend WithEvents Label8 As System.Windows.Forms.Label
 
 End Class
