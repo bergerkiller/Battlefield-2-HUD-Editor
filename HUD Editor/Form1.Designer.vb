@@ -22,68 +22,68 @@ Partial Class Form1
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Me.components = New System.ComponentModel.Container
+        Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Form1))
-        Me.ToolStrip1 = New System.Windows.Forms.ToolStrip
-        Me.ToolStripDropDownButton2 = New System.Windows.Forms.ToolStripDropDownButton
-        Me.NewToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
-        Me.LoadToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
-        Me.SaveToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
-        Me.SaveSnapshotToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
-        Me.ToolStripSeparator4 = New System.Windows.Forms.ToolStripSeparator
-        Me.ExitToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
-        Me.ToolStripSeparator2 = New System.Windows.Forms.ToolStripSeparator
-        Me.MainButton = New System.Windows.Forms.ToolStripButton
-        Me.ColorButton = New System.Windows.Forms.ToolStripButton
-        Me.ToolStripDropDownButton1 = New System.Windows.Forms.ToolStripDropDownButton
-        Me.DrawReferenceCrossToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
-        Me.DrawSelectionSquareToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
-        Me.BackgroundToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
-        Me.ToolStripComboBox2 = New System.Windows.Forms.ToolStripComboBox
-        Me.OverlayToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
-        Me.ToolStripComboBox3 = New System.Windows.Forms.ToolStripComboBox
-        Me.FullScreenToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
-        Me.UseFixedResolutionToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
-        Me.TextureFilterToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
-        Me.ToolStripSeparator3 = New System.Windows.Forms.ToolStripSeparator
-        Me.TextureLibraryCreatorToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
-        Me.ForceUpdateToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
-        Me.ResetScreenToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
-        Me.ViewLogToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
-        Me.TextureButton1 = New System.Windows.Forms.ToolStripButton
-        Me.TextureButton2 = New System.Windows.Forms.ToolStripButton
-        Me.StyleButton = New System.Windows.Forms.ToolStripButton
-        Me.RotationButton = New System.Windows.Forms.ToolStripButton
-        Me.SimulateButton = New System.Windows.Forms.ToolStripButton
-        Me.ShowButton = New System.Windows.Forms.ToolStripButton
+        Me.ToolStrip1 = New System.Windows.Forms.ToolStrip()
+        Me.ToolStripDropDownButton2 = New System.Windows.Forms.ToolStripDropDownButton()
+        Me.NewToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.LoadToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.SaveToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.SaveSnapshotToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ToolStripSeparator4 = New System.Windows.Forms.ToolStripSeparator()
+        Me.ExitToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ToolStripSeparator2 = New System.Windows.Forms.ToolStripSeparator()
+        Me.MainButton = New System.Windows.Forms.ToolStripButton()
+        Me.ColorButton = New System.Windows.Forms.ToolStripButton()
+        Me.ToolStripDropDownButton1 = New System.Windows.Forms.ToolStripDropDownButton()
+        Me.DrawReferenceCrossToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.DrawSelectionSquareToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.BackgroundToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ToolStripComboBox2 = New System.Windows.Forms.ToolStripComboBox()
+        Me.OverlayToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ToolStripComboBox3 = New System.Windows.Forms.ToolStripComboBox()
+        Me.FullScreenToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.UseFixedResolutionToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.TextureFilterToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ToolStripSeparator3 = New System.Windows.Forms.ToolStripSeparator()
+        Me.TextureLibraryCreatorToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ForceUpdateToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ResetScreenToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ViewLogToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.TextureButton1 = New System.Windows.Forms.ToolStripButton()
+        Me.TextureButton2 = New System.Windows.Forms.ToolStripButton()
+        Me.StyleButton = New System.Windows.Forms.ToolStripButton()
+        Me.RotationButton = New System.Windows.Forms.ToolStripButton()
+        Me.SimulateButton = New System.Windows.Forms.ToolStripButton()
+        Me.ShowButton = New System.Windows.Forms.ToolStripButton()
         Me.ContextMenuStrip1 = New System.Windows.Forms.ContextMenuStrip(Me.components)
-        Me.NewNodeToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
-        Me.SelectNodeToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
-        Me.ShowAllNodesToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
-        Me.HideToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
-        Me.SendToBackToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
-        Me.BringToFrontToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
-        Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator
-        Me.DeselectToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
-        Me.SelectAllToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
-        Me.CopyToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
-        Me.PasteToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
-        Me.CutToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
-        Me.DeleteToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
-        Me.SaveFileDialog1 = New System.Windows.Forms.SaveFileDialog
-        Me.OpenFileDialog1 = New System.Windows.Forms.OpenFileDialog
-        Me.Panel1 = New System.Windows.Forms.Panel
-        Me.Button1 = New System.Windows.Forms.Button
-        Me.TreeView1 = New System.Windows.Forms.TreeView
-        Me.DeleteButton = New System.Windows.Forms.Button
-        Me.AddButton = New System.Windows.Forms.Button
-        Me.ComboBox1 = New System.Windows.Forms.ComboBox
-        Me.Label1 = New System.Windows.Forms.Label
-        Me.SaveFileDialog2 = New System.Windows.Forms.SaveFileDialog
-        Me.Label2 = New System.Windows.Forms.Label
+        Me.NewNodeToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.SelectNodeToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ShowAllNodesToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.HideToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.SendToBackToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.BringToFrontToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator()
+        Me.DeselectToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.SelectAllToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.CopyToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.PasteToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.CutToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.DeleteToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.SaveFileDialog1 = New System.Windows.Forms.SaveFileDialog()
+        Me.OpenFileDialog1 = New System.Windows.Forms.OpenFileDialog()
+        Me.Panel1 = New System.Windows.Forms.Panel()
+        Me.Button1 = New System.Windows.Forms.Button()
+        Me.TreeView1 = New System.Windows.Forms.TreeView()
+        Me.DeleteButton = New System.Windows.Forms.Button()
+        Me.AddButton = New System.Windows.Forms.Button()
+        Me.ComboBox1 = New System.Windows.Forms.ComboBox()
+        Me.Label1 = New System.Windows.Forms.Label()
+        Me.Label3 = New System.Windows.Forms.Label()
+        Me.SaveFileDialog2 = New System.Windows.Forms.SaveFileDialog()
+        Me.Label2 = New System.Windows.Forms.Label()
         Me.Timer1 = New System.Windows.Forms.Timer(Me.components)
-        Me.Label3 = New System.Windows.Forms.Label
-        Me.MainScreen = New HUD_Editor.Canvas
+        Me.MainScreen = New HUD_Editor.Canvas()
         Me.ToolStrip1.SuspendLayout()
         Me.ContextMenuStrip1.SuspendLayout()
         Me.Panel1.SuspendLayout()
@@ -421,7 +421,7 @@ Partial Class Form1
         'Panel1
         '
         Me.Panel1.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-                    Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+            Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.Panel1.BackColor = System.Drawing.SystemColors.Info
         Me.Panel1.Controls.Add(Me.Button1)
         Me.Panel1.Controls.Add(Me.TreeView1)
@@ -439,7 +439,7 @@ Partial Class Form1
         'Button1
         '
         Me.Button1.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Button1.ForeColor = System.Drawing.Color.Black
         Me.Button1.Location = New System.Drawing.Point(310, -1)
         Me.Button1.Name = "Button1"
@@ -452,8 +452,8 @@ Partial Class Form1
         '
         Me.TreeView1.AllowDrop = True
         Me.TreeView1.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-                    Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.TreeView1.BackColor = System.Drawing.SystemColors.GradientInactiveCaption
         Me.TreeView1.CheckBoxes = True
         Me.TreeView1.ContextMenuStrip = Me.ContextMenuStrip1
@@ -510,6 +510,16 @@ Partial Class Form1
         Me.Label1.TabIndex = 1
         Me.Label1.Text = "Rendered GuiIndex:"
         '
+        'Label3
+        '
+        Me.Label3.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.Label3.AutoSize = True
+        Me.Label3.Location = New System.Drawing.Point(81, 546)
+        Me.Label3.Name = "Label3"
+        Me.Label3.Size = New System.Drawing.Size(179, 13)
+        Me.Label3.TabIndex = 8
+        Me.Label3.Text = "Nodes under ""Chat"" are bf2142-only"
+        '
         'SaveFileDialog2
         '
         Me.SaveFileDialog2.Filter = "Targa|*.tga|PNG|*.png"
@@ -530,21 +540,11 @@ Partial Class Form1
         '
         Me.Timer1.Interval = 20
         '
-        'Label3
-        '
-        Me.Label3.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        Me.Label3.AutoSize = True
-        Me.Label3.Location = New System.Drawing.Point(81, 546)
-        Me.Label3.Name = "Label3"
-        Me.Label3.Size = New System.Drawing.Size(179, 13)
-        Me.Label3.TabIndex = 8
-        Me.Label3.Text = "Nodes under ""Chat"" are bf2142-only"
-        '
         'MainScreen
         '
         Me.MainScreen.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-                    Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.MainScreen.BackColor = System.Drawing.Color.Black
         Me.MainScreen.ContextMenuStrip = Me.ContextMenuStrip1
         Me.MainScreen.Location = New System.Drawing.Point(0, 26)
