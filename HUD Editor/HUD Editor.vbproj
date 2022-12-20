@@ -1,0 +1,214 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{DAFCD265-E2F0-4529-88DF-69AF83E68E78}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <StartupObject>HUD_Editor.My.MyApplication</StartupObject>
+    <RootNamespace>HUD_Editor</RootNamespace>
+    <AssemblyName>HUD Editor</AssemblyName>
+    <FileAlignment>512</FileAlignment>
+    <MyType>WindowsForms</MyType>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <OptionExplicit>On</OptionExplicit>
+    <OptionCompare>Binary</OptionCompare>
+    <OptionStrict>Off</OptionStrict>
+    <OptionInfer>On</OptionInfer>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DocumentationFile>HUD Editor.xml</DocumentationFile>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DocumentationFile>HUD Editor.xml</DocumentationFile>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="FreeImageNET, Version=3.13.0.1, Culture=neutral, processorArchitecture=MSIL" />
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Import Include="Microsoft.VisualBasic" />
+    <Import Include="System" />
+    <Import Include="System.Collections" />
+    <Import Include="System.Collections.Generic" />
+    <Import Include="System.Data" />
+    <Import Include="System.Drawing" />
+    <Import Include="System.Diagnostics" />
+    <Import Include="System.Windows.Forms" />
+    <Import Include="System.Linq" />
+    <Import Include="System.Xml.Linq" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AddNode.Designer.vb">
+      <DependentUpon>AddNode.vb</DependentUpon>
+    </Compile>
+    <Compile Include="AddNode.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ColorDialog.Designer.vb">
+      <DependentUpon>ColorDialog.vb</DependentUpon>
+    </Compile>
+    <Compile Include="ColorDialog.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form1.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form1.Designer.vb">
+      <DependentUpon>Form1.vb</DependentUpon>
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="LoadFileDialog.Designer.vb">
+      <DependentUpon>LoadFileDialog.vb</DependentUpon>
+    </Compile>
+    <Compile Include="LoadFileDialog.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Module1.vb" />
+    <Compile Include="My Project\AssemblyInfo.vb" />
+    <Compile Include="My Project\Application.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Application.myapp</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\Resources.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\Settings.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="NodeSelect.Designer.vb">
+      <DependentUpon>NodeSelect.vb</DependentUpon>
+    </Compile>
+    <Compile Include="NodeSelect.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PositionDialog.Designer.vb">
+      <DependentUpon>PositionDialog.vb</DependentUpon>
+    </Compile>
+    <Compile Include="PositionDialog.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="RotationDialog.Designer.vb">
+      <DependentUpon>RotationDialog.vb</DependentUpon>
+    </Compile>
+    <Compile Include="RotationDialog.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SimulateDialog.Designer.vb">
+      <DependentUpon>SimulateDialog.vb</DependentUpon>
+    </Compile>
+    <Compile Include="SimulateDialog.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SizeDialog.Designer.vb">
+      <DependentUpon>SizeDialog.vb</DependentUpon>
+    </Compile>
+    <Compile Include="SizeDialog.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TextureBrowser.Designer.vb">
+      <DependentUpon>TextureBrowser.vb</DependentUpon>
+    </Compile>
+    <Compile Include="TextureBrowser.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="VariablesDialog.Designer.vb">
+      <DependentUpon>VariablesDialog.vb</DependentUpon>
+    </Compile>
+    <Compile Include="VariablesDialog.vb">
+      <SubType>Form</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="AddNode.resx">
+      <DependentUpon>AddNode.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ColorDialog.resx">
+      <DependentUpon>ColorDialog.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form1.resx">
+      <DependentUpon>Form1.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="LoadFileDialog.resx">
+      <DependentUpon>LoadFileDialog.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="My Project\Resources.resx">
+      <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.vb</LastGenOutput>
+      <CustomToolNamespace>My.Resources</CustomToolNamespace>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="NodeSelect.resx">
+      <DependentUpon>NodeSelect.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PositionDialog.resx">
+      <DependentUpon>PositionDialog.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="RotationDialog.resx">
+      <DependentUpon>RotationDialog.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SimulateDialog.resx">
+      <DependentUpon>SimulateDialog.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SizeDialog.resx">
+      <DependentUpon>SizeDialog.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TextureBrowser.resx">
+      <DependentUpon>TextureBrowser.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="VariablesDialog.resx">
+      <DependentUpon>VariablesDialog.vb</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="My Project\Application.myapp">
+      <Generator>MyApplicationCodeGenerator</Generator>
+      <LastGenOutput>Application.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="My Project\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <CustomToolNamespace>My</CustomToolNamespace>
+      <LastGenOutput>Settings.Designer.vb</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

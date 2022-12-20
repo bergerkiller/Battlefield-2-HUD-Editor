@@ -1,0 +1,11 @@
+# Temporary object files, used for compiling
+HUD Editor/obj
+
+# Debugger files, don't really need these in git...
+HUD Editor/bin/Debug/HUD Editor.pdb
+HUD Editor/bin/Debug/HUD Editor.vshost.exe
+HUD Editor/bin/Debug/HUD Editor.vshost.exe.manifest
+HUD Editor/bin/Debug/HUD Editor.xml
+
+# Logfile
+HUD Editor/bin/Debug/log.txt
