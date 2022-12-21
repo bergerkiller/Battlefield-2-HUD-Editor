@@ -467,7 +467,7 @@
                 End With
             ElseIf Me.Type = "Split Node" Then
                 rdata = "hudBuilder.createSplitNode			" & p & " " & Me.Name
-                If Me.BlendEffectA <> 0 And Me.BlendEffectB <> 0 Then rdata &= vbCrLf & "hudBuilder.addNodeBlendEffect		" & Me.BlendEffectA & " " & Me.BlendEffectB
+                If Me.BlendEffectA <> -1 And Me.BlendEffectB <> -1 Then rdata &= vbCrLf & "hudBuilder.addNodeBlendEffect		" & Me.BlendEffectA & " " & Me.BlendEffectB
             ElseIf Me.Type = "Bar Node" Then
                 With Me.BarNode
                     rdata = "hudBuilder.createBarNode 		" & p & " " & Me.Name & " " & .Style & " "
@@ -529,20 +529,20 @@
                 End With
             End If
             If Me.Color.IsWhite = False Then rdata &= vbCrLf & "hudBuilder.setNodeColor		 	" & Me.Color.ToDecimalText
-            If Me.InTime <> 0 Then rdata &= vbCrLf & "hudBuilder.setNodeInTime 		" & Me.InTime.ToString.Replace(",", ".")
-            If Me.OutTime <> 0 Then rdata &= vbCrLf & "hudBuilder.setNodeOutTime 		" & Me.OutTime.ToString.Replace(",", ".")
             If Me.ShowVariable.VariableName <> "" Then rdata &= vbCrLf & "hudBuilder.setNodeShowVariable 		" & Me.ShowVariable.VariableName
             If Me.AlphaVariable.VariableName <> "" Then rdata &= vbCrLf & "hudBuilder.setNodeAlphaVariable     	" & Me.AlphaVariable.VariableName
-            If Me.AlphaShowEffect = True Then rdata &= vbCrLf & "hudBuilder.addNodeAlphaShowEffect"
-            For Each line As String In Me.FailedLines.Split(vbCrLf)
-                line = line.Trim
-                If line <> "" Then rdata &= vbCrLf & line
-            Next
             If Me.LogicShowVariables <> "" Then
                 For Each line As String In Me.LogicShowVariables.Split(vbCrLf)
                     rdata &= vbCrLf & "hudBuilder.setNodeLogicShowVariable 		" & line
                 Next
             End If
+            If Me.InTime <> 0 Then rdata &= vbCrLf & "hudBuilder.setNodeInTime 		" & Me.InTime.ToString.Replace(",", ".")
+            If Me.OutTime <> 0 Then rdata &= vbCrLf & "hudBuilder.setNodeOutTime 		" & Me.OutTime.ToString.Replace(",", ".")
+            If Me.AlphaShowEffect = True Then rdata &= vbCrLf & "hudBuilder.addNodeAlphaShowEffect"
+            For Each line As String In Me.FailedLines.Split(vbCrLf)
+                line = line.Trim
+                If line <> "" Then rdata &= vbCrLf & line
+            Next
             Return rdata
         Else
             Return ""
